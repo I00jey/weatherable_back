@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class ClothInfo {
     private MajorCategory major;
-    private MiddelCategory middle;
+    private MiddleCategory middle;
     private Description description;
 }
