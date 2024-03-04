@@ -1,4 +1,4 @@
-package com.weatherable.weatherable.Model;
+package com.weatherable.weatherable.Entity.enums;
 
 public enum OuterMiddleCategory implements MiddleCategory {
     Jacket, Coat, Padded_Jacket, Blazer, Mustang, Sport_Shirt
