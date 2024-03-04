@@ -1,6 +1,6 @@
 package com.weatherable.weatherable.Controller;
 
-import com.weatherable.weatherable.Model.ClosetModel;
+import com.weatherable.weatherable.Entity.ClosetEntity;
 import com.weatherable.weatherable.Service.ClosetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ public class ClosetController {
 
     @GetMapping("/")
     @ResponseBody
-    public List<ClosetModel> getClosetList(@RequestParam String userid) {
+    public List<ClosetEntity> getClosetList(@RequestParam String userid) {
 
         return closetService.getClosetList(userid);
     }
