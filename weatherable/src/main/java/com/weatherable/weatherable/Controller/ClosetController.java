@@ -16,10 +16,5 @@ public class ClosetController {
     @Autowired
     ClosetService closetService;
 
-    @GetMapping("/")
-    @ResponseBody
-    public List<ClosetEntity> getClosetList(@RequestParam String userid) {
 
-        return closetService.getClosetList(userid);
-    }
 }

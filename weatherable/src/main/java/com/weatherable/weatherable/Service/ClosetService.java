@@ -13,8 +13,5 @@ public class ClosetService {
     @Autowired
     ClosetRepository closetRepository;
 
-    public List<ClosetEntity> getClosetList(String userid) {
-        List<ClosetEntity> closetList = closetRepository.findClosetModelByUserid(userid);
-        return closetList;
-    }
+
 }
