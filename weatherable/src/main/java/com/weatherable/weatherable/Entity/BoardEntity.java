@@ -1,26 +1,41 @@
 package com.weatherable.weatherable.Entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
-@Document(collection = "board")
+@Table(name = "board")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Entity
 public class BoardEntity {
 
+
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(nullable = false, length = 20)
     private String userid;
+
+    @Column(nullable = false, length = 50)
     private String title;
+
+    @Column(columnDefinition = "Text", nullable = false)
     private String content;
     private String image_path;
-    @CreatedDate
-    private Date createdAt;
+
+
+    @CreationTimestamp
+    private Timestamp createdAt;
+
+    @OneToMany(mappedBy = "boardentity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentEntity> comments = new ArrayList<>();
 }

@@ -1,24 +1,33 @@
 package com.weatherable.weatherable.Entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.hibernate.annotations.CreationTimestamp;
+import java.sql.Timestamp;
 
-import java.util.Date;
-
-@Data
+@Table(name = "comment")
 @NoArgsConstructor
-@Document(collection = "comment")
 @AllArgsConstructor
+@Data
+@Entity
 public class CommentEntity {
     @Id
-    private String id;
-    private String postId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "boardentity_id")
+    private BoardEntity boardEntity;
+
+    @Column(nullable = false)
     private String userid;
+
+    @Column(nullable = false)
     private String content;
-    @CreatedDate
-    private Date createdAt;
+
+    @CreationTimestamp
+    private Timestamp createdAt;
+
 }
