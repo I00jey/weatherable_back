@@ -1,24 +1,37 @@
 package com.weatherable.weatherable.Entity;
 
 import com.weatherable.weatherable.Entity.enums.ClothInfo;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
-@Document(collection = "closet")
+@Table(name = "closet")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Entity
 public class ClosetEntity {
 
     @Id
-    private String id;
-    private String userid;
-    private ArrayList<ClothInfo> clothInfo;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    // test 용 main 함수. 옷장에 넣을 때 이러한 구조로 넣게 될 듯 합니다.
+    @Column(nullable = false, length = 20)
+    private String userid;
+
+    @ManyToOne
+    @JoinColumn(name = "clothinfoentity_id")
+    private ClothInfoEntity clothInfoEntity;
+
+    @CreationTimestamp
+    private Timestamp createdAt;
+
+
+
 }

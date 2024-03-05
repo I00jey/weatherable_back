@@ -1,20 +1,23 @@
 package com.weatherable.weatherable.Entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
-
-@Document(collection = "follow")
+@Table(name = "follow")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Entity
 public class FollowEntity {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(nullable = false)
     private String userid;
-    private ArrayList<String> followingId;
+
+    @Column(nullable = false)
+    private String followingId;
 }

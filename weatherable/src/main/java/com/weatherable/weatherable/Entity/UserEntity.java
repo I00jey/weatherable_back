@@ -1,21 +1,32 @@
 package com.weatherable.weatherable.Entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "user")
+@Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Entity
 public class UserEntity {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(nullable = false)
     private String userid;
+
+    @Column(nullable = false)
     private String password;
-    private String username;
+
+    @Column(nullable = false)
+    private String nickname;
+
     private String image_path;
+
+    private Double height;
+    private Double weight;
 }

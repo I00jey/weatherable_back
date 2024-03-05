@@ -1,15 +1,19 @@
 package com.weatherable.weatherable.DTO;
 
-import com.weatherable.weatherable.Entity.enums.ClothInfo;
+import com.weatherable.weatherable.Entity.enums.*;
+import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 @Data
 @Builder
 public class ClosetDTO {
-    private String id;
+    private long id;
     private String userid;
-    private ArrayList<ClothInfo> clothInfo;
+    private String clothName;
+    private Timestamp createdAt;
 }

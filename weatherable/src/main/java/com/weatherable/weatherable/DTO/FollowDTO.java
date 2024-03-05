@@ -8,7 +8,7 @@ import java.util.ArrayList;
 @Data
 @Builder
 public class FollowDTO {
-    private String id;
+    private long id;
     private String userid;
-    private ArrayList<String> followingId;
+    private String followingId;
 }

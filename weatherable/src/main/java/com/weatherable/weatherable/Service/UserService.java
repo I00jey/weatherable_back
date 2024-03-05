@@ -28,7 +28,7 @@ public class UserService {
            UserDTO userDTO = UserDTO.builder()
                    .id(userEntity.getId())
                    .userid(userEntity.getUserid())
-                   .username(userEntity.getUsername())
+                   .nickname(userEntity.getNickname())
                    .password(userEntity.getPassword())
                    .image_path(userEntity.getImage_path())
                    .build();
