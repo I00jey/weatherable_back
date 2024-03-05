@@ -49,8 +49,8 @@ public class ClothInfoEntity {
     private String brand;
 
     @Column(nullable = false)
-    private String image_Path;
+    private String image_path;
 
-    @OneToMany(mappedBy = "clothinfoentity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "clothInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClosetEntity> closetEntityList = new ArrayList<>();
 }

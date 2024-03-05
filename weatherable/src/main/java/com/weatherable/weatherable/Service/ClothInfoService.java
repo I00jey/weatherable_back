@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TotalClothService {
+public class ClothInfoService {
 
     @Autowired
     UserRepository userRepository;

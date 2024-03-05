@@ -15,9 +15,12 @@ public class FollowEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
-    private String userid;
+    @ManyToOne
+    @JoinColumn(name = "from_user")
+    private UserEntity fromUser;
 
-    @Column(nullable = false)
-    private String followingId;
+
+    @ManyToOne
+    @JoinColumn(name = "to_user")
+    private UserEntity toUser;
 }

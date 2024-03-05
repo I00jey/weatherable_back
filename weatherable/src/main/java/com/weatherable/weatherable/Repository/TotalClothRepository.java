@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TotalClothRepository extends JpaRepository<ClosetEntity, String> {
-    List<ClosetEntity> findClosetModelByUserid(String userid);
+
 }

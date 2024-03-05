@@ -22,12 +22,13 @@ public class ClosetEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, length = 20)
-    private String userid;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity userCloset;
 
     @ManyToOne
-    @JoinColumn(name = "clothinfoentity_id")
-    private ClothInfoEntity clothInfoEntity;
+    @JoinColumn(name = "cloth_info_id")
+    private ClothInfoEntity clothInfo;
 
     @CreationTimestamp
     private Timestamp createdAt;

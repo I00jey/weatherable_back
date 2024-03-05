@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.catalina.User;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
@@ -22,8 +23,9 @@ public class BoardEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, length = 20)
-    private String userid;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity userBoard;
 
     @Column(nullable = false, length = 50)
     private String title;
@@ -36,6 +38,6 @@ public class BoardEntity {
     @CreationTimestamp
     private Timestamp createdAt;
 
-    @OneToMany(mappedBy = "boardentity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comments = new ArrayList<>();
 }
