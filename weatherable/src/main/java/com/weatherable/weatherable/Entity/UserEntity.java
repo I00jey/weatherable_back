@@ -28,23 +28,24 @@ public class UserEntity {
     @Column(nullable = false)
     private String nickname;
 
+    @Column(length = 10000)
     private String image_path;
 
     private Double height;
     private Double weight;
 
-    @OneToMany(mappedBy = "userBoard", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userBoard", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardEntity> board = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userComment", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userComment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comment = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userCloset", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userCloset", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClosetEntity> closet = new ArrayList<>();
 
-    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FollowEntity> fromUser = new ArrayList<>();
 
-    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FollowEntity> toUser = new ArrayList<>();
 }

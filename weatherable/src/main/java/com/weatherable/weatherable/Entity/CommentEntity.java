@@ -18,11 +18,11 @@ public class CommentEntity {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "board_id", nullable = false)
     private BoardEntity board;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity userComment;
 
     @Column(nullable = false)

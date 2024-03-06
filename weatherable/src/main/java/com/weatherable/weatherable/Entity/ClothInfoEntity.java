@@ -48,7 +48,7 @@ public class ClothInfoEntity {
     @Column(nullable = false)
     private String brand;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10000)
     private String image_path;
 
     @OneToMany(mappedBy = "clothInfo", cascade = CascadeType.ALL, orphanRemoval = true)

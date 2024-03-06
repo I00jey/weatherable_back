@@ -1,6 +1,5 @@
 package com.weatherable.weatherable.Entity;
 
-import com.weatherable.weatherable.Entity.enums.ClothInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,28 +10,24 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "closet")
+@Table(name = "board_image")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-public class ClosetEntity {
+public class BoardImageEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity userCloset;
+    @Column(length = 10000)
+    private String image_path;
 
     @ManyToOne
-    @JoinColumn(name = "cloth_info_id", nullable = false)
-    private ClothInfoEntity clothInfo;
-
-    @CreationTimestamp
-    private Timestamp createdAt;
-
+    @JoinColumn(name = "board_id", nullable = false)
+    private BoardEntity boardImage;
 
 
 }
