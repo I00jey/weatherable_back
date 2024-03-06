@@ -16,11 +16,11 @@ public class FollowEntity {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "from_user")
+    @JoinColumn(name = "from_user", nullable = false)
     private UserEntity fromUser;
 
 
     @ManyToOne
-    @JoinColumn(name = "to_user")
+    @JoinColumn(name = "to_user", nullable = false)
     private UserEntity toUser;
 }

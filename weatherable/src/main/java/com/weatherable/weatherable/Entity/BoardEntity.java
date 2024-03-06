@@ -24,7 +24,7 @@ public class BoardEntity {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity userBoard;
 
     @Column(nullable = false, length = 50)
@@ -32,7 +32,6 @@ public class BoardEntity {
 
     @Column(columnDefinition = "Text", nullable = false)
     private String content;
-    private String image_path;
 
 
     @CreationTimestamp
@@ -40,4 +39,7 @@ public class BoardEntity {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "boardImage", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardImageEntity> boardImage = new ArrayList<>();
 }
