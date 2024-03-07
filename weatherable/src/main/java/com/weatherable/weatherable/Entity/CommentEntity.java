@@ -18,8 +18,8 @@ public class CommentEntity {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "board_id", nullable = false)
-    private BoardEntity board;
+    @JoinColumn(name = "lookbook_id", nullable = false)
+    private LookbookEntity lookbookComment;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -29,6 +29,7 @@ public class CommentEntity {
     private String content;
 
     @CreationTimestamp
+    @Column(nullable = false, name = "created_at")
     private Timestamp createdAt;
 
 }

@@ -1,38 +1,26 @@
-package com.weatherable.weatherable.Entity;
+package com.weatherable.weatherable.Model;
 
-import com.weatherable.weatherable.Model.ClothInfoEntity;
 import com.weatherable.weatherable.enums.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "closet")
+@Document(collection = "cloth_info")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity
-public class ClosetEntity {
-
+public class ClothInfoEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity userCloset;
+    private String id;
 
     private MajorCategory majorCategory;
 
     private MiddleCategory middleCategory;
-
-    private long price;
 
     private Color color;
 
@@ -40,6 +28,9 @@ public class ClosetEntity {
 
     private Thickness thickness;
 
+    private Season season;
+
+    @Column(name = "product_name")
     private String productName;
 
     private String brand;
@@ -47,18 +38,9 @@ public class ClosetEntity {
     @Column(name = "small_image_path")
     private String smallImagePath;
 
+
     @Column(name = "big_image_path")
     private String bigImagePath;
-
-    private Style style;
-
-    private Season season;
-
-
-    @CreationTimestamp
-    @Column(nullable = false, name = "created_at")
-    private Timestamp createdAt;
-
 
 
 }
