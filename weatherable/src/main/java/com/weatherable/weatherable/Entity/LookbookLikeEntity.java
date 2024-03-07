@@ -5,22 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "follow")
+@Table(name = "lookbook_like")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-public class FollowEntity {
+public class LookbookLikeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "from_user", nullable = false)
-    private UserEntity fromUser;
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity userIndex;
 
 
     @ManyToOne
-    @JoinColumn(name = "to_user", nullable = false)
-    private UserEntity toUser;
+    @JoinColumn(name = "lookbook_id", nullable = false)
+    private LookbookEntity postIndex;
 }

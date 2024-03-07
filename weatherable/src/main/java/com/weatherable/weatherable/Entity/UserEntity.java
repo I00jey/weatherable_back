@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String userid;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String password;
 
     @Column(nullable = false)
@@ -31,11 +33,18 @@ public class UserEntity {
     @Column(length = 10000)
     private String image_path;
 
+    @Column(columnDefinition = "Text")
+    private String introduction;
+
+    @CreationTimestamp
+    @Column(nullable = false, name = "created_at")
+    private Timestamp createdAt;
+
     private Double height;
     private Double weight;
 
-    @OneToMany(mappedBy = "userBoard", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BoardEntity> board = new ArrayList<>();
+    @OneToMany(mappedBy = "userLookbook", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LookbookEntity> Lookbook = new ArrayList<>();
 
     @OneToMany(mappedBy = "userComment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comment = new ArrayList<>();
@@ -44,8 +53,13 @@ public class UserEntity {
     private List<ClosetEntity> closet = new ArrayList<>();
 
     @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FollowEntity> fromUser = new ArrayList<>();
+    private List<ClosetLikeEntity> fromUser = new ArrayList<>();
 
-    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FollowEntity> toUser = new ArrayList<>();
+    @OneToMany(mappedBy = "userClosetLike", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClosetLikeEntity> toUser = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userIndex", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LookbookLikeEntity> userLookBookLikes = new ArrayList<>();
+
+
 }

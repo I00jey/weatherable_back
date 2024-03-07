@@ -1,7 +1,6 @@
 package com.weatherable.weatherable.DTO;
 
-import com.weatherable.weatherable.Entity.enums.*;
-import jakarta.persistence.*;
+import com.weatherable.weatherable.enums.*;
 import lombok.Builder;
 import lombok.Data;
 

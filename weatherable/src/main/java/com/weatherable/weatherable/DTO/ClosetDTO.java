@@ -1,6 +1,5 @@
 package com.weatherable.weatherable.DTO;
 
-import com.weatherable.weatherable.Entity.enums.*;
 import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;

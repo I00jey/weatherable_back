@@ -1,12 +1,10 @@
 package com.weatherable.weatherable.Repository;
 
-import com.weatherable.weatherable.Entity.ClosetEntity;
+import com.weatherable.weatherable.Entity.ClosetLikeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface FollowRepository extends JpaRepository<ClosetEntity, String> {
+public interface FollowRepository extends JpaRepository<ClosetLikeEntity, Long> {
 
 }

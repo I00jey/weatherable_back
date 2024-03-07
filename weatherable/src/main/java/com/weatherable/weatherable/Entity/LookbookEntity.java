@@ -4,28 +4,25 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.User;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "board")
+@Table(name = "lookbook")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-public class BoardEntity {
-
-
+public class LookbookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity userBoard;
+    private UserEntity userLookbook;
 
     @Column(nullable = false, length = 50)
     private String title;
@@ -35,11 +32,16 @@ public class BoardEntity {
 
 
     @CreationTimestamp
+    @Column(nullable = false, name = "created_at")
     private Timestamp createdAt;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CommentEntity> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "lookbookComment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentEntity> lookbookComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "boardImage", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BoardImageEntity> boardImage = new ArrayList<>();
+    @OneToMany(mappedBy = "lookbookImage", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LookbookImageEntity> lookbookImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "postIndex", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LookbookLikeEntity> lookbookLikes = new ArrayList<>();
+
 }

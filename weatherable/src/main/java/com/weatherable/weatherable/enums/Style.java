@@ -1,4 +1,4 @@
-package com.weatherable.weatherable.Entity.enums;
+package com.weatherable.weatherable.enums;
 
 public enum Style {
     Street, Formal, Retro, Sporty;
