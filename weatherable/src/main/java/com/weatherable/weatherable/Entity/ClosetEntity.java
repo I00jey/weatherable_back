@@ -3,9 +3,7 @@ package com.weatherable.weatherable.Entity;
 import com.weatherable.weatherable.Model.ClothInfoEntity;
 import com.weatherable.weatherable.enums.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 
@@ -16,7 +14,8 @@ import java.util.List;
 @Table(name = "closet")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 public class ClosetEntity {
 

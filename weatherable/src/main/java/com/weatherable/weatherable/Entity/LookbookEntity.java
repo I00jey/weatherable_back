@@ -1,9 +1,7 @@
 package com.weatherable.weatherable.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
@@ -13,7 +11,8 @@ import java.util.List;
 @Table(name = "lookbook")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Setter
+@Getter
 @Entity
 public class LookbookEntity {
     @Id

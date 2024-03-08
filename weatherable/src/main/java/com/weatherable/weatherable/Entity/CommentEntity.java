@@ -1,16 +1,15 @@
 package com.weatherable.weatherable.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.sql.Timestamp;
 
 @Table(name = "comment")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 public class CommentEntity {
     @Id

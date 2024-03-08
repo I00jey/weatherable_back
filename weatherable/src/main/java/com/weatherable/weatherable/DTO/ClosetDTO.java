@@ -1,6 +1,10 @@
 package com.weatherable.weatherable.DTO;
 
+import com.weatherable.weatherable.Entity.UserEntity;
+import com.weatherable.weatherable.enums.*;
 import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,8 +15,35 @@ import java.util.ArrayList;
 @Data
 @Builder
 public class ClosetDTO {
-    private long id;
+    private Long id;
+
+    private Long user_id;
+
     private String userid;
-    private String clothName;
+
+    private MajorCategory majorCategory;
+
+    private MiddleCategory middleCategory;
+
+    private long price;
+
+    private Color color;
+
+    private Size size;
+
+    private Thickness thickness;
+
+    private String productName;
+
+    private String brand;
+
+    private String smallImagePath;
+
+    private String bigImagePath;
+
+    private Style style;
+
+    private Season season;
+
     private Timestamp createdAt;
 }
