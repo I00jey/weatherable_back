@@ -1,17 +1,15 @@
 package com.weatherable.weatherable.Controller;
 
+import com.weatherable.weatherable.DTO.ClosetDTO;
 import com.weatherable.weatherable.Entity.ClosetEntity;
-import com.weatherable.weatherable.Repository.ClosetRepository;
 import com.weatherable.weatherable.Service.ClosetService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/closet")
 public class ClosetController {
 
     @Autowired
@@ -19,12 +17,16 @@ public class ClosetController {
 
 
 
-    @GetMapping("/")
-    List<ClosetEntity> getClosetByUserid(@RequestParam Long userIndex) {
-        System.out.println("sfsfsfefe"+userIndex);
-        List<ClosetEntity> result = closetService.getAllList(userIndex);
+    @GetMapping("")
+    public List<ClosetDTO> getClosetByUserid(@RequestParam Long userIndex) {
+        List<ClosetDTO> result = closetService.getAllClothListByUserIndex(userIndex);
         System.out.println(result);
         return result;
     }
 
+    @PostMapping("")
+    public String insertCloth(@RequestBody ClosetEntity closetEntity) {
+        String result = closetService.insertCloth(closetEntity);
+        return result;
+    }
 }
