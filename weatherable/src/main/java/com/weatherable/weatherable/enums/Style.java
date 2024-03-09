@@ -1,5 +1,5 @@
 package com.weatherable.weatherable.enums;
 
 public enum Style {
-    Street, Formal, Retro, Sporty;
+    Casual, Sporty, Retro, Gorp_Core, Formal;
 }

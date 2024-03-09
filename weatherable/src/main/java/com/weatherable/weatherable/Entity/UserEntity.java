@@ -1,5 +1,6 @@
 package com.weatherable.weatherable.Entity;
 
+import com.weatherable.weatherable.enums.Style;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -41,6 +42,8 @@ public class UserEntity {
 
     private Double height;
     private Double weight;
+
+    private Style favoriteStyle;
 
     @OneToMany(mappedBy = "userLookbook", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LookbookEntity> Lookbook = new ArrayList<>();
