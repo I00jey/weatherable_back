@@ -18,11 +18,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("")
-    public String insertUser(@RequestBody UserEntity userEntity) {
-        String result = userService.insertUser(userEntity);
-        return result;
-    }
 
 
     @GetMapping("")
@@ -34,6 +29,36 @@ public class UserController {
     @PatchMapping("/nickname")
     public String updateUserNickname(@RequestBody UserEntity userEntity) {
         String result = userService.changeUserNickname(userEntity.getNickname(), userEntity.getId());
+        return result;
+    }
+
+    @PatchMapping("/physical")
+    public String updateUserHeightAndWeight(@RequestBody UserEntity userEntity) {
+        String result = userService.changeUserHeightAndWeight(userEntity.getHeight(), userEntity.getWeight(), userEntity.getId());
+        return result;
+    }
+
+    @PatchMapping("/image")
+    public String updateUserImagePath(@RequestBody UserEntity userEntity) {
+        String result = userService.changeUserImagePath(userEntity.getImagePath(), userEntity.getId());
+        return result;
+    }
+
+    @PatchMapping("/introduction")
+    public String updateUserIntroduction(@RequestBody UserEntity userEntity) {
+        String result = userService.changeUserIntroduction(userEntity.getIntroduction(), userEntity.getId());
+        return result;
+    }
+
+    @PatchMapping("/password")
+    public String updateUserPassword(@RequestBody UserEntity userEntity) {
+        String result = userService.changeUserPassword(userEntity.getPassword(), userEntity.getId());
+        return result;
+    }
+
+    @PatchMapping("/style")
+    public String updateUserStyle(@RequestBody UserEntity userEntity) {
+        String result = userService.changeUserStyle(userEntity.getFavoriteStyle(), userEntity.getId());
         return result;
     }
 }
