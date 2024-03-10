@@ -1,9 +1,11 @@
 package com.weatherable.weatherable.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.weatherable.weatherable.enums.Style;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 @Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
@@ -21,7 +24,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String userid;
 
     @Column(nullable = false, length = 1000)
@@ -30,8 +33,8 @@ public class UserEntity {
     @Column(nullable = false)
     private String nickname;
 
-    @Column(length = 10000)
-    private String image_path;
+    @Column(length = 10000, name = "image_path")
+    private String imagePath;
 
     @Column(columnDefinition = "Text")
     private String introduction;
@@ -43,6 +46,7 @@ public class UserEntity {
     private Double height;
     private Double weight;
 
+    @Column(name = "favorite_style")
     private Style favoriteStyle;
 
     @OneToMany(mappedBy = "userLookbook", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -62,6 +66,9 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userIndex", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LookbookLikeEntity> userLookBookLikes = new ArrayList<>();
+
+
+
 
 
 }
