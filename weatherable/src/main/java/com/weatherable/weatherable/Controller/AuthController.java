@@ -4,16 +4,15 @@ import com.weatherable.weatherable.DTO.UserDTO;
 import com.weatherable.weatherable.DTO.UserForMyPageDTO;
 import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Service.AuthService;
+import com.weatherable.weatherable.Service.CustomUserDetailsService;
 import com.weatherable.weatherable.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.List;
@@ -62,17 +61,17 @@ public class AuthController {
 
     }
 
-//    @PostMapping("/refresh")
-//    public List<String> authenticate(@RequestBody UserEntity userEntity) {
-//        String userid = userEntity.getUserid();
-//        String password = userEntity.getPassword();
-//        boolean result = userService.isLoginInfoEqual(userid, password);
-//        if (!result) {
-//            throw new RuntimeException("아이디 혹은 비밀번호가 다릅니다.");
-//        }
-//        return List.of(createRefreshToken(userid), createAccessToken(userid));
-//
-//    }
+    @Autowired
+    CustomUserDetailsService customUserDetailsService;
+
+    @PostMapping("/refresh")
+    public UserDetails somehting(@RequestBody UserEntity userEntity) {
+        String userid = userEntity.getUserid();
+        String password = userEntity.getPassword();
+        var result = customUserDetailsService.loadUserByUsername(userid);
+        return result;
+
+    }
 
     public String createAccessToken(String userid) {
         // claims 생성
