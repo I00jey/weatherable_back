@@ -52,6 +52,11 @@ public class UserController {
 
     @PatchMapping("/password")
     public String updateUserPassword(@RequestBody UserEntity userEntity) {
+        String existingPassword = userService.retrieveExistingPasswordById(userEntity.getId());
+        boolean arePasswordsEquals = userService.matchPassword(userEntity.getPassword(), existingPassword);
+        if (arePasswordsEquals) {
+            return "패스워드가 동일합니다";
+        }
         String result = userService.changeUserPassword(userEntity.getPassword(), userEntity.getId());
         return result;
     }
