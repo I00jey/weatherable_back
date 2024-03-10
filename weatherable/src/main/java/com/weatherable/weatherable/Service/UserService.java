@@ -27,6 +27,15 @@ public class UserService {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
+    public String retrieveExistingPasswordById( Long id) {
+        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
+        if(userEntityOptional.isEmpty()) {
+            throw new RuntimeException("유저 정보 없음");
+        }
+        String hashedPassword = userEntityOptional.get().getPassword();
+        return hashedPassword;
+    }
+
     public UserService(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
@@ -104,8 +113,8 @@ public class UserService {
     @Transactional
     public String changeUserPassword(String password, Long id) {
         if (userRepository.existsById(id)) {
-            // 여기 단에서 해시 한번 하기
-            userRepository.updatePassword(password, id);
+            String encodedPassword = encodePassword(password);
+            userRepository.updatePassword(encodedPassword, id);
             return "프로필 변경 완료";
         }
         return "일치하는 유저 정보가 없습니다.";
