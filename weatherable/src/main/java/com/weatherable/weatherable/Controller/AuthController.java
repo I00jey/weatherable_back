@@ -1,18 +1,20 @@
 package com.weatherable.weatherable.Controller;
 
-import com.weatherable.weatherable.DTO.UserDTO;
 import com.weatherable.weatherable.DTO.UserForMyPageDTO;
 import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Service.AuthService;
 import com.weatherable.weatherable.Service.CustomUserDetailsService;
 import com.weatherable.weatherable.Service.UserService;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.*;
+import com.weatherable.weatherable.Service.JwtUtilsService;
 
 import java.time.Instant;
 import java.util.List;
@@ -27,12 +29,18 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
+    @Autowired
+    JwtUtilsService jwtUtilsService;
+
     private JwtEncoder jwtEncoder;
+
 
     @Autowired
     public AuthController(JwtEncoder jwtEncoder) {
+
         this.jwtEncoder = jwtEncoder;
     }
+
 
     @PostMapping("/signup")
     public String insertUser(@RequestBody UserEntity userEntity) {
@@ -52,7 +60,7 @@ public class AuthController {
         }
         UserForMyPageDTO existingUserDTO = userService.getUserInfoForMyPage(userid);
         Long id = existingUserDTO.getId();
-        String refreshToken = createRefreshToken(userid);
+        String refreshToken = jwtUtilsService.createRefreshToken(userid);
         String accessToken = createAccessToken(userid);
 
         authService.updateUserRefreshToken(refreshToken, id);
@@ -65,20 +73,23 @@ public class AuthController {
     CustomUserDetailsService customUserDetailsService;
 
     @PostMapping("/refresh")
-    public UserDetails somehting(@RequestBody UserEntity userEntity) {
-        String userid = userEntity.getUserid();
-        String password = userEntity.getPassword();
-        var result = customUserDetailsService.loadUserByUsername(userid);
-        return result;
-
+    public String getRefresh(@RequestHeader("Refresh") String refreshToken) {
+        boolean result = jwtUtilsService.validateToken(refreshToken);
+        if(!result) {
+            throw new RuntimeException("Refresh Token Is Not Valid!");
+        }
+        String userid = jwtUtilsService.retrieveUserid(refreshToken);
+        return createAccessToken(userid);
     }
+
+
 
     public String createAccessToken(String userid) {
         // claims 생성
         var claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plusSeconds(60 * 30))
+                .expiresAt(Instant.now().plusSeconds(60*15))
                 .subject(userid)
                 .claim("scope", "ROLE_USER") // authority
                 .build();
@@ -88,28 +99,5 @@ public class AuthController {
         return jwtEncoder.encode(parameters).getTokenValue();
     }
 
-    public String createRefreshToken(String userid) {
-        // claims 생성
-        var claims = JwtClaimsSet.builder()
-                .issuer("self")
-                .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plusSeconds(60 * 60))
-                .subject(userid)
-                .claim("scope", "Refresh") // authority
-                .build();
-
-        // jwtEncoderParameters 생성하고 이걸 인코딩하고 TokenValue 추출해서 return
-        JwtEncoderParameters parameters = JwtEncoderParameters.from(claims);
-        return jwtEncoder.encode(parameters).getTokenValue();
-    }
-
-    private Object createScope(Authentication authentication) {
-        // 권한 받기
-        return authentication.getAuthorities().stream() // list of Authority objects
-                .map(a -> a.getAuthority()) // list of String
-                .collect(Collectors.joining(" "));
-    }
 }
 
-record JwtResponse(String token) {
-}
