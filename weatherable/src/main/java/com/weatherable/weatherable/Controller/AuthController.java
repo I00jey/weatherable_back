@@ -5,12 +5,8 @@ import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Service.AuthService;
 import com.weatherable.weatherable.Service.CustomUserDetailsService;
 import com.weatherable.weatherable.Service.UserService;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +14,6 @@ import com.weatherable.weatherable.Service.JwtUtilsService;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class AuthController {
@@ -54,16 +49,16 @@ public class AuthController {
     public List<String> authenticate(@RequestBody UserEntity userEntity) {
         String userid = userEntity.getUserid();
         String password = userEntity.getPassword();
-//        boolean result = userService.isLoginInfoEqual(userid, password);
-//        if (!result) {
-//            throw new RuntimeException("아이디 혹은 비밀번호가 다릅니다.");
-//        }
-//        UserForMyPageDTO existingUserDTO = userService.getUserInfoForMyPage(userid);
-//        Long id = existingUserDTO.getId();
+        boolean result = userService.isLoginInfoEqual(userid, password);
+        if (!result) {
+            throw new RuntimeException("아이디 혹은 비밀번호가 다릅니다.");
+        }
+        UserForMyPageDTO existingUserDTO = userService.getUserInfoForMyPage(userid);
+        Long id = existingUserDTO.getId();
         String refreshToken = jwtUtilsService.createRefreshToken(userid);
-        String accessToken = createAccessToken(userid);
+        String accessToken = jwtUtilsService.createAccessToken(userid);
 
-//        authService.updateUserRefreshToken(refreshToken, id);
+        authService.updateUserRefreshToken(refreshToken, id);
 
         return List.of(refreshToken, accessToken);
 
@@ -79,7 +74,7 @@ public class AuthController {
             throw new RuntimeException("Refresh Token Is Not Valid!");
         }
         String userid = jwtUtilsService.retrieveUserid(refreshToken);
-        return createAccessToken(userid);
+        return jwtUtilsService.createAccessToken(userid);
     }
 
 

@@ -22,7 +22,6 @@ public class ClosetController {
     @GetMapping("")
     public List<ClosetDTO> getClosetByUserid(@RequestParam Long userIndex) {
         List<ClosetDTO> result = closetService.getAllClothListByUserIndex(userIndex);
-        System.out.println(result);
         return result;
     }
 

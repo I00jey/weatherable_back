@@ -7,6 +7,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -14,7 +16,7 @@ import java.security.KeyPair;
 import java.sql.Date;
 import java.time.Instant;
 
-@Service
+@Component
 public class JwtUtilsService {
 
     private final KeyPair keyPair; // RSA key pair
@@ -31,10 +33,20 @@ public class JwtUtilsService {
 
     // 토큰에서 클레임을 추출하는 함수
     public Claims extractAllClaims(String token) {
+        token = token.substring(7);
         var jwtSubject =  Jwts.parserBuilder().setSigningKey(key).build();
         var parseClaims = jwtSubject.parseClaimsJws(token).getBody();
         return parseClaims;
     }
+
+    public String getUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    public String getIssuer(String token) {
+        return extractAllClaims(token).getIssuer();
+    }
+
 
     public String createRefreshToken(String userid) {
         // claims 생성
@@ -50,14 +62,34 @@ public class JwtUtilsService {
         return claims;
     }
 
+    public String createAccessToken(String userid) {
+        // claims 생성
+        var claims = Jwts.builder()
+                .setIssuer("access")
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(Date.from(Instant.now().plusSeconds(60*60*24*14)))
+                .setSubject(userid)
+                .claim("scope", "ROLE_USER") // authority
+                .signWith(key)
+                .compact();
+
+        return claims;
+    }
+
     public boolean validateToken(String token) {
         var claims = extractAllClaims(token);
         String userid = claims.getSubject();
         String existingRefreshToken = getExistingRefreshToken(userid);
-        boolean isValidToken = token.equals(existingRefreshToken);
+        boolean isValidToken = token.substring(7).equals(existingRefreshToken);
         boolean isExpired = isTokenExpired(token);
 
         return !isExpired && isValidToken;
+    }
+
+    public boolean validateAccessToken(String token, UserDetails userDetails) {
+        final String username = getUsername(token);
+
+        return ( username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     public String getExistingRefreshToken(String userid) {
