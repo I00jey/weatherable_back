@@ -1,16 +1,10 @@
 package com.weatherable.weatherable.DTO;
 
-import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.enums.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 
 @Data
 @Builder

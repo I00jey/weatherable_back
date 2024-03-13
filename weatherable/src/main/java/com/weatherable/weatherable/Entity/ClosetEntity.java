@@ -14,8 +14,8 @@ import java.util.List;
 @Table(name = "closet")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
-@Setter
 @Entity
 public class ClosetEntity {
 
@@ -52,7 +52,6 @@ public class ClosetEntity {
     private Style style;
 
     private Season season;
-
 
     @CreationTimestamp
     @Column(nullable = false, name = "created_at")

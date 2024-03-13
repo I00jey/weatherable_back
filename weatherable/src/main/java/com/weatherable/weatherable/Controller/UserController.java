@@ -27,43 +27,43 @@ public class UserController {
     }
 
     @PatchMapping("/nickname")
-    public String updateUserNickname(@RequestBody UserEntity userEntity) {
-        String result = userService.changeUserNickname(userEntity.getNickname(), userEntity.getId());
+    public String updateUserNickname(@RequestBody UserDTO userDTO) {
+        String result = userService.changeUserNickname(userDTO.getNickname(), userDTO.getId());
         return result;
     }
 
     @PatchMapping("/physical")
-    public String updateUserHeightAndWeight(@RequestBody UserEntity userEntity) {
-        String result = userService.changeUserHeightAndWeight(userEntity.getHeight(), userEntity.getWeight(), userEntity.getId());
+    public String updateUserHeightAndWeight(@RequestBody UserDTO userDTO) {
+        String result = userService.changeUserHeightAndWeight(userDTO.getHeight(), userDTO.getWeight(), userDTO.getId());
         return result;
     }
 
     @PatchMapping("/image")
-    public String updateUserImagePath(@RequestBody UserEntity userEntity) {
-        String result = userService.changeUserImagePath(userEntity.getImagePath(), userEntity.getId());
+    public String updateUserImagePath(@RequestBody UserDTO userDTO) {
+        String result = userService.changeUserImagePath(userDTO.getImagePath(), userDTO.getId());
         return result;
     }
 
     @PatchMapping("/introduction")
-    public String updateUserIntroduction(@RequestBody UserEntity userEntity) {
-        String result = userService.changeUserIntroduction(userEntity.getIntroduction(), userEntity.getId());
+    public String updateUserIntroduction(@RequestBody UserDTO userDTO) {
+        String result = userService.changeUserIntroduction(userDTO.getIntroduction(), userDTO.getId());
         return result;
     }
 
     @PatchMapping("/password")
-    public String updateUserPassword(@RequestBody UserEntity userEntity) {
-        String existingPassword = userService.retrieveExistingPasswordById(userEntity.getId());
-        boolean arePasswordsEquals = userService.matchPassword(userEntity.getPassword(), existingPassword);
+    public String updateUserPassword(@RequestBody UserDTO userDTO) {
+        String existingPassword = userService.retrieveExistingPasswordById(userDTO.getId());
+        boolean arePasswordsEquals = userService.matchPassword(userDTO.getPassword(), existingPassword);
         if (arePasswordsEquals) {
             return "패스워드가 동일합니다";
         }
-        String result = userService.changeUserPassword(userEntity.getPassword(), userEntity.getId());
+        String result = userService.changeUserPassword(userDTO.getPassword(), userDTO.getId());
         return result;
     }
 
     @PatchMapping("/style")
-    public String updateUserStyle(@RequestBody UserEntity userEntity) {
-        String result = userService.changeUserStyle(userEntity.getFavoriteStyle(), userEntity.getId());
+    public String updateUserStyle(@RequestBody UserDTO userDTO) {
+        String result = userService.changeUserStyle(userDTO.getFavoriteStyle(), userDTO.getId());
         return result;
     }
 }

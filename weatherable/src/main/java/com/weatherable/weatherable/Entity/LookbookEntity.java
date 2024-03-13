@@ -11,7 +11,6 @@ import java.util.List;
 @Table(name = "lookbook")
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
 @Entity
 public class LookbookEntity {

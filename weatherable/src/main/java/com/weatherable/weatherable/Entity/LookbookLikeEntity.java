@@ -6,7 +6,6 @@ import lombok.*;
 @Table(name = "lookbook_like")
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
 @Entity
 public class LookbookLikeEntity {

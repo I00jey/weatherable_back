@@ -2,11 +2,15 @@ package com.weatherable.weatherable.Service;
 
 import com.weatherable.weatherable.DTO.ClosetDTO;
 import com.weatherable.weatherable.Entity.ClosetEntity;
+import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Repository.ClosetRepository;
+import com.weatherable.weatherable.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +20,10 @@ public class ClosetService {
 
     @Autowired
     ClosetRepository closetRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
 
     public List<ClosetDTO> getAllClothListByUserIndex(Long userIndex) {
         Optional<List<ClosetEntity>> closetEntitiesOptional = closetRepository.retrieveAllClothByUserIndex(userIndex);
@@ -50,9 +58,88 @@ public class ClosetService {
     }
 
 
-    public String insertCloth(ClosetEntity closetEntity) {
+    public String insertCloth(ClosetDTO closetDTO) throws AccountNotFoundException {
+        if (userRepository.findById(closetDTO.getUser_id()).isEmpty()) {
+            throw new AccountNotFoundException("유저 없음");
+        }
+        UserEntity userEntity = userRepository.findById(closetDTO.getUser_id()).get();
+        ClosetEntity closetEntity = ClosetEntity.builder()
+                .majorCategory(closetDTO.getMajorCategory())
+                .middleCategory(closetDTO.getMiddleCategory())
+                .userCloset(userEntity)
+                .bigImagePath(closetDTO.getBigImagePath())
+                .style(closetDTO.getStyle())
+                .size(closetDTO.getSize())
+                .brand(closetDTO.getBrand())
+                .color(closetDTO.getColor())
+                .smallImagePath(closetDTO.getSmallImagePath())
+                .season(closetDTO.getSeason())
+                .productName(closetDTO.getProductName())
+                .thickness(closetDTO.getThickness())
+                .price(closetDTO.getPrice())
+                .build();
+
         ClosetEntity result = closetRepository.save(closetEntity);
         return result.getProductName() + "등록완료";
+    }
+
+    public String updateCloth(Long id, ClosetDTO closetDTO) throws AccountNotFoundException {
+        if (userRepository.findById(closetDTO.getUser_id()).isEmpty()) {
+            throw new AccountNotFoundException("유저 없음");
+        }
+
+        UserEntity userEntity = userRepository.findById(closetDTO.getUser_id()).get();
+        ClosetEntity closetEntity = ClosetEntity.builder()
+                .id(id)
+                .majorCategory(closetDTO.getMajorCategory())
+                .middleCategory(closetDTO.getMiddleCategory())
+                .userCloset(userEntity)
+                .bigImagePath(closetDTO.getBigImagePath())
+                .style(closetDTO.getStyle())
+                .size(closetDTO.getSize())
+                .brand(closetDTO.getBrand())
+                .color(closetDTO.getColor())
+                .smallImagePath(closetDTO.getSmallImagePath())
+                .season(closetDTO.getSeason())
+                .productName(closetDTO.getProductName())
+                .thickness(closetDTO.getThickness())
+                .price(closetDTO.getPrice())
+                .createdAt(closetDTO.getCreatedAt())
+                .build();
+
+        ClosetEntity result = closetRepository.save(closetEntity);
+        return result.getProductName() + "등록완료";
+    }
+
+    public void deleteClothById(Long id) {
+        closetRepository.deleteById(id);
+    }
+
+    public ClosetDTO retrieveClothById(Long id) throws ChangeSetPersister.NotFoundException {
+        if (closetRepository.findById(id).isEmpty()) {
+            throw new ChangeSetPersister.NotFoundException();
+        }
+        ClosetEntity closetEntity = closetRepository.findById(id).get();
+
+        ClosetDTO closetDTO = ClosetDTO.builder()
+                .id(closetEntity.getId())
+                .user_id(closetEntity.getUserCloset().getId())
+                .size(closetEntity.getSize())
+                .style(closetEntity.getStyle())
+                .middleCategory(closetEntity.getMiddleCategory())
+                .price(closetEntity.getPrice())
+                .season(closetEntity.getSeason())
+                .smallImagePath(closetEntity.getSmallImagePath())
+                .bigImagePath(closetEntity.getBigImagePath())
+                .brand(closetEntity.getBrand())
+                .createdAt(closetEntity.getCreatedAt())
+                .color(closetEntity.getColor())
+                .majorCategory(closetEntity.getMajorCategory())
+                .productName(closetEntity.getProductName())
+                .thickness(closetEntity.getThickness())
+                .userid(closetEntity.getUserCloset().getUserid())
+                .build();
+        return closetDTO;
     }
 
 }
