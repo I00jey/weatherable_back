@@ -9,6 +9,7 @@ import com.weatherable.weatherable.Repository.UserRepository;
 import com.weatherable.weatherable.enums.Style;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -149,10 +150,7 @@ public class UserService {
             return result;
         }
 
-        result = UserForMyPageDTO.builder()
-                .isPresent(false)
-                .build();
-        return result;
+        throw new UsernameNotFoundException("일치하는 유저가 없습니다.");
     }
 
 

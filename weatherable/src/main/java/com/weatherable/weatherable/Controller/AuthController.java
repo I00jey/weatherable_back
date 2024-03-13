@@ -54,16 +54,16 @@ public class AuthController {
     public List<String> authenticate(@RequestBody UserEntity userEntity) {
         String userid = userEntity.getUserid();
         String password = userEntity.getPassword();
-        boolean result = userService.isLoginInfoEqual(userid, password);
-        if (!result) {
-            throw new RuntimeException("아이디 혹은 비밀번호가 다릅니다.");
-        }
-        UserForMyPageDTO existingUserDTO = userService.getUserInfoForMyPage(userid);
-        Long id = existingUserDTO.getId();
+//        boolean result = userService.isLoginInfoEqual(userid, password);
+//        if (!result) {
+//            throw new RuntimeException("아이디 혹은 비밀번호가 다릅니다.");
+//        }
+//        UserForMyPageDTO existingUserDTO = userService.getUserInfoForMyPage(userid);
+//        Long id = existingUserDTO.getId();
         String refreshToken = jwtUtilsService.createRefreshToken(userid);
         String accessToken = createAccessToken(userid);
 
-        authService.updateUserRefreshToken(refreshToken, id);
+//        authService.updateUserRefreshToken(refreshToken, id);
 
         return List.of(refreshToken, accessToken);
 
@@ -81,6 +81,14 @@ public class AuthController {
         String userid = jwtUtilsService.retrieveUserid(refreshToken);
         return createAccessToken(userid);
     }
+
+
+
+//    @GetMapping("/refresh2")
+//    public String getre(@RequestParam String userid) {
+//        User
+//        return customUserDetailsService.loadUserByUsername(userid);
+//    }
 
 
 

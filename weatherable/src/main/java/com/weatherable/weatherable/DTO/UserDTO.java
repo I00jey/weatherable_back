@@ -1,5 +1,6 @@
 package com.weatherable.weatherable.DTO;
 
+import com.weatherable.weatherable.enums.Style;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,4 +14,7 @@ public class UserDTO {
     private String image_path;
     private Double height;
     private Double weight;
+    private String imagePath;
+    private String introduction;
+    private Style favoriteStyle;
 }

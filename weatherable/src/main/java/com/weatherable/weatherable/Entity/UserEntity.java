@@ -46,6 +46,8 @@ public class UserEntity {
     private Double height;
     private Double weight;
 
+    private String role = "USER";
+
     @Column(name = "favorite_style")
     private Style favoriteStyle;
 
