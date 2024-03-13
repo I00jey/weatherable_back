@@ -1,35 +1,43 @@
 package com.weatherable.weatherable.Service;
 
-import com.weatherable.weatherable.Entity.AuthEntity;
+import com.weatherable.weatherable.DTO.UserDTO;
+import com.weatherable.weatherable.utils.CustomUserDetails;
 import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserRepository userRepository;
 
     @Autowired
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUserid(username)
+        UserEntity userEntity = userRepository.findByUserid(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
-
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUserid())
-                .password(user.getPassword())
-                .roles("USER")
+        UserDTO user = UserDTO.builder()
+                .id(userEntity.getId())
+                .userid(userEntity.getUserid())
+                .password(userEntity.getPassword())
+                .nickname(userEntity.getNickname())
+                .imagePath(userEntity.getImagePath())
+                .height(userEntity.getHeight())
+                .weight(userEntity.getWeight())
+                .introduction(userEntity.getIntroduction())
+                .favoriteStyle(userEntity.getFavoriteStyle())
                 .build();
+
+         CustomUserDetails customUserDetails = new CustomUserDetails(user);
+        return customUserDetails;
+
 
     }
 
