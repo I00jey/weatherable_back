@@ -32,10 +32,10 @@ public class ClosetController {
     }
 
     @PostMapping("")
-    public String insertCloth(@RequestPart("closetEntity") ClosetEntity closetEntity, @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
+    public String insertCloth(@RequestPart("closetDTO") ClosetDTO closetDTO, @RequestPart("imageFile") MultipartFile imageFile) throws IOException, AccountNotFoundException {
         String imagePath = s3Upload.saveImageFile(imageFile);
-        closetEntity.setBigImagePath(imagePath);
-        String result = closetService.insertCloth(closetEntity);
+        closetDTO.setBigImagePath(imagePath);
+        String result = closetService.insertCloth(closetDTO);
         return result;
     }
 
