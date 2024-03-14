@@ -58,5 +58,6 @@ public class ClosetEntity {
     private Timestamp createdAt;
 
 
-
+    public void setBigImagePath(String imagePath) {
+    }
 }
