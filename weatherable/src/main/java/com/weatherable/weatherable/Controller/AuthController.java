@@ -1,5 +1,6 @@
 package com.weatherable.weatherable.Controller;
 
+import com.weatherable.weatherable.DTO.UserDTO;
 import com.weatherable.weatherable.DTO.UserForMyPageDTO;
 import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Service.AuthService;
@@ -38,17 +39,17 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public String insertUser(@RequestBody UserEntity userEntity) {
+    public String insertUser(@RequestBody UserDTO userDTO) {
 
-        String result = userService.insertUser(userEntity);
+        String result = userService.insertUser(userDTO);
 
         return result;
     }
 
     @PostMapping("/login")
-    public List<String> authenticate(@RequestBody UserEntity userEntity) {
-        String userid = userEntity.getUserid();
-        String password = userEntity.getPassword();
+    public List<String> authenticate(@RequestBody UserDTO userDTO) {
+        String userid = userDTO.getUserid();
+        String password = userDTO.getPassword();
         boolean result = userService.isLoginInfoEqual(userid, password);
         if (!result) {
             throw new RuntimeException("아이디 혹은 비밀번호가 다릅니다.");

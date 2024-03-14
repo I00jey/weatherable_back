@@ -49,13 +49,20 @@ public class UserService {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
-    public String insertUser(UserEntity userEntity) {
-        if (userRepository.findByUserid(userEntity.getUserid()).isPresent()) {
+    public String insertUser(UserDTO userDTO) {
+        if (userRepository.findByUserid(userDTO.getUserid()).isPresent()) {
             throw new RuntimeException("이미 존재하는 사용자입니다.");
         }
 
-        String encodedPassword = encodePassword(userEntity.getPassword());
-        userEntity.setPassword(encodedPassword);
+        String encodedPassword = encodePassword(userDTO.getPassword());
+        userDTO.setPassword(encodedPassword);
+
+        UserEntity userEntity = UserEntity.builder()
+                .userid(userDTO.getUserid())
+                .password(userDTO.getPassword())
+                .nickname(userDTO.getNickname())
+                .build();
+
         userRepository.save(userEntity);
         authRepository.save(AuthEntity.builder()
                 .usersEntity(userEntity)

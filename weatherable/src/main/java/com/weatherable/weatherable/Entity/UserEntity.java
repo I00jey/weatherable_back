@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Getter
-@Setter
 @Entity
 public class UserEntity {
 
@@ -48,28 +47,33 @@ public class UserEntity {
 
     private String role = "USER";
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
+    private boolean active;
+
     @Column(name = "favorite_style")
     private Style favoriteStyle;
 
+
     @OneToMany(mappedBy = "userLookbook", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LookbookEntity> Lookbook = new ArrayList<>();
+    private final List<LookbookEntity> Lookbook = new ArrayList<>();
 
     @OneToMany(mappedBy = "userComment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CommentEntity> comment = new ArrayList<>();
+    private final List<CommentEntity> comment = new ArrayList<>();
 
     @OneToMany(mappedBy = "userCloset", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ClosetEntity> closet = new ArrayList<>();
+    private final List<ClosetEntity> closet = new ArrayList<>();
 
     @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ClosetLikeEntity> fromUser = new ArrayList<>();
+    private final List<ClosetLikeEntity> fromUser = new ArrayList<>();
 
     @OneToMany(mappedBy = "userClosetLike", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ClosetLikeEntity> toUser = new ArrayList<>();
+    private final List<ClosetLikeEntity> toUser = new ArrayList<>();
 
     @OneToMany(mappedBy = "userIndex", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LookbookLikeEntity> userLookBookLikes = new ArrayList<>();
+    private final List<LookbookLikeEntity> userLookBookLikes = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<UserSizeEntity> userSize = new ArrayList<>();
 
 
 
