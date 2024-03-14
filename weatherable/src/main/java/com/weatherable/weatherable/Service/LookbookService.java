@@ -1,15 +1,18 @@
 package com.weatherable.weatherable.Service;
 
+import com.weatherable.weatherable.Repository.LookbookRepository;
 import com.weatherable.weatherable.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BoardService {
+public class LookbookService {
 
     @Autowired
-    UserRepository userRepository;
-    
-   // dto 반환해주는 클래스 만들기
+    LookbookRepository lookbookRepository;
+
+    public void deleteLookbook(Long id) {
+        lookbookRepository.deletelookbook(id);
+    }
 
 }

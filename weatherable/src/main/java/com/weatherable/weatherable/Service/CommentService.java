@@ -1,5 +1,6 @@
 package com.weatherable.weatherable.Service;
 
+import com.weatherable.weatherable.Repository.CommentRepository;
 import com.weatherable.weatherable.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,8 +9,13 @@ import org.springframework.stereotype.Service;
 public class CommentService {
 
     @Autowired
-    UserRepository userRepository;
-    
-   // dto 반환해주는 클래스 만들기
+    CommentRepository commentRepository;
+
+
+    public String deleteComment(Long id) {
+        commentRepository.deleteComment(id);
+        return "삭제 완료";
+    }
+
 
 }
