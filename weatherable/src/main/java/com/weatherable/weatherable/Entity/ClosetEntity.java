@@ -53,6 +53,9 @@ public class ClosetEntity {
 
     private Season season;
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
+    private boolean active;
+
     @CreationTimestamp
     @Column(nullable = false, name = "created_at")
     private Timestamp createdAt;

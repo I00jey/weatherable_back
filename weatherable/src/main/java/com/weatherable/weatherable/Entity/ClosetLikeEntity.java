@@ -3,7 +3,7 @@ package com.weatherable.weatherable.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "follow")
+@Table(name = "closet_like")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

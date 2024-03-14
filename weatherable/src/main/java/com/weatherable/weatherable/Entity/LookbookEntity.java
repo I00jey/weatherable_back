@@ -28,6 +28,9 @@ public class LookbookEntity {
     @Column(columnDefinition = "Text", nullable = false)
     private String content;
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
+    private boolean active;
+
 
     @CreationTimestamp
     @Column(nullable = false, name = "created_at")
