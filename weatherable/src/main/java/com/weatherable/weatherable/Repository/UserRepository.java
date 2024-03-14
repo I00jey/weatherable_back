@@ -47,4 +47,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "update user set favorite_style = :style where id = :id", nativeQuery = true)
     void updateStyle(Style style, Long id);
 
+    @Modifying
+    @Query(value = "update user set nickname = :nickname, active = false where id = :id", nativeQuery = true)
+    void deleteUser(Long id, String nickname);
 }

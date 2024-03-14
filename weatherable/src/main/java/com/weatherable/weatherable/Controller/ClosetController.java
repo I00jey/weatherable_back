@@ -51,9 +51,10 @@ public class ClosetController {
         return result;
     }
 
-    @DeleteMapping("{id}")
-    public String deleteSingleClosetById(@PathVariable Long id) {
-        closetService.deleteClothById(id);
+    @DeleteMapping("")
+    public String deleteSingleClosetById(@RequestBody ClosetDTO closetDTO) {
+        Long id = closetDTO.getId();
+        closetService.deleteCloth(id);
         return "삭제 완료";
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -135,6 +136,16 @@ public class UserService {
             return "프로필 변경 완료";
         }
         return "일치하는 유저 정보가 없습니다.";
+    }
+
+    @Transactional
+    public String deleteUserAccount(Long id) {
+        if(!userRepository.existsById(id)) {
+            throw new UsernameNotFoundException("User Not Founded");
+        }
+        String random = "del_"+UUID.randomUUID().toString().substring(1,11);
+        userRepository.deleteUser(id, random);
+        return "회원탈퇴 완료";
     }
 
 

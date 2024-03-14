@@ -111,8 +111,9 @@ public class ClosetService {
         return result.getProductName() + "등록완료";
     }
 
-    public void deleteClothById(Long id) {
-        closetRepository.deleteById(id);
+
+    public void deleteCloth(Long id) {
+        closetRepository.deleteCloset(id);
     }
 
     public ClosetDTO retrieveClothById(Long id) throws ChangeSetPersister.NotFoundException {

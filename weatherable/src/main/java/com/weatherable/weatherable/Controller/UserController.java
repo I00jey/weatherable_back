@@ -66,4 +66,10 @@ public class UserController {
         String result = userService.changeUserStyle(userDTO.getFavoriteStyle(), userDTO.getId());
         return result;
     }
+
+    @DeleteMapping("")
+    public String deleteUserAccount(@RequestBody UserDTO userDTO) {
+        String result = userService.deleteUserAccount(userDTO.getId());
+        return result;
+    }
 }
