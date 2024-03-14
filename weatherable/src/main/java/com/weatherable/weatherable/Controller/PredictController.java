@@ -18,7 +18,7 @@ public class PredictController {
         // 받은 메시지를 UTF-8로 디코딩
         String message = new String(messageBytes, "UTF-8");
 
-        // 받은 메시지 json으로 파싱
+        // 받은 메시지 json 으로 파싱
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(message);
         System.out.println("Received message from Python server: " + jsonNode.toString());
