@@ -16,8 +16,8 @@ public class CommentEntity {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "lookbook_id", nullable = false)
-    private LookbookEntity lookbookComment;
+    @JoinColumn(name = "codi_id", nullable = false)
+    private CodiEntity codiComment;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

@@ -13,9 +13,11 @@ import java.util.Optional;
 public interface ClosetRepository extends JpaRepository<ClosetEntity, Long> {
 
     @Query(value = "select * from closet where user_id = :userIndex and active = true", nativeQuery = true)
-    public Optional<List<ClosetEntity>> retrieveAllClothByUserIndex(Long userIndex);
+    Optional<List<ClosetEntity>> retrieveAllClothByUserIndex(Long userIndex);
 
     @Modifying
     @Query(value = "update closet set active = false where id = :id", nativeQuery = true)
     void deleteCloset(Long id);
+
+    Optional<ClosetEntity> getByIdAndAccess(Long id, boolean access);
 }

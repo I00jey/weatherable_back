@@ -1,11 +1,8 @@
 package com.weatherable.weatherable.Controller;
 
 import com.weatherable.weatherable.DTO.CommentDTO;
-import com.weatherable.weatherable.DTO.LookBookDTO;
-import com.weatherable.weatherable.Service.ClosetService;
 import com.weatherable.weatherable.Service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

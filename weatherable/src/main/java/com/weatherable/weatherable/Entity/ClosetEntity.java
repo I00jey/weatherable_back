@@ -33,6 +33,8 @@ public class ClosetEntity {
 
     private long price;
 
+    private Double score;
+
     private Color color;
 
     private Size size;
