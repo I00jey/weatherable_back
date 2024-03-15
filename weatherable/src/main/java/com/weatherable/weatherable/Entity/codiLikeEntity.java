@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Entity
-public class LookbookLikeEntity {
+public class codiLikeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -19,6 +19,6 @@ public class LookbookLikeEntity {
 
 
     @ManyToOne
-    @JoinColumn(name = "lookbook_id", nullable = false)
-    private LookbookEntity postIndex;
+    @JoinColumn(name = "codi_id", nullable = false)
+    private CodiEntity codiIndex;
 }

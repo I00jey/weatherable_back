@@ -15,6 +15,8 @@ public class ClosetDTO {
 
     private String userid;
 
+    private double score;
+
     private MajorCategory majorCategory;
 
     private MiddleCategory middleCategory;

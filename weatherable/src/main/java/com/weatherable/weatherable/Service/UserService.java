@@ -73,7 +73,7 @@ public class UserService {
 
     public boolean isLoginInfoEqual(String userid, String password) {
 
-        Optional<UserEntity> userEntityOptional = userRepository.findByUserid(userid);
+        Optional<UserEntity> userEntityOptional = userRepository.findByUseridAndAccess(userid, true);
         if (userEntityOptional.isEmpty()) {
             return false;
         }
@@ -150,7 +150,7 @@ public class UserService {
 
 
     public UserForMyPageDTO getUserInfoForMyPage(String userid) {
-        Optional<UserEntity> userEntityOptional = userRepository.findByUserid(userid);
+        Optional<UserEntity> userEntityOptional = userRepository.findByUseridAndAccess(userid, true);
         UserForMyPageDTO result;
         if (userEntityOptional.isPresent()) {
             UserEntity userEntity = userEntityOptional.get();

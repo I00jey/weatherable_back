@@ -71,6 +71,7 @@ public class ClosetService {
                 .style(closetDTO.getStyle())
                 .size(closetDTO.getSize())
                 .brand(closetDTO.getBrand())
+                .score(closetDTO.getScore())
                 .color(closetDTO.getColor())
                 .smallImagePath(closetDTO.getSmallImagePath())
                 .season(closetDTO.getSeason())
@@ -98,6 +99,7 @@ public class ClosetService {
                 .style(closetDTO.getStyle())
                 .size(closetDTO.getSize())
                 .brand(closetDTO.getBrand())
+                .score(closetDTO.getScore())
                 .color(closetDTO.getColor())
                 .smallImagePath(closetDTO.getSmallImagePath())
                 .season(closetDTO.getSeason())
@@ -117,10 +119,10 @@ public class ClosetService {
     }
 
     public ClosetDTO retrieveClothById(Long id) throws ChangeSetPersister.NotFoundException {
-        if (closetRepository.findById(id).isEmpty()) {
+        if (closetRepository.getByIdAndAccess(id, true).isEmpty()) {
             throw new ChangeSetPersister.NotFoundException();
         }
-        ClosetEntity closetEntity = closetRepository.findById(id).get();
+        ClosetEntity closetEntity = closetRepository.getByIdAndAccess(id, true).get();
 
         ClosetDTO closetDTO = ClosetDTO.builder()
                 .id(closetEntity.getId())

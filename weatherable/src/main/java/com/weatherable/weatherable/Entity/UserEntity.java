@@ -1,11 +1,9 @@
 package com.weatherable.weatherable.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.weatherable.weatherable.enums.Style;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -54,8 +52,8 @@ public class UserEntity {
     private Style favoriteStyle;
 
 
-    @OneToMany(mappedBy = "userLookbook", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<LookbookEntity> Lookbook = new ArrayList<>();
+    @OneToMany(mappedBy = "userCodi", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<CodiEntity> userCodie = new ArrayList<>();
 
     @OneToMany(mappedBy = "userComment", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<CommentEntity> comment = new ArrayList<>();
@@ -70,7 +68,7 @@ public class UserEntity {
     private final List<ClosetLikeEntity> toUser = new ArrayList<>();
 
     @OneToMany(mappedBy = "userIndex", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<LookbookLikeEntity> userLookBookLikes = new ArrayList<>();
+    private final List<codiLikeEntity> userLookBookLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<UserSizeEntity> userSize = new ArrayList<>();
