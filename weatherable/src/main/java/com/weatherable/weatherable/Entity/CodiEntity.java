@@ -30,6 +30,12 @@ public class CodiEntity {
     private Long accessoryIndex;
     private Long capIndex;
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
+    private boolean active;
+
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean showing;
+
 
     @CreationTimestamp
     @Column(nullable = false, name = "created_at")

@@ -16,9 +16,23 @@ public interface CodiRepository extends JpaRepository<CodiEntity, Long> {
     @Query(value = "update codi set active = false where id = :id", nativeQuery = true)
     void deleteCodi(Long id);
 
-    Optional<List<CodiEntity>> findByUserCodiIdAndAccess(Long id, boolean access);
+    @Modifying
+    @Query(value = "update codi set showing = true where id = :id", nativeQuery = true)
+    void showCodi(Long id);
 
-    Optional<CodiEntity> getByIdAndAccess(Long id, boolean access);
+
+    @Modifying
+    @Query(value = "update codi set showing = false where id = :id", nativeQuery = true)
+    void hideCodi(Long id);
+
+    Optional<List<CodiEntity>> findByUserCodiIdAndActiveOrderByCreatedAtDesc(Long id, boolean access);
+    Optional<List<CodiEntity>> findByUserCodiIdAndActiveAndShowingOrderByCreatedAtDesc(Long id, boolean access, boolean show);
+
+    Optional<List<CodiEntity>> findByActiveOrderByCreatedAtDesc(boolean access);
+
+    Optional<CodiEntity> getByIdAndActive(Long id, boolean access);
+
+    Optional<CodiEntity> getByIdAndActiveAndShowing(Long id, boolean access, boolean show);
 
 
 }

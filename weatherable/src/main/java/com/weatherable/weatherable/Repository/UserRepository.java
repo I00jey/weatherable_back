@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    Optional<UserEntity> findByUseridAndAccess(String userid, boolean access);
+    Optional<UserEntity> findByUseridAndActive(String userid, boolean active);
 
     Optional<UserEntity> findByUserid(String userid);
     Optional<UserEntity> findById(long id);

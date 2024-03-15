@@ -119,10 +119,10 @@ public class ClosetService {
     }
 
     public ClosetDTO retrieveClothById(Long id) throws ChangeSetPersister.NotFoundException {
-        if (closetRepository.getByIdAndAccess(id, true).isEmpty()) {
+        if (closetRepository.getByIdAndActive(id, true).isEmpty()) {
             throw new ChangeSetPersister.NotFoundException();
         }
-        ClosetEntity closetEntity = closetRepository.getByIdAndAccess(id, true).get();
+        ClosetEntity closetEntity = closetRepository.getByIdAndActive(id, true).get();
 
         ClosetDTO closetDTO = ClosetDTO.builder()
                 .id(closetEntity.getId())
