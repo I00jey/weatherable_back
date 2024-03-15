@@ -39,13 +39,13 @@ public class ClosetController {
         return result;
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ClosetDTO getSingleClosetById(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
         ClosetDTO closetDTO = closetService.retrieveClothById(id);
         return closetDTO;
     }
 
-    @PatchMapping("{id}")
+    @PutMapping("/{id}")
     public String updateSingleClosetById(@PathVariable Long id, @RequestBody ClosetDTO closetDTO) throws AccountNotFoundException {
         String result = closetService.updateCloth(id, closetDTO);
         return result;

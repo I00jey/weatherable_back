@@ -47,7 +47,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public List<String> authenticate(@RequestBody UserDTO userDTO) {
+    public List<String> authenticate(@RequestBody UserDTO userDTO) throws Exception {
         String userid = userDTO.getUserid();
         String password = userDTO.getPassword();
         boolean result = userService.isLoginInfoEqual(userid, password);

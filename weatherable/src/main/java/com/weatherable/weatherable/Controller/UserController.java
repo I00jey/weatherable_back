@@ -21,7 +21,7 @@ public class UserController {
 
 
     @GetMapping("")
-    public UserForMyPageDTO getUserByUserid(@RequestParam String userid) {
+    public UserForMyPageDTO getUserByUserid(@RequestParam String userid) throws Exception {
         UserForMyPageDTO result = userService.getUserInfoForMyPage(userid);
         return result;
     }

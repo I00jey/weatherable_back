@@ -2,10 +2,13 @@ package com.weatherable.weatherable.Service;
 
 import com.weatherable.weatherable.DTO.UserDTO;
 import com.weatherable.weatherable.DTO.UserForMyPageDTO;
+import com.weatherable.weatherable.DTO.UserSizeDTO;
 import com.weatherable.weatherable.Entity.AuthEntity;
 import com.weatherable.weatherable.Entity.UserEntity;
+import com.weatherable.weatherable.Entity.UserSizeEntity;
 import com.weatherable.weatherable.Repository.AuthRepository;
 import com.weatherable.weatherable.Repository.UserRepository;
+import com.weatherable.weatherable.Repository.UserSizeRepository;
 import com.weatherable.weatherable.enums.Style;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,9 @@ public class UserService {
 
     @Autowired
     AuthRepository authRepository;
+
+    @Autowired
+    UserSizeRepository userSizeRepository;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -73,7 +79,7 @@ public class UserService {
 
     public boolean isLoginInfoEqual(String userid, String password) {
 
-        Optional<UserEntity> userEntityOptional = userRepository.findByUseridAndAccess(userid, true);
+        Optional<UserEntity> userEntityOptional = userRepository.findByUseridAndActive(userid, true);
         if (userEntityOptional.isEmpty()) {
             return false;
         }
@@ -149,11 +155,12 @@ public class UserService {
     }
 
 
-    public UserForMyPageDTO getUserInfoForMyPage(String userid) {
-        Optional<UserEntity> userEntityOptional = userRepository.findByUseridAndAccess(userid, true);
+    public UserForMyPageDTO getUserInfoForMyPage(String userid) throws Exception {
+        Optional<UserEntity> userEntityOptional = userRepository.findByUseridAndActive(userid, true);
         UserForMyPageDTO result;
         if (userEntityOptional.isPresent()) {
             UserEntity userEntity = userEntityOptional.get();
+            UserSizeDTO userSizeDTO = getUserSize(userEntity.getId());
             result = UserForMyPageDTO.builder()
                     .id(userEntity.getId())
                     .userid(userEntity.getUserid())
@@ -162,13 +169,40 @@ public class UserService {
                     .height(userEntity.getHeight())
                     .weight(userEntity.getWeight())
                     .numberOfCloth(userEntity.getCloset().size())
-                    .numberOfLookbook(userEntity.getLookbook().size())
                     .isPresent(true)
+                    .userSizeDTO(userSizeDTO)
                     .build();
             return result;
         }
 
+
         throw new UsernameNotFoundException("일치하는 유저가 없습니다.");
+    }
+        public UserSizeDTO getUserSize(Long userIndex) throws Exception {
+            Optional<UserSizeEntity> userSizeEntityOptional = userSizeRepository.retrieveUserSizeByUserIndex(userIndex);
+            if (userSizeEntityOptional.isEmpty()) {
+                throw new Exception("불러올 유저 정보가 없습니다.");
+            }
+            UserSizeEntity userSizeEntity = userSizeEntityOptional.get();
+            UserSizeDTO userSizeDTO = UserSizeDTO.builder()
+                    .id(userSizeEntity.getId())
+                    .b1(userSizeEntity.getB1())
+                    .b2(userSizeEntity.getB2())
+                    .b3(userSizeEntity.getB3())
+                    .b4(userSizeEntity.getB4())
+                    .o1(userSizeEntity.getO1())
+                    .o2(userSizeEntity.getO2())
+                    .o3(userSizeEntity.getO3())
+                    .o4(userSizeEntity.getO4())
+                    .s1(userSizeEntity.getS1())
+                    .s2(userSizeEntity.getS2())
+                    .t1(userSizeEntity.getT1())
+                    .t2(userSizeEntity.getT2())
+                    .t3(userSizeEntity.getT3())
+                    .t4(userSizeEntity.getT4())
+                    .user_id(userSizeEntity.getUserEntity().getId())
+                    .build();
+            return userSizeDTO;
     }
 
 
