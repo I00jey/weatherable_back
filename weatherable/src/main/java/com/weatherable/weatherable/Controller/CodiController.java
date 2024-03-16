@@ -1,6 +1,7 @@
 package com.weatherable.weatherable.Controller;
 
 import com.weatherable.weatherable.DTO.CodiDTO;
+import com.weatherable.weatherable.DTO.CodiDTOWithImage;
 import com.weatherable.weatherable.Service.CodiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,14 @@ public class CodiController {
     }
 
     @GetMapping("")
-    public List<CodiDTO> retrieveAllCodi() throws Exception {
-        List<CodiDTO> codiDTOList = codiService.retrieveAllCodi();
+    public List<CodiDTOWithImage> retrieveAllCodi() throws Exception {
+        List<CodiDTOWithImage> codiDTOList = codiService.retrieveAllCodi();
+        return codiDTOList;
+    }
+
+    @GetMapping("/user/{id}")
+    public List<CodiDTOWithImage> retrieveAllSomeonesCodi(@PathVariable Long id) throws Exception {
+        List<CodiDTOWithImage> codiDTOList = codiService.retrieveSomeOnesCodi(id);
         return codiDTOList;
     }
 
@@ -42,8 +49,8 @@ public class CodiController {
     }
 
     @GetMapping("/{id}")
-    public CodiDTO retrieveSingleCodi(@PathVariable Long id) throws Exception {
-        CodiDTO codiDTO = codiService.retrieveSingleCodi(id);
+    public CodiDTOWithImage retrieveSingleCodi(@PathVariable Long id) throws Exception {
+        CodiDTOWithImage codiDTO = codiService.retrieveSingleCodi(id);
         return codiDTO;
     }
 
