@@ -55,7 +55,7 @@ public class ClosetEntity {
 
     private Season season;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
+    @Column(columnDefinition="tinyint(1) default 1")
     private boolean active;
 
     @CreationTimestamp

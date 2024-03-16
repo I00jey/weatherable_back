@@ -36,6 +36,7 @@ public class CodiService {
                 .userCodi(userEntityOptional.get())
                 .topIndex(codiDTO.getTopIndex())
                 .bottomIndex(codiDTO.getBottomIndex())
+                .active(true)
                 .outerIndex(codiDTO.getOuterIndex())
                 .shoesIndex(codiDTO.getShoesIndex())
                 .accessoryIndex(codiDTO.getAccessoryIndex())
@@ -57,6 +58,7 @@ public class CodiService {
                 .bottomIndex(codiDTO.getBottomIndex())
                 .outerIndex(codiDTO.getOuterIndex())
                 .shoesIndex(codiDTO.getShoesIndex())
+                .active(true)
                 .accessoryIndex(codiDTO.getAccessoryIndex())
                 .capIndex(codiDTO.getCapIndex())
                 .build();

@@ -68,11 +68,16 @@ public class UserService {
                 .userid(userDTO.getUserid())
                 .password(userDTO.getPassword())
                 .nickname(userDTO.getNickname())
+                .active(true)
                 .build();
+
 
         userRepository.save(userEntity);
         authRepository.save(AuthEntity.builder()
                 .usersEntity(userEntity)
+                .build());
+        userSizeRepository.save(UserSizeEntity.builder()
+                        .userEntity(userEntity)
                 .build());
         return userEntity.getUserid() + "회원가입 완료";
     }

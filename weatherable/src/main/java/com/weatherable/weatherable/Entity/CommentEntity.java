@@ -26,7 +26,7 @@ public class CommentEntity {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
+    @Column(columnDefinition="tinyint(1) default 1")
     private boolean active;
 
     @CreationTimestamp
