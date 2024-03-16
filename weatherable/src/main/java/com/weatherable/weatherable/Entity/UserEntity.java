@@ -45,7 +45,7 @@ public class UserEntity {
 
     private String role = "USER";
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
+    @Column(columnDefinition="tinyint(1) default 1")
     private boolean active;
 
     @Column(name = "favorite_style")

@@ -28,8 +28,11 @@ public class JwtUtilsService {
         this.keyPair = keyPair;
     }
 
-    SecretKey key = Keys
-            .secretKeyFor(SignatureAlgorithm.HS256);
+    // 실제론 이 키 사용, 서버 시작하면 서명이 달라지기 때문에 지금은 귀찮아서 하드코딩 사용
+//    SecretKey key = Keys
+//            .secretKeyFor(SignatureAlgorithm.HS256);
+
+    SecretKey key = Keys.hmacShaKeyFor("passwosjlfslvnwlvwklvnwklvwknwklvnwlnvwlvnwkl".getBytes());
 
     // 토큰에서 클레임을 추출하는 함수
     public Claims extractAllClaims(String token) {

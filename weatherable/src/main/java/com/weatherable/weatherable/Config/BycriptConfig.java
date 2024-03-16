@@ -43,24 +43,7 @@ public class BycriptConfig {
                 .keyID(UUID.randomUUID().toString())
                 .build();
     }
-//    @Value("${java.file.USERNAME}") // 변수 파일에 등록된 java.file.test 값 가져오기
-//    String username;
-//    @Value("{java.file.PASSWORD}")
-//    String password;
-//
-//    @Value("{java.file.MYSQLURI}")
-//    String mysqlUri;
-//
-//    @Bean
-//    public DataSource dataSource() {
-//
-//        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-//        dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
-//        dataSourceBuilder.username(username);
-//        dataSourceBuilder.password(password);
-//        dataSourceBuilder.url(mysqlUri);
-//        return dataSourceBuilder.build();
-//    }
+
 
     @Bean
     public JWKSource<SecurityContext> jwkSource(RSAKey rsaKey) {

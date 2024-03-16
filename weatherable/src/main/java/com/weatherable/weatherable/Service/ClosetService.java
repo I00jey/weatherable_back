@@ -78,6 +78,7 @@ public class ClosetService {
                 .productName(closetDTO.getProductName())
                 .thickness(closetDTO.getThickness())
                 .price(closetDTO.getPrice())
+                .active(true)
                 .build();
 
         ClosetEntity result = closetRepository.save(closetEntity);
@@ -101,6 +102,7 @@ public class ClosetService {
                 .brand(closetDTO.getBrand())
                 .score(closetDTO.getScore())
                 .color(closetDTO.getColor())
+                .active(true)
                 .smallImagePath(closetDTO.getSmallImagePath())
                 .season(closetDTO.getSeason())
                 .productName(closetDTO.getProductName())

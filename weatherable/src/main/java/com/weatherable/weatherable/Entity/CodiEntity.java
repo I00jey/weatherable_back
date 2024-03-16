@@ -30,10 +30,10 @@ public class CodiEntity {
     private Long accessoryIndex;
     private Long capIndex;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
+    @Column(columnDefinition="tinyint(1) default 1")
     private boolean active;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    @Column(columnDefinition="tinyint(1) default 0")
     private boolean showing;
 
 
