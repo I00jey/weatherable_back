@@ -51,6 +51,17 @@ public class ClosetController {
         return result;
     }
 
+    @PatchMapping("/{id}")
+    public String toggleLike(@PathVariable Long id, @RequestBody ClosetDTO closetDTO) {
+        if (closetDTO.isLike()) {
+            closetService.unlikeCloth(id);
+        } else {
+            closetService.likeCloth(id);
+        }
+        return "좋아요 토글 완료";
+    }
+
+
     @DeleteMapping("")
     public String deleteSingleClosetById(@RequestBody ClosetDTO closetDTO) {
         Long id = closetDTO.getId();

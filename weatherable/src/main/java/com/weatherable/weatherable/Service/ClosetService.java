@@ -102,6 +102,7 @@ public class ClosetService {
                 .brand(closetDTO.getBrand())
                 .score(closetDTO.getScore())
                 .color(closetDTO.getColor())
+                .like(closetDTO.isLike())
                 .active(true)
                 .smallImagePath(closetDTO.getSmallImagePath())
                 .season(closetDTO.getSeason())
@@ -120,6 +121,15 @@ public class ClosetService {
         closetRepository.deleteCloset(id);
     }
 
+    public void likeCloth(Long id) {
+        closetRepository.likeCloset(id);
+    }
+
+    public void unlikeCloth(Long id) {
+        closetRepository.unlikeCloset(id);
+    }
+
+
     public ClosetDTO retrieveClothById(Long id) throws ChangeSetPersister.NotFoundException {
         if (closetRepository.getByIdAndActive(id, true).isEmpty()) {
             throw new ChangeSetPersister.NotFoundException();
@@ -137,6 +147,7 @@ public class ClosetService {
                 .smallImagePath(closetEntity.getSmallImagePath())
                 .bigImagePath(closetEntity.getBigImagePath())
                 .brand(closetEntity.getBrand())
+                .like(closetEntity.isLike())
                 .createdAt(closetEntity.getCreatedAt())
                 .color(closetEntity.getColor())
                 .majorCategory(closetEntity.getMajorCategory())

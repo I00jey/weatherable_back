@@ -19,5 +19,14 @@ public interface ClosetRepository extends JpaRepository<ClosetEntity, Long> {
     @Query(value = "update closet set active = false where id = :id", nativeQuery = true)
     void deleteCloset(Long id);
 
+    @Modifying
+    @Query(value = "update closet set like = true where id = :id", nativeQuery = true)
+    void likeCloset(long id);
+
+    @Modifying
+    @Query(value = "update closet set like = false where id = :id", nativeQuery = true)
+    void unlikeCloset(long id);
+
+
     Optional<ClosetEntity> getByIdAndActive(Long id, boolean active);
 }
