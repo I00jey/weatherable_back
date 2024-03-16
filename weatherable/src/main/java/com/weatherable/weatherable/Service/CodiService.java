@@ -1,8 +1,12 @@
 package com.weatherable.weatherable.Service;
 
+import com.weatherable.weatherable.DTO.ClosetDTO;
 import com.weatherable.weatherable.DTO.CodiDTO;
+import com.weatherable.weatherable.DTO.CodiDTOWithImage;
+import com.weatherable.weatherable.Entity.ClosetEntity;
 import com.weatherable.weatherable.Entity.CodiEntity;
 import com.weatherable.weatherable.Entity.UserEntity;
+import com.weatherable.weatherable.Repository.ClosetRepository;
 import com.weatherable.weatherable.Repository.CodiRepository;
 import com.weatherable.weatherable.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,9 @@ public class CodiService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ClosetRepository closetRepository;
 
 
     public void deleteCodi(Long id) {
@@ -65,106 +72,154 @@ public class CodiService {
         codiRepository.save(codiEntity);
     }
 
-    public List<CodiDTO> retrieveAllCodi() throws Exception {
+    public List<CodiDTOWithImage> retrieveAllCodi() throws Exception {
         Optional<List<CodiEntity>> codiEntityOptional = codiRepository.findByActiveOrderByCreatedAtDesc(true);
         if (codiEntityOptional.isEmpty()) {
             throw new Exception("불러올 코디가 없습니다.");
         }
         List<CodiEntity> codiEntitityList = codiEntityOptional.get();
-        List<CodiDTO> codiDTOList = new ArrayList<>();
+        List<CodiDTOWithImage> codiDTOList = new ArrayList<>();
         for (var codiEntity : codiEntitityList) {
-            var codiDTo = CodiDTO.builder()
+            ClosetEntity closetTopEntity = closetRepository.getByIdAndActive(codiEntity.getTopIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetBottomEntity = closetRepository.getByIdAndActive(codiEntity.getBottomIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetOuterEntity = closetRepository.getByIdAndActive(codiEntity.getOuterIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetShoesEntity = closetRepository.getByIdAndActive(codiEntity.getShoesIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetAccessoryEntity = closetRepository.getByIdAndActive(codiEntity.getAccessoryIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetCapEntity = closetRepository.getByIdAndActive(codiEntity.getCapIndex(), true).orElseGet(ClosetEntity::new);
+
+            var codiDTo = CodiDTOWithImage.builder()
                     .id(codiEntity.getId())
                     .createdAt(codiEntity.getCreatedAt())
                     .userid(codiEntity.getUserCodi().getUserid())
                     .nickname(codiEntity.getUserCodi().getNickname())
                     .user_id(codiEntity.getUserCodi().getId())
-                    .topIndex(codiEntity.getTopIndex())
-                    .bottomIndex(codiEntity.getBottomIndex())
-                    .outerIndex(codiEntity.getOuterIndex())
-                    .shoesIndex(codiEntity.getShoesIndex())
-                    .accessoryIndex(codiEntity.getAccessoryIndex())
-                    .capIndex(codiEntity.getCapIndex())
+                    .top(transformIntoClosetDTO(closetTopEntity))
+                    .bottom(transformIntoClosetDTO(closetBottomEntity))
+                    .outer(transformIntoClosetDTO(closetOuterEntity))
+                    .shoes(transformIntoClosetDTO(closetShoesEntity))
+                    .accessory(transformIntoClosetDTO(closetAccessoryEntity))
+                    .cap(transformIntoClosetDTO(closetCapEntity))
                     .build();
-        codiDTOList.add(codiDTo);
+            codiDTOList.add(codiDTo);
         }
         return codiDTOList;
 
     }
 
-    public List<CodiDTO> retrieveSomeOnesCodi(Long user_id) throws Exception {
+    ClosetDTO transformIntoClosetDTO(ClosetEntity closetEntity) {
+        return ClosetDTO.builder()
+                .id(closetEntity.getId())
+                .user_id(closetEntity.getUserCloset().getId())
+                .size(closetEntity.getSize())
+                .style(closetEntity.getStyle())
+                .middleCategory(closetEntity.getMiddleCategory())
+                .price(closetEntity.getPrice())
+                .season(closetEntity.getSeason())
+                .smallImagePath(closetEntity.getSmallImagePath())
+                .bigImagePath(closetEntity.getBigImagePath())
+                .brand(closetEntity.getBrand())
+                .createdAt(closetEntity.getCreatedAt())
+                .color(closetEntity.getColor())
+                .majorCategory(closetEntity.getMajorCategory())
+                .productName(closetEntity.getProductName())
+                .thickness(closetEntity.getThickness())
+                .userid(closetEntity.getUserCloset().getUserid())
+                .build();
+    }
+
+    public List<CodiDTOWithImage> retrieveSomeOnesCodi(Long user_id) throws Exception {
         Optional<List<CodiEntity>> codiEntityOptional =
                 codiRepository.findByUserCodiIdAndActiveAndShowingOrderByCreatedAtDesc(user_id, true, true);
         if (codiEntityOptional.isEmpty()) {
             throw new Exception("불러올 코디가 없습니다.");
         }
-            List<CodiDTO> codiDTOList = new ArrayList<>();
-            List<CodiEntity> codiEntitityList = codiEntityOptional.get();
-            for (var codiEntity : codiEntitityList) {
-                var codiDTo = CodiDTO.builder()
-                        .id(codiEntity.getId())
-                        .createdAt(codiEntity.getCreatedAt())
-                        .userid(codiEntity.getUserCodi().getUserid())
-                        .nickname(codiEntity.getUserCodi().getNickname())
-                        .user_id(codiEntity.getUserCodi().getId())
-                        .topIndex(codiEntity.getTopIndex())
-                        .bottomIndex(codiEntity.getBottomIndex())
-                        .outerIndex(codiEntity.getOuterIndex())
-                        .shoesIndex(codiEntity.getShoesIndex())
-                        .accessoryIndex(codiEntity.getAccessoryIndex())
-                        .capIndex(codiEntity.getCapIndex())
-                        .build();
-                codiDTOList.add(codiDTo);
-            }
-            return codiDTOList;
-    }
-
-    public List<CodiDTO> retrieveMyCodi(Long user_id) throws Exception {
-        Optional<List<CodiEntity>> codiEntityOptional =
-                codiRepository.findByUserCodiIdAndActiveOrderByCreatedAtDesc(user_id, true);
-        if (codiEntityOptional.isEmpty()) {
-            throw new Exception("불러올 코디가 없습니다.");
-        }
         List<CodiEntity> codiEntitityList = codiEntityOptional.get();
-        List<CodiDTO> codiDTOList = new ArrayList<>();
+        List<CodiDTOWithImage> codiDTOList = new ArrayList<>();
         for (var codiEntity : codiEntitityList) {
-            var codiDTo = CodiDTO.builder()
+            ClosetEntity closetTopEntity = closetRepository.getByIdAndActive(codiEntity.getTopIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetBottomEntity = closetRepository.getByIdAndActive(codiEntity.getBottomIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetOuterEntity = closetRepository.getByIdAndActive(codiEntity.getOuterIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetShoesEntity = closetRepository.getByIdAndActive(codiEntity.getShoesIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetAccessoryEntity = closetRepository.getByIdAndActive(codiEntity.getAccessoryIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetCapEntity = closetRepository.getByIdAndActive(codiEntity.getCapIndex(), true).orElseGet(ClosetEntity::new);
+
+            var codiDTo = CodiDTOWithImage.builder()
                     .id(codiEntity.getId())
                     .createdAt(codiEntity.getCreatedAt())
                     .userid(codiEntity.getUserCodi().getUserid())
                     .nickname(codiEntity.getUserCodi().getNickname())
                     .user_id(codiEntity.getUserCodi().getId())
-                    .topIndex(codiEntity.getTopIndex())
-                    .bottomIndex(codiEntity.getBottomIndex())
-                    .outerIndex(codiEntity.getOuterIndex())
-                    .shoesIndex(codiEntity.getShoesIndex())
-                    .accessoryIndex(codiEntity.getAccessoryIndex())
-                    .capIndex(codiEntity.getCapIndex())
+                    .top(transformIntoClosetDTO(closetTopEntity))
+                    .bottom(transformIntoClosetDTO(closetBottomEntity))
+                    .outer(transformIntoClosetDTO(closetOuterEntity))
+                    .shoes(transformIntoClosetDTO(closetShoesEntity))
+                    .accessory(transformIntoClosetDTO(closetAccessoryEntity))
+                    .cap(transformIntoClosetDTO(closetCapEntity))
                     .build();
             codiDTOList.add(codiDTo);
         }
         return codiDTOList;
     }
 
-    public CodiDTO retrieveSingleCodi(Long id) throws Exception {
+    public List<CodiDTOWithImage> retrieveMyCodi(Long user_id) throws Exception {
+        Optional<List<CodiEntity>> codiEntityOptional =
+                codiRepository.findByUserCodiIdAndActiveOrderByCreatedAtDesc(user_id, true);
+        if (codiEntityOptional.isEmpty()) {
+            throw new Exception("불러올 코디가 없습니다.");
+        }
+        List<CodiEntity> codiEntitityList = codiEntityOptional.get();
+        List<CodiDTOWithImage> codiDTOList = new ArrayList<>();
+        for (var codiEntity : codiEntitityList) {
+            ClosetEntity closetTopEntity = closetRepository.getByIdAndActive(codiEntity.getTopIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetBottomEntity = closetRepository.getByIdAndActive(codiEntity.getBottomIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetOuterEntity = closetRepository.getByIdAndActive(codiEntity.getOuterIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetShoesEntity = closetRepository.getByIdAndActive(codiEntity.getShoesIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetAccessoryEntity = closetRepository.getByIdAndActive(codiEntity.getAccessoryIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetCapEntity = closetRepository.getByIdAndActive(codiEntity.getCapIndex(), true).orElseGet(ClosetEntity::new);
+
+            var codiDTo = CodiDTOWithImage.builder()
+                    .id(codiEntity.getId())
+                    .createdAt(codiEntity.getCreatedAt())
+                    .userid(codiEntity.getUserCodi().getUserid())
+                    .nickname(codiEntity.getUserCodi().getNickname())
+                    .user_id(codiEntity.getUserCodi().getId())
+                    .top(transformIntoClosetDTO(closetTopEntity))
+                    .bottom(transformIntoClosetDTO(closetBottomEntity))
+                    .outer(transformIntoClosetDTO(closetOuterEntity))
+                    .shoes(transformIntoClosetDTO(closetShoesEntity))
+                    .accessory(transformIntoClosetDTO(closetAccessoryEntity))
+                    .cap(transformIntoClosetDTO(closetCapEntity))
+                    .build();
+            codiDTOList.add(codiDTo);
+        }
+        return codiDTOList;
+    }
+
+    public CodiDTOWithImage retrieveSingleCodi(Long id) throws Exception {
         Optional<CodiEntity> codiEntityOptional =
                 codiRepository.getByIdAndActive(id, true);
         if (codiEntityOptional.isEmpty()) {
             throw new Exception("불러올 코디가 없습니다.");
         }
         CodiEntity codiEntity = codiEntityOptional.get();
-        CodiDTO codiDTO = CodiDTO.builder()
+        ClosetEntity closetTopEntity = closetRepository.getByIdAndActive(codiEntity.getTopIndex(), true).orElseGet(ClosetEntity::new);
+        ClosetEntity closetBottomEntity = closetRepository.getByIdAndActive(codiEntity.getBottomIndex(), true).orElseGet(ClosetEntity::new);
+        ClosetEntity closetOuterEntity = closetRepository.getByIdAndActive(codiEntity.getOuterIndex(), true).orElseGet(ClosetEntity::new);
+        ClosetEntity closetShoesEntity = closetRepository.getByIdAndActive(codiEntity.getShoesIndex(), true).orElseGet(ClosetEntity::new);
+        ClosetEntity closetAccessoryEntity = closetRepository.getByIdAndActive(codiEntity.getAccessoryIndex(), true).orElseGet(ClosetEntity::new);
+        ClosetEntity closetCapEntity = closetRepository.getByIdAndActive(codiEntity.getCapIndex(), true).orElseGet(ClosetEntity::new);
+        CodiDTOWithImage codiDTO = CodiDTOWithImage.builder()
                 .id(codiEntity.getId())
                 .createdAt(codiEntity.getCreatedAt())
                 .userid(codiEntity.getUserCodi().getUserid())
                 .nickname(codiEntity.getUserCodi().getNickname())
                 .user_id(codiEntity.getUserCodi().getId())
-                .topIndex(codiEntity.getTopIndex())
-                .bottomIndex(codiEntity.getBottomIndex())
-                .outerIndex(codiEntity.getOuterIndex())
-                .shoesIndex(codiEntity.getShoesIndex())
-                .accessoryIndex(codiEntity.getAccessoryIndex())
-                .capIndex(codiEntity.getCapIndex())
+                .top(transformIntoClosetDTO(closetTopEntity))
+                .bottom(transformIntoClosetDTO(closetBottomEntity))
+                .outer(transformIntoClosetDTO(closetOuterEntity))
+                .shoes(transformIntoClosetDTO(closetShoesEntity))
+                .accessory(transformIntoClosetDTO(closetAccessoryEntity))
+                .cap(transformIntoClosetDTO(closetCapEntity))
                 .build();
         return codiDTO;
     }

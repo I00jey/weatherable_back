@@ -1,0 +1,23 @@
+package com.weatherable.weatherable.DTO;
+
+import lombok.Builder;
+import lombok.Data;
+
+import java.sql.Timestamp;
+
+@Data
+@Builder
+public class CodiDTOWithImage {
+    private long id;
+    private Long user_id;
+    private String userid;
+    private String nickname;
+    private ClosetDTO top;
+    private ClosetDTO bottom;
+    private ClosetDTO outer;
+    private ClosetDTO shoes;
+    private ClosetDTO accessory;
+    private ClosetDTO cap;
+    private Timestamp createdAt;
+
+}
