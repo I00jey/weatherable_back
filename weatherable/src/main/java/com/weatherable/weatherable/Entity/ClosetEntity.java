@@ -55,6 +55,8 @@ public class ClosetEntity {
 
     private Season season;
 
+    private boolean like;
+
     @Column(columnDefinition="tinyint(1) default 1")
     private boolean active;
 

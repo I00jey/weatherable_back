@@ -25,6 +25,8 @@ public class ClosetDTO {
 
     private Color color;
 
+    private boolean like;
+
     private Size size;
 
     private Thickness thickness;
