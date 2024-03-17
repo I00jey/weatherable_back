@@ -43,7 +43,7 @@ public class UserEntity {
     private Double height;
     private Double weight;
 
-    private String role = "USER";
+    private final String role = "USER";
 
     @Column(columnDefinition="tinyint(1) default 1")
     private boolean active;
