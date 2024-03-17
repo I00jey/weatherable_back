@@ -1,5 +1,5 @@
 package com.weatherable.weatherable.enums;
 
 public enum Season {
-    Spring, Summer, Fall, Winter;
+    봄, 여름, 가을, 겨울
 }

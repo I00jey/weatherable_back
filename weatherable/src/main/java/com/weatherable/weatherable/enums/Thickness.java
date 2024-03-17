@@ -1,5 +1,5 @@
 package com.weatherable.weatherable.enums;
 
 public enum Thickness {
-    Thin, Middle, Thick
+    얇음, 보통, 두꺼움
 }
