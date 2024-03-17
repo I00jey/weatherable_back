@@ -45,6 +45,6 @@ public class CodiEntity {
     private List<CommentEntity> codiComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "codiIndex", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<codiLikeEntity> codiLikes = new ArrayList<>();
+    private List<CodiLikeEntity> codiLikes = new ArrayList<>();
 
 }

@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 public class CodiDTO {
     private long id;
     private Long user_id;
+    private Long codiLikeCount;
     private String userid;
     private String nickname;
     private Long topIndex;
