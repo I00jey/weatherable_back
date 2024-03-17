@@ -42,9 +42,11 @@ public class CodiEntity {
     private Timestamp createdAt;
 
     @OneToMany(mappedBy = "codiComment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<CommentEntity> codiComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "codiIndex", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<codiLikeEntity> codiLikes = new ArrayList<>();
 
 }

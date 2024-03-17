@@ -53,7 +53,7 @@ public class ClosetController {
 
     @PatchMapping("/{id}")
     public String toggleLike(@PathVariable Long id, @RequestBody ClosetDTO closetDTO) {
-        if (closetDTO.isLike()) {
+        if (closetDTO.isLiked()) {
             closetService.unlikeCloth(id);
         } else {
             closetService.likeCloth(id);
