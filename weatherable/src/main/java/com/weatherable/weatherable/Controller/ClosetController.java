@@ -1,7 +1,6 @@
 package com.weatherable.weatherable.Controller;
 
 import com.weatherable.weatherable.DTO.ClosetDTO;
-import com.weatherable.weatherable.Entity.ClosetEntity;
 import com.weatherable.weatherable.Service.ClosetService;
 import com.weatherable.weatherable.Service.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import java.io.IOException;
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/closet")
 public class ClosetController {

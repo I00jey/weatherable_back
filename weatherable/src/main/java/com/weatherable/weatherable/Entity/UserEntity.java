@@ -45,7 +45,7 @@ public class UserEntity {
     private Double height;
     private Double weight;
 
-    private String role = "USER";
+    private final String role = "USER";
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
     private boolean active;
