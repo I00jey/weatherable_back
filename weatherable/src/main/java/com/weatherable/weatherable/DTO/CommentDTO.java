@@ -10,9 +10,10 @@ import java.util.Date;
 @Data
 @Builder
 public class CommentDTO {
-    private long id;
-    private String postId;
+    private Long id;
+    private Long codi_Id;
     private String userid;
+    private String nickname;
     private String content;
     private Timestamp createdAt;
 }

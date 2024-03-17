@@ -25,7 +25,7 @@ public class ClosetDTO {
 
     private Color color;
 
-    private boolean like;
+    private boolean liked;
 
     private Size size;
 

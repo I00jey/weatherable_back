@@ -2,6 +2,8 @@ package com.weatherable.weatherable.Controller;
 
 import com.weatherable.weatherable.DTO.CodiDTO;
 import com.weatherable.weatherable.DTO.CodiDTOWithImage;
+import com.weatherable.weatherable.DTO.CodiLikeDTO;
+import com.weatherable.weatherable.Service.CodiLikeService;
 import com.weatherable.weatherable.Service.CodiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,9 @@ public class CodiController {
     @Autowired
     CodiService codiService;
 
+    @Autowired
+    CodiLikeService codiLikeService;
+
 
     @DeleteMapping("")
     public String deleteCodi(@RequestBody CodiDTO codiDTO) {
@@ -25,8 +30,8 @@ public class CodiController {
     }
 
     @GetMapping("")
-    public List<CodiDTOWithImage> retrieveAllCodi() throws Exception {
-        List<CodiDTOWithImage> codiDTOList = codiService.retrieveAllCodi();
+    public List<CodiDTOWithImage> retrieveAllCodi(@RequestParam Long userIndex) throws Exception {
+        List<CodiDTOWithImage> codiDTOList = codiService.retrieveAllCodi(userIndex);
         return codiDTOList;
     }
 
@@ -42,6 +47,12 @@ public class CodiController {
         return "등록 완료";
     }
 
+    @PostMapping("/like")
+    public String toggleLike(@RequestBody CodiLikeDTO codiLikeDTO) throws Exception {
+        codiLikeService.likeToggle(codiLikeDTO);
+        return "좋아요 완료";
+    }
+
     @PutMapping("")
     public String updateCodi(CodiDTO codiDTO) throws AccountNotFoundException {
         codiService.updateCodi(codiDTO);
@@ -49,8 +60,8 @@ public class CodiController {
     }
 
     @GetMapping("/{id}")
-    public CodiDTOWithImage retrieveSingleCodi(@PathVariable Long id) throws Exception {
-        CodiDTOWithImage codiDTO = codiService.retrieveSingleCodi(id);
+    public CodiDTOWithImage retrieveSingleCodi(@PathVariable Long id, @RequestParam Long userIndex) throws Exception {
+        CodiDTOWithImage codiDTO = codiService.retrieveSingleCodi(id, userIndex);
         return codiDTO;
     }
 
