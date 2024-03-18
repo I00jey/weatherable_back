@@ -3,8 +3,12 @@ package com.weatherable.weatherable.Controller;
 import com.weatherable.weatherable.DTO.ClosetDTO;
 import com.weatherable.weatherable.Service.ClosetService;
 import com.weatherable.weatherable.Service.S3Upload;
+import com.weatherable.weatherable.enums.DefaultRes;
+import com.weatherable.weatherable.enums.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,50 +30,64 @@ public class ClosetController {
 
 
     @GetMapping("")
-    public List<ClosetDTO> getClosetByUserid(@RequestParam Long userIndex) {
+    public ResponseEntity<DefaultRes<List<ClosetDTO>>> getClosetByUserid(@RequestParam Long userIndex) {
         List<ClosetDTO> result = closetService.getAllClothListByUserIndex(userIndex);
-        return result;
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "Closet fetch 완료", result),
+                HttpStatus.OK);
     }
 
     @PostMapping("")
-    public String insertCloth(@RequestPart("closetDTO") ClosetDTO closetDTO, @RequestPart("imageFile") MultipartFile imageFile) throws IOException, AccountNotFoundException {
+    public ResponseEntity<DefaultRes<String>> insertCloth(@RequestPart("closetDTO") ClosetDTO closetDTO, @RequestPart("imageFile") MultipartFile imageFile) throws IOException, AccountNotFoundException {
+        if(!imageFile.isEmpty()) {
         String imagePath = s3Upload.saveImageFile(imageFile);
         closetDTO.setBigImagePath(imagePath);
+        }
         String result = closetService.insertCloth(closetDTO);
-        return result;
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.CREATED, result),
+                HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ClosetDTO getSingleClosetById(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
+    public ResponseEntity<DefaultRes<ClosetDTO>> getSingleClosetById(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
         ClosetDTO closetDTO = closetService.retrieveClothById(id);
-        return closetDTO;
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "Cloth fetch 완료", closetDTO),
+                HttpStatus.OK);
     }
 
     @PutMapping("")
-    public String updateSingleClosetById(@RequestBody ClosetDTO closetDTO, @RequestPart("imageFile") MultipartFile imageFile) throws AccountNotFoundException, IOException {
+    public ResponseEntity<DefaultRes<String>> updateSingleClosetById(@RequestBody ClosetDTO closetDTO, @RequestPart("imageFile") MultipartFile imageFile) throws AccountNotFoundException, IOException {
         if (!imageFile.isEmpty()) {
             String imagePath = s3Upload.saveImageFile(imageFile);
             closetDTO.setBigImagePath(imagePath);
         }
         String result = closetService.updateCloth(closetDTO);
-        return result;
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, result),
+                HttpStatus.OK);
     }
 
     @PatchMapping("")
-    public String toggleLike(@RequestBody ClosetDTO closetDTO) {
+    public ResponseEntity<DefaultRes<String>> toggleLike(@RequestBody ClosetDTO closetDTO) {
         if (closetDTO.isLiked()) {
             closetService.unlikeCloth(closetDTO.getId());
         } else {
             closetService.likeCloth(closetDTO.getId());
         }
-        return "좋아요 토글 완료";
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "좋아요 토글 완료"),
+                HttpStatus.OK);
     }
 
 
     @DeleteMapping("")
-    public String deleteSingleClosetById(@RequestBody ClosetDTO closetDTO) {
+    public ResponseEntity<DefaultRes<String>> deleteSingleClosetById(@RequestBody ClosetDTO closetDTO) {
         Long id = closetDTO.getId();
         closetService.deleteCloth(id);
-        return "삭제 완료";
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "삭제 완료"),
+                HttpStatus.OK);
     }
 }

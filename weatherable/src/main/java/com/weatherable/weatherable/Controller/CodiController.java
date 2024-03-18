@@ -1,11 +1,16 @@
 package com.weatherable.weatherable.Controller;
 
+import com.weatherable.weatherable.DTO.ClosetDTO;
 import com.weatherable.weatherable.DTO.CodiDTO;
 import com.weatherable.weatherable.DTO.CodiDTOWithImage;
 import com.weatherable.weatherable.DTO.CodiLikeDTO;
 import com.weatherable.weatherable.Service.CodiLikeService;
 import com.weatherable.weatherable.Service.CodiService;
+import com.weatherable.weatherable.enums.DefaultRes;
+import com.weatherable.weatherable.enums.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.AccountNotFoundException;
@@ -23,10 +28,12 @@ public class CodiController {
 
 
     @DeleteMapping("")
-    public String deleteCodi(@RequestBody CodiDTO codiDTO) {
+    public ResponseEntity<DefaultRes<String>> deleteCodi(@RequestBody CodiDTO codiDTO) {
         Long id = codiDTO.getId();
         codiService.deleteCodi(id);
-        return "삭제 완료";
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "삭제 완료"),
+                HttpStatus.OK);
     }
 
     @GetMapping("")
