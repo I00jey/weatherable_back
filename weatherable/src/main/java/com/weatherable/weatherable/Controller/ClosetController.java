@@ -31,63 +31,107 @@ public class ClosetController {
 
     @GetMapping("")
     public ResponseEntity<DefaultRes<List<ClosetDTO>>> getClosetByUserid(@RequestParam Long userIndex) {
-        List<ClosetDTO> result = closetService.getAllClothListByUserIndex(userIndex);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.OK, "Closet fetch 완료", result),
-                HttpStatus.OK);
+        try {
+            List<ClosetDTO> result = closetService.getAllClothListByUserIndex(userIndex);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "Closet fetch 완료", result),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("")
-    public ResponseEntity<DefaultRes<String>> insertCloth(@RequestPart("closetDTO") ClosetDTO closetDTO) throws AccountNotFoundException {  
-        String result = closetService.insertCloth(closetDTO);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.CREATED, result),
-                HttpStatus.CREATED);
+    public ResponseEntity<DefaultRes<String>> insertCloth(@RequestBody ClosetDTO closetDTO){
+
+        try {
+            String result = closetService.insertCloth(closetDTO);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.CREATED, result),
+                    HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/image")
     public ResponseEntity<DefaultRes<String>> uploadImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
-        String imageUrl = s3Upload.saveImageFile(imageFile);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.CREATED, "image Url fetched!", imageUrl),
-                HttpStatus.CREATED);
+        try {
+            String imageUrl = s3Upload.saveImageFile(imageFile);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.CREATED, "image Url fetched!", imageUrl),
+                    HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DefaultRes<ClosetDTO>> getSingleClosetById(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
-        ClosetDTO closetDTO = closetService.retrieveClothById(id);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.OK, "Cloth fetch 완료", closetDTO),
-                HttpStatus.OK);
+    public ResponseEntity<DefaultRes<ClosetDTO>> getSingleClosetById(@PathVariable Long id) {
+        try {
+            ClosetDTO closetDTO = closetService.retrieveClothById(id);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "Cloth fetch 완료", closetDTO),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("")
     public ResponseEntity<DefaultRes<String>> updateSingleClosetById(@RequestBody ClosetDTO closetDTO) throws AccountNotFoundException {
-        String result = closetService.updateCloth(closetDTO);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.OK, result),
-                HttpStatus.OK);
+        try {
+            String result = closetService.updateCloth(closetDTO);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, result),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping("")
     public ResponseEntity<DefaultRes<String>> toggleLike(@RequestBody ClosetDTO closetDTO) {
-        if (closetDTO.isLiked()) {
-            closetService.unlikeCloth(closetDTO.getId());
-        } else {
-            closetService.likeCloth(closetDTO.getId());
+        try {
+            if (closetDTO.isLiked()) {
+                closetService.unlikeCloth(closetDTO.getId());
+            } else {
+                closetService.likeCloth(closetDTO.getId());
+            }
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "좋아요 토글 완료"),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.OK, "좋아요 토글 완료"),
-                HttpStatus.OK);
     }
 
 
     @DeleteMapping("")
     public ResponseEntity<DefaultRes<String>> deleteSingleClosetById(@RequestBody ClosetDTO closetDTO) {
+        try {
         Long id = closetDTO.getId();
         closetService.deleteCloth(id);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, "삭제 완료"),
                 HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 }

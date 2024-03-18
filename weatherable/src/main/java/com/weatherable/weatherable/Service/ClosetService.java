@@ -25,33 +25,34 @@ public class ClosetService {
     UserRepository userRepository;
 
 
-    public List<ClosetDTO> getAllClothListByUserIndex(Long userIndex) {
+    public List<ClosetDTO> getAllClothListByUserIndex(Long userIndex) throws Exception {
         Optional<List<ClosetEntity>> closetEntitiesOptional = closetRepository.retrieveAllClothByUserIndex(userIndex);
         List<ClosetDTO> result = new ArrayList<>();
+        if (closetEntitiesOptional.isEmpty()) {
+            throw new Exception("옷장에 옷이 없습니다.");
+        }
 
-        if (closetEntitiesOptional.isPresent()) {
-            List<ClosetEntity> closetEntityList = closetEntitiesOptional.get();
-            for (ClosetEntity closetEntity : closetEntityList) {
-                ClosetDTO closetDTO = ClosetDTO.builder()
-                        .id(closetEntity.getId())
-                        .productName(closetEntity.getProductName())
-                        .user_id(closetEntity.getUserCloset().getId())
-                        .userid(closetEntity.getUserCloset().getUserid())
-                        .majorCategory(closetEntity.getMajorCategory())
-                        .middleCategory(closetEntity.getMiddleCategory())
-                        .price(closetEntity.getPrice())
-                        .brand(closetEntity.getBrand())
-                        .color(closetEntity.getColor())
-                        .style(closetEntity.getStyle())
-                        .size(closetEntity.getSize())
-                        .season(closetEntity.getSeason())
-                        .bigImagePath(closetEntity.getBigImagePath())
-                        .thickness(closetEntity.getThickness())
-                        .smallImagePath(closetEntity.getSmallImagePath())
-                        .createdAt(closetEntity.getCreatedAt())
-                        .build();
-                result.add(closetDTO);
-            }
+        List<ClosetEntity> closetEntityList = closetEntitiesOptional.get();
+        for (ClosetEntity closetEntity : closetEntityList) {
+            ClosetDTO closetDTO = ClosetDTO.builder()
+                    .id(closetEntity.getId())
+                    .productName(closetEntity.getProductName())
+                    .user_id(closetEntity.getUserCloset().getId())
+                    .userid(closetEntity.getUserCloset().getUserid())
+                    .majorCategory(closetEntity.getMajorCategory())
+                    .middleCategory(closetEntity.getMiddleCategory())
+                    .price(closetEntity.getPrice())
+                    .brand(closetEntity.getBrand())
+                    .color(closetEntity.getColor())
+                    .style(closetEntity.getStyle())
+                    .size(closetEntity.getSize())
+                    .season(closetEntity.getSeason())
+                    .bigImagePath(closetEntity.getBigImagePath())
+                    .thickness(closetEntity.getThickness())
+                    .smallImagePath(closetEntity.getSmallImagePath())
+                    .createdAt(closetEntity.getCreatedAt())
+                    .build();
+            result.add(closetDTO);
         }
 
         return result;

@@ -29,21 +29,25 @@ public class GptController {
 
 
     @GetMapping("/chat")
-    public ResponseEntity<DefaultRes<String>> chat(@RequestParam("prompt") String prompt){
+    public ResponseEntity<DefaultRes<String>> chat(@RequestParam("prompt") String prompt) {
+        try {
 
-        GptRequestDTO request = new GptRequestDTO(
-                model,prompt,1,256,1,2,2);
+            GptRequestDTO request = new GptRequestDTO(
+                    model, prompt, 1, 256, 1, 2, 2);
 
-        GptResponseDTO gptResponse = restTemplate.postForObject(
-                apiUrl
-                , request
-                , GptResponseDTO.class
-        );
+            GptResponseDTO gptResponse = restTemplate.postForObject(
+                    apiUrl
+                    , request
+                    , GptResponseDTO.class
+            );
 
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.OK, "gpt 답변 fetching 완료", gptResponse.getChoices().get(0).getMessage().getContent()),
-                HttpStatus.OK);
-
-
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "gpt 답변 fetching 완료", gptResponse.getChoices().get(0).getMessage().getContent()),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 }

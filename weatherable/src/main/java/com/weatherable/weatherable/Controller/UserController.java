@@ -33,26 +33,44 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<DefaultRes<UserForMyPageDTO>> getUserByUserid(@RequestParam String userid) throws Exception {
+        try {
         UserForMyPageDTO result = userService.getUserInfoForMyPage(userid);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, "유저 데이터 fetch 완료", result),
                 HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping("/nickname")
     public ResponseEntity<DefaultRes<String>> updateUserNickname(@RequestBody UserDTO userDTO) {
+        try {
         String result = userService.changeUserNickname(userDTO.getNickname(), userDTO.getId());
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, result),
                 HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping("/physical")
     public ResponseEntity<DefaultRes<String>> updateUserHeightAndWeight(@RequestBody UserDTO userDTO) {
+        try {
         String result = userService.changeUserHeightAndWeight(userDTO.getHeight(), userDTO.getWeight(), userDTO.getId());
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, result),
                 HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Value("${cloud.aws.default.imgPath}")
@@ -61,6 +79,7 @@ public class UserController {
     @PatchMapping("/image")
     public ResponseEntity<DefaultRes<String>> updateUserImagePath(@RequestBody UserDTO userDTO, @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
         String imagePath;
+        try {
         if (imageFile.isEmpty()) {
         imagePath = defaultImgPath;
         } else {
@@ -70,14 +89,25 @@ public class UserController {
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, result),
                 HttpStatus.OK);
+        }catch(Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping("/introduction")
     public ResponseEntity<DefaultRes<String>> updateUserIntroduction(@RequestBody UserDTO userDTO) {
+        try {
         String result = userService.changeUserIntroduction(userDTO.getIntroduction(), userDTO.getId());
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, result),
                 HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PatchMapping("/password")
@@ -97,17 +127,30 @@ public class UserController {
 
     @PatchMapping("/style")
     public ResponseEntity<DefaultRes<String>> updateUserStyle(@RequestBody UserDTO userDTO) {
+        try {
         String result = userService.changeUserStyle(userDTO.getFavoriteStyle(), userDTO.getId());
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, result),
                 HttpStatus.OK);
+
+        } catch(Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("")
     public ResponseEntity<DefaultRes<String>> deleteUserAccount(@RequestBody UserDTO userDTO) {
+        try {
         String result = userService.deleteUserAccount(userDTO.getId());
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, result),
                 HttpStatus.OK);
+        }catch(Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 }
