@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 @Entity
 public class CommentEntity {
     @Id

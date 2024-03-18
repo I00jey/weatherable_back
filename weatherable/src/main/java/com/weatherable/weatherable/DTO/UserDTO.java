@@ -12,6 +12,7 @@ public class UserDTO {
     private Long id;
     private String userid;
     private String password;
+    private String passwordConfirm;
     private String nickname;
     private String image_path;
     private Double height;

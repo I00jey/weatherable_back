@@ -85,14 +85,14 @@ public class ClosetService {
         return result.getProductName() + "등록완료";
     }
 
-    public String updateCloth(Long id, ClosetDTO closetDTO) throws AccountNotFoundException {
+    public String updateCloth(ClosetDTO closetDTO) throws AccountNotFoundException {
         if (userRepository.findById(closetDTO.getUser_id()).isEmpty()) {
             throw new AccountNotFoundException("유저 없음");
         }
 
         UserEntity userEntity = userRepository.findById(closetDTO.getUser_id()).get();
         ClosetEntity closetEntity = ClosetEntity.builder()
-                .id(id)
+                .id(closetDTO.getId())
                 .majorCategory(closetDTO.getMajorCategory())
                 .middleCategory(closetDTO.getMiddleCategory())
                 .userCloset(userEntity)

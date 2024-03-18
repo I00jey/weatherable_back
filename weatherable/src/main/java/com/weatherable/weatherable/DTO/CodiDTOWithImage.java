@@ -18,6 +18,8 @@ public class CodiDTOWithImage {
     private ClosetDTO shoes;
     private ClosetDTO accessory;
     private ClosetDTO cap;
+    private Long numberOfLikes;
+    private boolean doILike;
     private Timestamp createdAt;
 
 }

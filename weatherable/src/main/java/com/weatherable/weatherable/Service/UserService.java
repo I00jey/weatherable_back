@@ -12,6 +12,7 @@ import com.weatherable.weatherable.Repository.UserSizeRepository;
 import com.weatherable.weatherable.enums.Style;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,9 +57,24 @@ public class UserService {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
-    public String insertUser(UserDTO userDTO) {
-        if (userRepository.findByUserid(userDTO.getUserid()).isPresent()) {
+    public boolean checkIdValidation(UserDTO userDTO) {
+        return userRepository.findByUserid(userDTO.getUserid()).isEmpty();
+    }
+
+    public boolean checkPasswordsAreEqual(UserDTO userDTO) {
+        return userDTO.getPassword().equals(userDTO.getPasswordConfirm());
+    }
+
+    @Value("${cloud.aws.default.imgPath}")
+    private String defaultImgPath;
+
+    public String insertUser(UserDTO userDTO) throws Exception {
+        if (!checkIdValidation(userDTO)) {
             throw new RuntimeException("이미 존재하는 사용자입니다.");
+        }
+
+        if (!checkPasswordsAreEqual(userDTO)) {
+            throw new Exception("비밀번호와 비밀번호 확인이 다릅니다.");
         }
 
         String encodedPassword = encodePassword(userDTO.getPassword());
@@ -68,6 +84,7 @@ public class UserService {
                 .userid(userDTO.getUserid())
                 .password(userDTO.getPassword())
                 .nickname(userDTO.getNickname())
+                .imagePath(defaultImgPath)
                 .active(true)
                 .build();
 
