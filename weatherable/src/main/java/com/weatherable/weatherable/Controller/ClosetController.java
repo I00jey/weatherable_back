@@ -45,18 +45,22 @@ public class ClosetController {
         return closetDTO;
     }
 
-    @PutMapping("/{id}")
-    public String updateSingleClosetById(@PathVariable Long id, @RequestBody ClosetDTO closetDTO) throws AccountNotFoundException {
-        String result = closetService.updateCloth(id, closetDTO);
+    @PutMapping("")
+    public String updateSingleClosetById(@RequestBody ClosetDTO closetDTO, @RequestPart("imageFile") MultipartFile imageFile) throws AccountNotFoundException, IOException {
+        if (!imageFile.isEmpty()) {
+            String imagePath = s3Upload.saveImageFile(imageFile);
+            closetDTO.setBigImagePath(imagePath);
+        }
+        String result = closetService.updateCloth(closetDTO);
         return result;
     }
 
-    @PatchMapping("/{id}")
-    public String toggleLike(@PathVariable Long id, @RequestBody ClosetDTO closetDTO) {
+    @PatchMapping("")
+    public String toggleLike(@RequestBody ClosetDTO closetDTO) {
         if (closetDTO.isLiked()) {
-            closetService.unlikeCloth(id);
+            closetService.unlikeCloth(closetDTO.getId());
         } else {
-            closetService.likeCloth(id);
+            closetService.likeCloth(closetDTO.getId());
         }
         return "좋아요 토글 완료";
     }
