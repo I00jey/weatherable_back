@@ -46,9 +46,11 @@ public class ClosetController {
     }
 
     @PostMapping("/image")
-    public String uploadImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
+    public ResponseEntity<DefaultRes<String>> uploadImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
         String imageUrl = s3Upload.saveImageFile(imageFile);
-        return imageUrl;
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.CREATED, "image Url fetched!", imageUrl),
+                HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
