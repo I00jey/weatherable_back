@@ -6,7 +6,12 @@ import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Service.AuthService;
 import com.weatherable.weatherable.Service.CustomUserDetailsService;
 import com.weatherable.weatherable.Service.UserService;
+import com.weatherable.weatherable.enums.DefaultRes;
+import com.weatherable.weatherable.enums.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -39,30 +44,28 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public String insertUser(@RequestBody UserDTO userDTO) throws Exception {
+    public ResponseEntity<DefaultRes<String>> insertUser(@RequestBody UserDTO userDTO) throws Exception {
 
         String result = userService.insertUser(userDTO);
 
-        return result;
+        return new ResponseEntity<>(DefaultRes.res(StatusCode.CREATED, result), HttpStatus.CREATED);
     }
 
     @PostMapping("/validation")
-    public boolean useridValidation(@RequestBody UserDTO userDTO) {
-        return userService.checkIdValidation(userDTO);
+    public ResponseEntity<DefaultRes<Boolean>> useridValidation(@RequestBody UserDTO userDTO) {
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "validation Info", userService.checkIdValidation(userDTO)),
+                HttpStatus.OK);
     }
 
-    @PostMapping("/validation2")
-    public boolean passwordsAreEquals(@RequestBody UserDTO userDTO) {
-        return userService.checkPasswordsAreEqual(userDTO);
-    }
 
     @PostMapping("/login")
-    public List<String> authenticate(@RequestBody UserDTO userDTO) throws Exception {
+    public ResponseEntity<DefaultRes<List<String>>> authenticate(@RequestBody UserDTO userDTO) throws Exception {
         String userid = userDTO.getUserid();
         String password = userDTO.getPassword();
         boolean result = userService.isLoginInfoEqual(userid, password);
         if (!result) {
-            throw new RuntimeException("아이디 혹은 비밀번호가 다릅니다.");
+            throw new Exception("아이디 혹은 비밀번호가 다릅니다.");
         }
         UserForMyPageDTO existingUserDTO = userService.getUserInfoForMyPage(userid);
         Long id = existingUserDTO.getId();
@@ -71,31 +74,25 @@ public class AuthController {
 
         authService.updateUserRefreshToken(refreshToken, id);
 
-        return List.of(refreshToken, accessToken);
-
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "0: refresh token, 1: access token", List.of(refreshToken, accessToken)),
+                HttpStatus.OK);
     }
 
     @Autowired
     CustomUserDetailsService customUserDetailsService;
 
     @PostMapping("/refresh")
-    public String getRefresh(@RequestHeader("Refresh") String refreshToken) {
+    public ResponseEntity<DefaultRes< String>> getRefresh(@RequestHeader("Refresh") String refreshToken) {
         boolean result = jwtUtilsService.validateToken(refreshToken);
         if(!result) {
             throw new RuntimeException("Refresh Token Is Not Valid!");
         }
         String userid = jwtUtilsService.retrieveUserid(refreshToken);
-        return jwtUtilsService.createAccessToken(userid);
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "access token", jwtUtilsService.createAccessToken(userid)),
+                HttpStatus.OK);
     }
-
-
-
-//    @GetMapping("/refresh2")
-//    public String getre(@RequestParam String userid) {
-//        User
-//        return customUserDetailsService.loadUserByUsername(userid);
-//    }
-
 
 
     public String createAccessToken(String userid) {
