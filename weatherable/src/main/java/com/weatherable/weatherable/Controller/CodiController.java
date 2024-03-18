@@ -29,59 +29,101 @@ public class CodiController {
 
     @DeleteMapping("")
     public ResponseEntity<DefaultRes<String>> deleteCodi(@RequestBody CodiDTO codiDTO) {
+        try {
         Long id = codiDTO.getId();
         codiService.deleteCodi(id);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, "삭제 완료"),
                 HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("")
-    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllCodi(@RequestParam Long userIndex) throws Exception {
+    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllCodi(@RequestParam Long userIndex){
+        try {
         List<CodiDTOWithImage> codiDTOList = codiService.retrieveAllCodi(userIndex);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, "Codi Fetch 완료", codiDTOList),
                 HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllSomeonesCodi(@PathVariable Long id) throws Exception {
+    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllSomeonesCodi(@PathVariable Long id){
+        try {
         List<CodiDTOWithImage> codiDTOList = codiService.retrieveSomeOnesCodi(id);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, "Codi Fetch 완료", codiDTOList),
                 HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("")
-    public ResponseEntity<DefaultRes<String>> insertCodi(CodiDTO codiDTO) throws AccountNotFoundException {
+    public ResponseEntity<DefaultRes<String>> insertCodi(CodiDTO codiDTO) {
+        try {
         codiService.createCodi(codiDTO);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.CREATED, "Codi 등록 완료"),
                 HttpStatus.CREATED);
+        }catch(Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/like")
-    public ResponseEntity<DefaultRes<String>> toggleLike(@RequestBody CodiLikeDTO codiLikeDTO) throws Exception {
+    public ResponseEntity<DefaultRes<String>> toggleLike(@RequestBody CodiLikeDTO codiLikeDTO) {
+        try {
         codiLikeService.likeToggle(codiLikeDTO);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, "Codi 좋아요 완료"),
                 HttpStatus.OK);
+        }catch(Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("")
-    public ResponseEntity<DefaultRes<String>> updateCodi(CodiDTO codiDTO) throws AccountNotFoundException {
+    public ResponseEntity<DefaultRes<String>> updateCodi(CodiDTO codiDTO){
+        try {
         codiService.updateCodi(codiDTO);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, "Codi 수정 완료"),
                 HttpStatus.OK);
+        }catch(Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DefaultRes<CodiDTOWithImage>> retrieveSingleCodi(@PathVariable Long id, @RequestParam Long userIndex) throws Exception {
+    public ResponseEntity<DefaultRes<CodiDTOWithImage>> retrieveSingleCodi(@PathVariable Long id, @RequestParam Long userIndex) {
+        try {
         CodiDTOWithImage codiDTO = codiService.retrieveSingleCodi(id, userIndex);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, "Codi fetch 완료", codiDTO),
                 HttpStatus.OK);
+        }catch(Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
 

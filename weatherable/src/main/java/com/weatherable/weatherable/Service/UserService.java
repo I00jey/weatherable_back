@@ -112,21 +112,21 @@ public class UserService {
     }
 
     @Transactional
-    public String changeUserNickname(String nickname, Long id) {
+    public String changeUserNickname(String nickname, Long id) throws Exception {
         if (userRepository.existsByNicknameAndId(nickname, id)) {
-            return "동일한 닉네임입니다.";
+            throw new Exception("동일한 닉네임입니다");
         }
         userRepository.updateNickname(nickname, id);
         return "닉네임 변경 완료";
     }
 
     @Transactional
-    public String changeUserHeightAndWeight(Double height, Double weight, Long id) {
+    public String changeUserHeightAndWeight(Double height, Double weight, Long id) throws Exception {
         if (userRepository.existsById(id)) {
             userRepository.updateHeightAndWeight(height, weight, id);
             return "정보 변경 완료";
         }
-        return "일치하는 유저 정보가 없습니다.";
+        throw new Exception("일치하는 유저 정보가 없습니다.");
     }
 
     @Transactional
@@ -179,8 +179,11 @@ public class UserService {
 
     public UserForMyPageDTO getUserInfoForMyPage(String userid) throws Exception {
         Optional<UserEntity> userEntityOptional = userRepository.findByUseridAndActive(userid, true);
+       if (userEntityOptional.isEmpty()) {
+           throw new UsernameNotFoundException("유저이름이 없습니다");
+       }
         UserForMyPageDTO result;
-        if (userEntityOptional.isPresent()) {
+
             UserEntity userEntity = userEntityOptional.get();
             UserSizeDTO userSizeDTO = getUserSize(userEntity.getId());
             result = UserForMyPageDTO.builder()
@@ -194,10 +197,7 @@ public class UserService {
                     .userSizeDTO(userSizeDTO)
                     .build();
             return result;
-        }
 
-
-        throw new UsernameNotFoundException("일치하는 유저가 없습니다.");
     }
         public UserSizeDTO getUserSize(Long userIndex) throws Exception {
             Optional<UserSizeEntity> userSizeEntityOptional = userSizeRepository.retrieveUserSizeByUserIndex(userIndex);

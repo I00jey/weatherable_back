@@ -20,41 +20,71 @@ public class CommentController {
 
     @DeleteMapping("")
     public ResponseEntity<DefaultRes<String>> deleteSingleComment(@RequestBody CommentDTO commentDTO) {
-        Long id = commentDTO.getId();
-        String result = commentService.deleteComment(id);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.OK, result),
-                HttpStatus.OK);
+        try {
+            Long id = commentDTO.getId();
+            String result = commentService.deleteComment(id);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, result),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{codiId}")
-    public ResponseEntity<DefaultRes<List<CommentDTO>>> retrieveAllComment(@PathVariable Long codiId) throws Exception {
+    public ResponseEntity<DefaultRes<List<CommentDTO>>> retrieveAllComment(@PathVariable Long codiId) {
+        try {
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, "댓글 fetch 완료", commentService.retrieveAllComment(codiId)),
                 HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/comment/{id}")
-    public ResponseEntity<DefaultRes<CommentDTO>> retrieveSingleComment(@PathVariable Long id) throws Exception {
+    public ResponseEntity<DefaultRes<CommentDTO>> retrieveSingleComment(@PathVariable Long id) {
+        try {
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, "댓글 fetch 완료", commentService.retrieveSingleComment(id)),
                 HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("")
-    public ResponseEntity<DefaultRes<String>> insertComment(@RequestBody CommentDTO commentDTO) throws Exception {
+    public ResponseEntity<DefaultRes<String>> insertComment(@RequestBody CommentDTO commentDTO) {
+        try {
         commentService.insertComment(commentDTO);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.CREATED, "댓글 작성 완료"),
                 HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("")
     public ResponseEntity<DefaultRes<String>> updateComment(@RequestBody CommentDTO commentDTO) throws Exception {
+        try {
         commentService.updateComment(commentDTO);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.CREATED, "댓글 수정 완료"),
                 HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
 
