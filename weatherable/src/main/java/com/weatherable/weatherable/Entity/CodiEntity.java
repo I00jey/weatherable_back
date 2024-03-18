@@ -47,6 +47,6 @@ public class CodiEntity {
 
     @OneToMany(mappedBy = "codiIndex", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<codiLikeEntity> codiLikes = new ArrayList<>();
+    private List<CodiLikeEntity> codiLikes = new ArrayList<>();
 
 }
