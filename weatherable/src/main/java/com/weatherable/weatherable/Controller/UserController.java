@@ -4,11 +4,15 @@ import com.weatherable.weatherable.DTO.UserDTO;
 import com.weatherable.weatherable.DTO.UserForMyPageDTO;
 import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Service.ClosetService;
+import com.weatherable.weatherable.Service.S3Upload;
 import com.weatherable.weatherable.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -17,6 +21,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    S3Upload s3Upload;
 
 
 
@@ -38,9 +45,18 @@ public class UserController {
         return result;
     }
 
+    @Value("${cloud.aws.default.imgPath}")
+    private String defaultImgPath;
+
     @PatchMapping("/image")
-    public String updateUserImagePath(@RequestBody UserDTO userDTO) {
-        String result = userService.changeUserImagePath(userDTO.getImagePath(), userDTO.getId());
+    public String updateUserImagePath(@RequestBody UserDTO userDTO, @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
+        String imagePath;
+        if (imageFile.isEmpty()) {
+        imagePath = defaultImgPath;
+        } else {
+        imagePath = s3Upload.saveImageFile(imageFile);
+        }
+        String result = userService.changeUserImagePath(imagePath, userDTO.getId());
         return result;
     }
 
