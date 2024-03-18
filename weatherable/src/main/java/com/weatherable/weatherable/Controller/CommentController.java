@@ -2,7 +2,11 @@ package com.weatherable.weatherable.Controller;
 
 import com.weatherable.weatherable.DTO.CommentDTO;
 import com.weatherable.weatherable.Service.CommentService;
+import com.weatherable.weatherable.enums.DefaultRes;
+import com.weatherable.weatherable.enums.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,32 +19,42 @@ public class CommentController {
     CommentService commentService;
 
     @DeleteMapping("")
-    public String deleteSingleComment(@RequestBody CommentDTO commentDTO) {
+    public ResponseEntity<DefaultRes<String>> deleteSingleComment(@RequestBody CommentDTO commentDTO) {
         Long id = commentDTO.getId();
         String result = commentService.deleteComment(id);
-        return result;
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, result),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{codiId}")
-    public List<CommentDTO> retrieveAllComment(@PathVariable Long codiId) throws Exception {
-        return commentService.retrieveAllComment(codiId);
+    public ResponseEntity<DefaultRes<List<CommentDTO>>> retrieveAllComment(@PathVariable Long codiId) throws Exception {
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "댓글 fetch 완료", commentService.retrieveAllComment(codiId)),
+                HttpStatus.OK);
     }
 
     @GetMapping("/comment/{id}")
-    public CommentDTO retrieveSingleComment(@PathVariable Long id) throws Exception {
-        return commentService.retrieveSingleComment(id);
+    public ResponseEntity<DefaultRes<CommentDTO>> retrieveSingleComment(@PathVariable Long id) throws Exception {
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "댓글 fetch 완료", commentService.retrieveSingleComment(id)),
+                HttpStatus.OK);
     }
 
     @PostMapping("")
-    public String insertComment(@RequestBody CommentDTO commentDTO) throws Exception {
+    public ResponseEntity<DefaultRes<String>> insertComment(@RequestBody CommentDTO commentDTO) throws Exception {
         commentService.insertComment(commentDTO);
-        return "댓글 작성 완료";
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.CREATED, "댓글 작성 완료"),
+                HttpStatus.CREATED);
     }
 
     @PutMapping("")
-    public String updateComment(@RequestBody CommentDTO commentDTO) throws Exception {
+    public ResponseEntity<DefaultRes<String>> updateComment(@RequestBody CommentDTO commentDTO) throws Exception {
         commentService.updateComment(commentDTO);
-        return "댓글 수정 완료";
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.CREATED, "댓글 수정 완료"),
+                HttpStatus.CREATED);
     }
 
 

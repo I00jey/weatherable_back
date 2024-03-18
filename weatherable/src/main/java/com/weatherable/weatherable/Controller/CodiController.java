@@ -37,39 +37,51 @@ public class CodiController {
     }
 
     @GetMapping("")
-    public List<CodiDTOWithImage> retrieveAllCodi(@RequestParam Long userIndex) throws Exception {
+    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllCodi(@RequestParam Long userIndex) throws Exception {
         List<CodiDTOWithImage> codiDTOList = codiService.retrieveAllCodi(userIndex);
-        return codiDTOList;
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "Codi Fetch 완료", codiDTOList),
+                HttpStatus.OK);
     }
 
     @GetMapping("/user/{id}")
-    public List<CodiDTOWithImage> retrieveAllSomeonesCodi(@PathVariable Long id) throws Exception {
+    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllSomeonesCodi(@PathVariable Long id) throws Exception {
         List<CodiDTOWithImage> codiDTOList = codiService.retrieveSomeOnesCodi(id);
-        return codiDTOList;
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "Codi Fetch 완료", codiDTOList),
+                HttpStatus.OK);
     }
 
     @PostMapping("")
-    public String insertCodi(CodiDTO codiDTO) throws AccountNotFoundException {
+    public ResponseEntity<DefaultRes<String>> insertCodi(CodiDTO codiDTO) throws AccountNotFoundException {
         codiService.createCodi(codiDTO);
-        return "등록 완료";
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.CREATED, "Codi 등록 완료"),
+                HttpStatus.CREATED);
     }
 
     @PostMapping("/like")
-    public String toggleLike(@RequestBody CodiLikeDTO codiLikeDTO) throws Exception {
+    public ResponseEntity<DefaultRes<String>> toggleLike(@RequestBody CodiLikeDTO codiLikeDTO) throws Exception {
         codiLikeService.likeToggle(codiLikeDTO);
-        return "좋아요 완료";
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "Codi 좋아요 완료"),
+                HttpStatus.OK);
     }
 
     @PutMapping("")
-    public String updateCodi(CodiDTO codiDTO) throws AccountNotFoundException {
+    public ResponseEntity<DefaultRes<String>> updateCodi(CodiDTO codiDTO) throws AccountNotFoundException {
         codiService.updateCodi(codiDTO);
-        return "수정 완료";
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "Codi 수정 완료"),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public CodiDTOWithImage retrieveSingleCodi(@PathVariable Long id, @RequestParam Long userIndex) throws Exception {
+    public ResponseEntity<DefaultRes<CodiDTOWithImage>> retrieveSingleCodi(@PathVariable Long id, @RequestParam Long userIndex) throws Exception {
         CodiDTOWithImage codiDTO = codiService.retrieveSingleCodi(id, userIndex);
-        return codiDTO;
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "Codi fetch 완료", codiDTO),
+                HttpStatus.OK);
     }
 
 

@@ -3,6 +3,10 @@ package com.weatherable.weatherable.Controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weatherable.weatherable.enums.DefaultRes;
+import com.weatherable.weatherable.enums.StatusCode;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,11 +36,14 @@ public class PredictController {
     // 단일 이미지 판단 출력
     @PostMapping("/sendmessage")
     @ResponseBody
-    public String receiveMessage(@RequestBody String data) {
+    public ResponseEntity<DefaultRes<String>> receiveMessage(@RequestBody String data) {
 
         System.out.println("message " + data);
 
         // 원하는 응답 또는 처리를 수행하고 반환
-        return "Message received successfully!";
+
+        return new ResponseEntity<>(
+                DefaultRes.res(StatusCode.OK, "Message received successfully!"),
+                HttpStatus.OK);
     }
 }

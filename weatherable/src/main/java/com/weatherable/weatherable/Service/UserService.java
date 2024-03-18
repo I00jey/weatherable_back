@@ -190,7 +190,6 @@ public class UserService {
                     .favoriteStyle(userEntity.getFavoriteStyle())
                     .height(userEntity.getHeight())
                     .weight(userEntity.getWeight())
-                    .numberOfCloth(userEntity.getCloset().size())
                     .isPresent(true)
                     .userSizeDTO(userSizeDTO)
                     .build();

@@ -38,7 +38,7 @@ public class AuthenticationResource {
 
         http.authorizeHttpRequests((requests) ->
                 requests
-                        .requestMatchers("/login", "/signup", "/refresh").permitAll()
+                        .requestMatchers("/login", "/signup", "/refresh", "/validation").permitAll()
                         .requestMatchers("/**").hasRole("USER")
                         .anyRequest().authenticated());
 
