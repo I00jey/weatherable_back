@@ -39,11 +39,21 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public String insertUser(@RequestBody UserDTO userDTO) {
+    public String insertUser(@RequestBody UserDTO userDTO) throws Exception {
 
         String result = userService.insertUser(userDTO);
 
         return result;
+    }
+
+    @PostMapping("/validation")
+    public boolean useridValidation(@RequestBody UserDTO userDTO) {
+        return userService.checkIdValidation(userDTO);
+    }
+
+    @PostMapping("/validation2")
+    public boolean passwordsAreEquals(@RequestBody UserDTO userDTO) {
+        return userService.checkPasswordsAreEqual(userDTO);
     }
 
     @PostMapping("/login")
