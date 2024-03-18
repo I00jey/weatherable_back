@@ -38,15 +38,17 @@ public class ClosetController {
     }
 
     @PostMapping("")
-    public ResponseEntity<DefaultRes<String>> insertCloth(@RequestPart("closetDTO") ClosetDTO closetDTO, @RequestPart("imageFile") MultipartFile imageFile) throws IOException, AccountNotFoundException {
-        if(!imageFile.isEmpty()) {
-        String imagePath = s3Upload.saveImageFile(imageFile);
-        closetDTO.setBigImagePath(imagePath);
-        }
+    public ResponseEntity<DefaultRes<String>> insertCloth(@RequestPart("closetDTO") ClosetDTO closetDTO) throws AccountNotFoundException {  
         String result = closetService.insertCloth(closetDTO);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.CREATED, result),
                 HttpStatus.CREATED);
+    }
+
+    @PostMapping("/image")
+    public String uploadImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
+        String imageUrl = s3Upload.saveImageFile(imageFile);
+        return imageUrl;
     }
 
     @GetMapping("/{id}")
@@ -58,11 +60,7 @@ public class ClosetController {
     }
 
     @PutMapping("")
-    public ResponseEntity<DefaultRes<String>> updateSingleClosetById(@RequestBody ClosetDTO closetDTO, @RequestPart("imageFile") MultipartFile imageFile) throws AccountNotFoundException, IOException {
-        if (!imageFile.isEmpty()) {
-            String imagePath = s3Upload.saveImageFile(imageFile);
-            closetDTO.setBigImagePath(imagePath);
-        }
+    public ResponseEntity<DefaultRes<String>> updateSingleClosetById(@RequestBody ClosetDTO closetDTO) throws AccountNotFoundException {
         String result = closetService.updateCloth(closetDTO);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, result),
