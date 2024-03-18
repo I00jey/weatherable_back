@@ -32,11 +32,15 @@ public class ClosetController {
     }
 
     @PostMapping("")
-    public String insertCloth(@RequestPart("closetDTO") ClosetDTO closetDTO, @RequestPart("imageFile") MultipartFile imageFile) throws IOException, AccountNotFoundException {
-        String imagePath = s3Upload.saveImageFile(imageFile);
-        closetDTO.setBigImagePath(imagePath);
+    public String insertCloth(@RequestPart("closetDTO") ClosetDTO closetDTO) throws AccountNotFoundException {
         String result = closetService.insertCloth(closetDTO);
         return result;
+    }
+
+    @PostMapping("/image")
+    public String uploadImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
+        String imageUrl = s3Upload.saveImageFile(imageFile);
+        return imageUrl;
     }
 
     @GetMapping("/{id}")
