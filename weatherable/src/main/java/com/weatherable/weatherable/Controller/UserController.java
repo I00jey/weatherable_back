@@ -38,7 +38,7 @@ public class UserController {
 
 
     @GetMapping("")
-    public ResponseEntity<DefaultRes<UserForMyPageDTO>> getUserByUserid(@RequestHeader("Authorization") String accessToken) throws Exception {
+    public ResponseEntity<DefaultRes<UserForMyPageDTO>> getUserByUserid(@RequestHeader("Authorization") String accessToken){
         try {
             String userid = jwtUtilsService.retrieveUserid(accessToken);
             Long userIndex = userService.retrieveUserIndexByUserid(userid);
@@ -177,7 +177,7 @@ public class UserController {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<DefaultRes<String>> deleteUserAccount(@RequestBody UserDTO userDTO, @RequestHeader("Authorization") String accessToken) {
+    public ResponseEntity<DefaultRes<String>> deleteUserAccount(@RequestHeader("Authorization") String accessToken) {
         try {
             String userid = jwtUtilsService.retrieveUserid(accessToken);
             Long userIndex = userService.retrieveUserIndexByUserid(userid);
