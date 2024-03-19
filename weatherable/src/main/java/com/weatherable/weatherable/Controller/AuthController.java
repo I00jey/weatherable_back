@@ -8,6 +8,7 @@ import com.weatherable.weatherable.Service.CustomUserDetailsService;
 import com.weatherable.weatherable.Service.UserService;
 import com.weatherable.weatherable.enums.DefaultRes;
 import com.weatherable.weatherable.enums.StatusCode;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.*;
 import com.weatherable.weatherable.Service.JwtUtilsService;
 
+import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.util.List;
 
@@ -76,6 +78,9 @@ public class AuthController {
                     HttpStatus.BAD_REQUEST);
         }
     }
+
+
+
 
 
     @PostMapping("/login")

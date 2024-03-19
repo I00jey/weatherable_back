@@ -26,13 +26,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthenticationResource {
 
-//    @Autowired
-//    private CustomUserDetailsService customUserDetailsService;
-//    @Autowired
-//    private JwtUtilsService jwtUtilsService;
+    private final JwtRequestFilter jwtRequestFilter;
 
-    @Autowired
-    JwtRequestFilter jwtRequestFilter;
     @Bean
     SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
 
@@ -69,8 +64,4 @@ public class AuthenticationResource {
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }
-
-
-
-
 }

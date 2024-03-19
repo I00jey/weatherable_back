@@ -6,6 +6,8 @@ import com.weatherable.weatherable.DTO.CodiDTOWithImage;
 import com.weatherable.weatherable.DTO.CodiLikeDTO;
 import com.weatherable.weatherable.Service.CodiLikeService;
 import com.weatherable.weatherable.Service.CodiService;
+import com.weatherable.weatherable.Service.JwtUtilsService;
+import com.weatherable.weatherable.Service.UserService;
 import com.weatherable.weatherable.enums.DefaultRes;
 import com.weatherable.weatherable.enums.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +28,22 @@ public class CodiController {
     @Autowired
     CodiLikeService codiLikeService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    JwtUtilsService jwtUtilsService;
+
 
     @DeleteMapping("")
     public ResponseEntity<DefaultRes<String>> deleteCodi(@RequestBody CodiDTO codiDTO) {
         try {
-        Long id = codiDTO.getId();
-        codiService.deleteCodi(id);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.OK, "삭제 완료"),
-                HttpStatus.OK);
-        }catch (Exception e) {
+            Long id = codiDTO.getId();
+            codiService.deleteCodi(id);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "삭제 완료"),
+                    HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
                     HttpStatus.BAD_REQUEST);
@@ -43,13 +51,15 @@ public class CodiController {
     }
 
     @GetMapping("")
-    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllCodi(@RequestParam Long userIndex){
+    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllCodi(@RequestHeader("Authorization") String accessToken) {
         try {
-        List<CodiDTOWithImage> codiDTOList = codiService.retrieveAllCodi(userIndex);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.OK, "Codi Fetch 완료", codiDTOList),
-                HttpStatus.OK);
-        } catch(Exception e) {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            Long userIndex = userService.retrieveUserIndexByUserid(userid);
+            List<CodiDTOWithImage> codiDTOList = codiService.retrieveAllCodi(userIndex);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "Codi Fetch 완료", codiDTOList),
+                    HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
                     HttpStatus.BAD_REQUEST);
@@ -57,12 +67,14 @@ public class CodiController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllSomeonesCodi(@PathVariable Long id, @RequestParam Long userIndex){
+    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllSomeonesCodi(@PathVariable Long id, @RequestHeader("Authorization") String accessToken) {
         try {
-        List<CodiDTOWithImage> codiDTOList = codiService.retrieveSomeOnesCodi(id, userIndex);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.OK, "Codi Fetch 완료", codiDTOList),
-                HttpStatus.OK);
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            Long userIndex = userService.retrieveUserIndexByUserid(userid);
+            List<CodiDTOWithImage> codiDTOList = codiService.retrieveSomeOnesCodi(id, userIndex);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "Codi Fetch 완료", codiDTOList),
+                    HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
@@ -71,13 +83,15 @@ public class CodiController {
     }
 
     @PostMapping("")
-    public ResponseEntity<DefaultRes<String>> insertCodi(CodiDTO codiDTO) {
+    public ResponseEntity<DefaultRes<String>> insertCodi(CodiDTO codiDTO, @RequestHeader("Authorization") String accessToken) {
         try {
-        codiService.createCodi(codiDTO);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.CREATED, "Codi 등록 완료"),
-                HttpStatus.CREATED);
-        }catch(Exception e) {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            codiDTO.setUserid(userid);
+            codiService.createCodi(codiDTO);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.CREATED, "Codi 등록 완료"),
+                    HttpStatus.CREATED);
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
                     HttpStatus.BAD_REQUEST);
@@ -85,13 +99,16 @@ public class CodiController {
     }
 
     @PostMapping("/like")
-    public ResponseEntity<DefaultRes<String>> toggleLike(@RequestBody CodiLikeDTO codiLikeDTO) {
+    public ResponseEntity<DefaultRes<String>> toggleLike(@RequestBody CodiLikeDTO codiLikeDTO, @RequestHeader("Authorization") String accessToken) {
         try {
-        codiLikeService.likeToggle(codiLikeDTO);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.OK, "Codi 좋아요 완료"),
-                HttpStatus.OK);
-        }catch(Exception e) {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            Long userIndex = userService.retrieveUserIndexByUserid(userid);
+            codiLikeDTO.setUser_id(userIndex);
+            codiLikeService.likeToggle(codiLikeDTO);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "Codi 좋아요 완료"),
+                    HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
                     HttpStatus.BAD_REQUEST);
@@ -99,13 +116,15 @@ public class CodiController {
     }
 
     @PutMapping("")
-    public ResponseEntity<DefaultRes<String>> updateCodi(CodiDTO codiDTO){
+    public ResponseEntity<DefaultRes<String>> updateCodi(CodiDTO codiDTO, @RequestHeader("Authorization") String accessToken) {
         try {
-        codiService.updateCodi(codiDTO);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.OK, "Codi 수정 완료"),
-                HttpStatus.OK);
-        }catch(Exception e) {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            codiDTO.setUserid(userid);
+            codiService.updateCodi(codiDTO);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "Codi 수정 완료"),
+                    HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
                     HttpStatus.BAD_REQUEST);
@@ -113,13 +132,15 @@ public class CodiController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DefaultRes<CodiDTOWithImage>> retrieveSingleCodi(@PathVariable Long id, @RequestParam Long userIndex) {
+    public ResponseEntity<DefaultRes<CodiDTOWithImage>> retrieveSingleCodi(@PathVariable Long id, @RequestHeader("Authorization") String accessToken) {
         try {
-        CodiDTOWithImage codiDTO = codiService.retrieveSingleCodi(id, userIndex);
-        return new ResponseEntity<>(
-                DefaultRes.res(StatusCode.OK, "Codi fetch 완료", codiDTO),
-                HttpStatus.OK);
-        }catch(Exception e) {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            Long userIndex = userService.retrieveUserIndexByUserid(userid);
+            CodiDTOWithImage codiDTO = codiService.retrieveSingleCodi(id, userIndex);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "Codi fetch 완료", codiDTO),
+                    HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
                     HttpStatus.BAD_REQUEST);

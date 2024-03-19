@@ -2,11 +2,11 @@ package com.weatherable.weatherable.Controller;
 
 import com.weatherable.weatherable.DTO.ClosetDTO;
 import com.weatherable.weatherable.Service.ClosetService;
+import com.weatherable.weatherable.Service.JwtUtilsService;
 import com.weatherable.weatherable.Service.S3Upload;
 import com.weatherable.weatherable.enums.DefaultRes;
 import com.weatherable.weatherable.enums.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -26,13 +25,16 @@ public class ClosetController {
     ClosetService closetService;
 
     @Autowired
+    JwtUtilsService jwtUtilsService;
+
+    @Autowired
     S3Upload s3Upload;
 
 
     @GetMapping("")
-    public ResponseEntity<DefaultRes<List<ClosetDTO>>> getClosetByUserid(@RequestParam Long userIndex) {
+    public ResponseEntity<DefaultRes<List<ClosetDTO>>> getClosetByUserid(@RequestParam String userid) {
         try {
-            List<ClosetDTO> result = closetService.getAllClothListByUserIndex(userIndex);
+            List<ClosetDTO> result = closetService.getAllClothListByUserid(userid);
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.OK, "Closet fetch 완료", result),
                     HttpStatus.OK);
@@ -44,9 +46,10 @@ public class ClosetController {
     }
 
     @PostMapping("")
-    public ResponseEntity<DefaultRes<String>> insertCloth(@RequestBody ClosetDTO closetDTO){
-
+    public ResponseEntity<DefaultRes<String>> insertCloth(@RequestHeader("Authorization") String accessToken, @RequestBody ClosetDTO closetDTO){
         try {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            closetDTO.setUserid(userid);
             String result = closetService.insertCloth(closetDTO);
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.CREATED, result),
@@ -87,8 +90,10 @@ public class ClosetController {
     }
 
     @PutMapping("")
-    public ResponseEntity<DefaultRes<String>> updateSingleClosetById(@RequestBody ClosetDTO closetDTO) {
+    public ResponseEntity<DefaultRes<String>> updateSingleClosetById(@RequestHeader("Authorization") String accessToken, @RequestBody ClosetDTO closetDTO) {
         try {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            closetDTO.setUserid(userid);
             String result = closetService.updateCloth(closetDTO);
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.OK, result),

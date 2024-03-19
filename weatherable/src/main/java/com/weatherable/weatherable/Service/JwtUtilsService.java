@@ -37,11 +37,12 @@ public class JwtUtilsService {
     @Value("${jwt.password.secretKey}")
     private String secretKey;
 
-    SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
+
 
     // 토큰에서 클레임을 추출하는 함수
     public Claims extractAllClaims(String token) {
         token = token.substring(7);
+        SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
         var jwtSubject = Jwts.parserBuilder().setSigningKey(key).build();
         var parseClaims = jwtSubject.parseClaimsJws(token).getBody();
         return parseClaims;
@@ -57,6 +58,7 @@ public class JwtUtilsService {
 
 
     public String createRefreshToken(String userid) {
+        SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
         // claims 생성
         var claims = Jwts.builder()
                 .setIssuer("refresh")
@@ -71,6 +73,7 @@ public class JwtUtilsService {
     }
 
     public String createAccessToken(String userid) {
+        SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
         // claims 생성
         var claims = Jwts.builder()
                 .setIssuer("access")
@@ -119,31 +122,5 @@ public class JwtUtilsService {
         var claims = extractAllClaims(token);
         return claims.getSubject();
     }
-    // 특정 클레임을 추출하는 함수
-//    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-//        final Claims claims = extractAllClaims(token);
-//        return claimsResolver.apply(claims);
-//    }
-//
-//    // 토큰의 만료 날짜 확인
-//    public Date extractExpiration(String token) {
-//        return extractClaim(token, Claims::getExpiration);
-//    }
-//
-//    // 토큰이 만료되었는지 확인
-//    public Boolean isTokenExpired(String token) {
-//        return extractExpiration(token).before(new Date());
-//    }
-//
-//    // 토큰의 유효성 검사
-//    public Boolean validateToken(String token, UserDetails userDetails) {
-//        final String username = extractUsername(token);
-//        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-//    }
-//
-//    // 토큰에서 사용자명 추출
-//    public String extractUsername(String token) {
-//        return extractClaim(token, Claims::getSubject);
-//    }
 
 }
