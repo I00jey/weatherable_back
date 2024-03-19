@@ -54,6 +54,7 @@ public class CodiService {
                 .shoesIndex(codiDTO.getShoesIndex())
                 .accessoryIndex(codiDTO.getAccessoryIndex())
                 .capIndex(codiDTO.getCapIndex())
+                .createdAt(codiDTO.getCreatedAt())
                 .build();
         codiRepository.save(codiEntity);
     }
@@ -79,7 +80,7 @@ public class CodiService {
     }
 
     public List<CodiDTOWithImage> retrieveAllCodi(Long user_id) throws Exception {
-        Optional<List<CodiEntity>> codiEntityOptional = codiRepository.findByActiveOrderByCreatedAtDesc(true);
+        Optional<List<CodiEntity>> codiEntityOptional = codiRepository.findByActiveAndShowingOrderByCreatedAtDesc(true, true);
         if (codiEntityOptional.isEmpty()) {
             throw new Exception("불러올 코디가 없습니다.");
         }
@@ -137,7 +138,7 @@ public class CodiService {
                 .build();
     }
 
-    public List<CodiDTOWithImage> retrieveSomeOnesCodi(Long user_id) throws Exception {
+    public List<CodiDTOWithImage> retrieveSomeOnesCodi(Long user_id, Long userIndex) throws Exception {
         Optional<List<CodiEntity>> codiEntityOptional =
                 codiRepository.findByUserCodiIdAndActiveAndShowingOrderByCreatedAtDesc(user_id, true, true);
         if (codiEntityOptional.isEmpty()) {
@@ -153,7 +154,7 @@ public class CodiService {
             ClosetEntity closetAccessoryEntity = closetRepository.getByIdAndActive(codiEntity.getAccessoryIndex(), true).orElseGet(ClosetEntity::new);
             ClosetEntity closetCapEntity = closetRepository.getByIdAndActive(codiEntity.getCapIndex(), true).orElseGet(ClosetEntity::new);
             Long numberOfLikes = codiLikeRepository.countByCodiIndexId(codiEntity.getId());
-            boolean doILike = codiLikeRepository.existsByCodiIndexIdAndUserIndexId(codiEntity.getId(), user_id);
+            boolean doILike = codiLikeRepository.existsByCodiIndexIdAndUserIndexId(codiEntity.getId(), userIndex);
             var codiDTo = CodiDTOWithImage.builder()
                     .id(codiEntity.getId())
                     .createdAt(codiEntity.getCreatedAt())
@@ -174,9 +175,9 @@ public class CodiService {
         return codiDTOList;
     }
 
-    public List<CodiDTOWithImage> retrieveMyCodi(Long user_id) throws Exception {
+    public List<CodiDTOWithImage> retrieveMyCodi(Long userIndex) throws Exception {
         Optional<List<CodiEntity>> codiEntityOptional =
-                codiRepository.findByUserCodiIdAndActiveOrderByCreatedAtDesc(user_id, true);
+                codiRepository.findByUserCodiIdAndActiveOrderByCreatedAtDesc(userIndex, true);
         if (codiEntityOptional.isEmpty()) {
             throw new Exception("불러올 코디가 없습니다.");
         }
@@ -190,7 +191,7 @@ public class CodiService {
             ClosetEntity closetAccessoryEntity = closetRepository.getByIdAndActive(codiEntity.getAccessoryIndex(), true).orElseGet(ClosetEntity::new);
             ClosetEntity closetCapEntity = closetRepository.getByIdAndActive(codiEntity.getCapIndex(), true).orElseGet(ClosetEntity::new);
             Long numberOfLikes = codiLikeRepository.countByCodiIndexId(codiEntity.getId());
-            boolean doILike = codiLikeRepository.existsByCodiIndexIdAndUserIndexId(codiEntity.getId(), user_id);
+            boolean doILike = codiLikeRepository.existsByCodiIndexIdAndUserIndexId(codiEntity.getId(), userIndex);
             var codiDTo = CodiDTOWithImage.builder()
                     .id(codiEntity.getId())
                     .createdAt(codiEntity.getCreatedAt())

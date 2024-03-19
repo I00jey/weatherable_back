@@ -1,5 +1,6 @@
 package com.weatherable.weatherable.Service;
 
+import com.weatherable.weatherable.DTO.ClosetDTO;
 import com.weatherable.weatherable.DTO.UserDTO;
 import com.weatherable.weatherable.DTO.UserForMyPageDTO;
 import com.weatherable.weatherable.DTO.UserSizeDTO;
@@ -36,7 +37,7 @@ public class UserService {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public String retrieveExistingPasswordById( Long id) {
+    public String retrieveExistingPasswordById(Long id) {
         Optional<UserEntity> userEntityOptional = userRepository.findById(id);
         if(userEntityOptional.isEmpty()) {
             throw new RuntimeException("유저 정보 없음");
@@ -63,6 +64,15 @@ public class UserService {
 
     public boolean checkPasswordsAreEqual(UserDTO userDTO) {
         return userDTO.getPassword().equals(userDTO.getPasswordConfirm());
+    }
+
+    public Long retrieveUserIndexByUserid(String userid) throws Exception {
+        var userEntityOptional = userRepository.findByUseridAndActive(userid, true);
+        if (userEntityOptional.isEmpty()) {
+            throw new Exception("유저 정보 없음");
+        }
+
+        return userEntityOptional.get().getId();
     }
 
     @Value("${cloud.aws.default.imgPath}")
@@ -193,7 +203,6 @@ public class UserService {
                     .favoriteStyle(userEntity.getFavoriteStyle())
                     .height(userEntity.getHeight())
                     .weight(userEntity.getWeight())
-                    .isPresent(true)
                     .userSizeDTO(userSizeDTO)
                     .build();
             return result;

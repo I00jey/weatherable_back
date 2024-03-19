@@ -19,7 +19,8 @@ public class UserForMyPageDTO {
     private Double weight;
     private Style favoriteStyle;
     private long numberOfCloth;
-    private boolean isPresent;
     private UserSizeDTO userSizeDTO;
+    private List<ClosetDTO> closetDTOList;
+    private List<CodiDTOWithImage> codiDTOList;
 
 }

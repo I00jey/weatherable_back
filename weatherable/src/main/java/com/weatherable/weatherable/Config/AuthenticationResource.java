@@ -26,10 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthenticationResource {
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-    @Autowired
-    private JwtUtilsService jwtUtilsService;
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Bean
     SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
@@ -50,7 +47,7 @@ public class AuthenticationResource {
         http.csrf(AbstractHttpConfigurer::disable);
         http.headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
-        http.addFilterBefore(new JwtRequestFilter(customUserDetailsService, jwtUtilsService), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -67,8 +64,4 @@ public class AuthenticationResource {
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }
-
-
-
-
 }

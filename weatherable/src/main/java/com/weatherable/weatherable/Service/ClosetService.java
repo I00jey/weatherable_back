@@ -8,7 +8,6 @@ import com.weatherable.weatherable.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
@@ -25,8 +24,13 @@ public class ClosetService {
     UserRepository userRepository;
 
 
-    public List<ClosetDTO> getAllClothListByUserIndex(Long userIndex) throws Exception {
-        Optional<List<ClosetEntity>> closetEntitiesOptional = closetRepository.retrieveAllClothByUserIndex(userIndex);
+    public List<ClosetDTO> getAllClothListByUserid(String userid) throws Exception {
+        var userEntityOptional = userRepository.findByUseridAndActive(userid, true);
+        if (userEntityOptional.isEmpty()) {
+            throw new Exception("유저 정보가 없습니다.");
+        }
+        var userEntity = userEntityOptional.get();
+        Optional<List<ClosetEntity>> closetEntitiesOptional = closetRepository.retrieveAllClothByUserIndex(userEntity.getId());
         List<ClosetDTO> result = new ArrayList<>();
         if (closetEntitiesOptional.isEmpty()) {
             throw new Exception("옷장에 옷이 없습니다.");
@@ -58,12 +62,51 @@ public class ClosetService {
         return result;
     }
 
-
-    public String insertCloth(ClosetDTO closetDTO) throws AccountNotFoundException {
-        if (userRepository.findById(closetDTO.getUser_id()).isEmpty()) {
-            throw new AccountNotFoundException("유저 없음");
+    public List<ClosetDTO> getMyAllClothList(String userid) throws Exception {
+        var userEntityOptional = userRepository.findByUseridAndActive(userid, true);
+        if (userEntityOptional.isEmpty()) {
+            throw new Exception("유저 정보가 없습니다.");
         }
-        UserEntity userEntity = userRepository.findById(closetDTO.getUser_id()).get();
+        var userEntity = userEntityOptional.get();
+        Optional<List<ClosetEntity>> closetEntitiesOptional = closetRepository.retrieveAllClothByUserIndex(userEntity.getId());
+        List<ClosetDTO> result = new ArrayList<>();
+        if (closetEntitiesOptional.isEmpty()) {
+            throw new Exception("옷장에 옷이 없습니다.");
+        }
+
+        List<ClosetEntity> closetEntityList = closetEntitiesOptional.get();
+        for (ClosetEntity closetEntity : closetEntityList) {
+            ClosetDTO closetDTO = ClosetDTO.builder()
+                    .id(closetEntity.getId())
+                    .productName(closetEntity.getProductName())
+                    .user_id(closetEntity.getUserCloset().getId())
+                    .userid(closetEntity.getUserCloset().getUserid())
+                    .majorCategory(closetEntity.getMajorCategory())
+                    .middleCategory(closetEntity.getMiddleCategory())
+                    .price(closetEntity.getPrice())
+                    .liked(closetEntity.isLiked())
+                    .brand(closetEntity.getBrand())
+                    .color(closetEntity.getColor())
+                    .style(closetEntity.getStyle())
+                    .size(closetEntity.getSize())
+                    .season(closetEntity.getSeason())
+                    .bigImagePath(closetEntity.getBigImagePath())
+                    .thickness(closetEntity.getThickness())
+                    .smallImagePath(closetEntity.getSmallImagePath())
+                    .createdAt(closetEntity.getCreatedAt())
+                    .build();
+            result.add(closetDTO);
+        }
+
+        return result;
+    }
+
+    public String insertCloth(ClosetDTO closetDTO) throws Exception {
+        var userEntityOptional = userRepository.findByUseridAndActive(closetDTO.getUserid(), true);
+        if (userEntityOptional.isEmpty()) {
+            throw new Exception("유저 정보가 없습니다.");
+        }
+        var userEntity = userEntityOptional.get();
         ClosetEntity closetEntity = ClosetEntity.builder()
                 .majorCategory(closetDTO.getMajorCategory())
                 .middleCategory(closetDTO.getMiddleCategory())
@@ -86,12 +129,12 @@ public class ClosetService {
         return result.getProductName() + "등록완료";
     }
 
-    public String updateCloth(ClosetDTO closetDTO) throws AccountNotFoundException {
-        if (userRepository.findById(closetDTO.getUser_id()).isEmpty()) {
-            throw new AccountNotFoundException("유저 없음");
+    public String updateCloth(ClosetDTO closetDTO) throws Exception {
+        var userEntityOptional = userRepository.findByUseridAndActive(closetDTO.getUserid(), true);
+        if (userEntityOptional.isEmpty()) {
+            throw new Exception("유저 정보가 없습니다.");
         }
-
-        UserEntity userEntity = userRepository.findById(closetDTO.getUser_id()).get();
+        var userEntity = userEntityOptional.get();
         ClosetEntity closetEntity = ClosetEntity.builder()
                 .id(closetDTO.getId())
                 .majorCategory(closetDTO.getMajorCategory())
