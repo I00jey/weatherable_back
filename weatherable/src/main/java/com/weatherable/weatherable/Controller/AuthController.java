@@ -9,6 +9,7 @@ import com.weatherable.weatherable.Service.UserService;
 import com.weatherable.weatherable.enums.DefaultRes;
 import com.weatherable.weatherable.enums.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;

@@ -6,7 +6,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -28,16 +30,19 @@ public class JwtUtilsService {
         this.keyPair = keyPair;
     }
 
-    // 실제론 이 키 사용, 서버 시작하면 서명이 달라지기 때문에 지금은 귀찮아서 하드코딩 사용
+    // 실제론 이 키 사용, 서버 시작하면 서명이 달라지기 때문에 하드코딩 사용
 //    SecretKey key = Keys
 //            .secretKeyFor(SignatureAlgorithm.HS256);
 
-    SecretKey key = Keys.hmacShaKeyFor("passwosjlfslvnwlvwklvnwklvwknwklvnwlnvwlvnwkl".getBytes());
+    @Value("${jwt.password.secretKey}")
+    private String secretKey;
+
+    SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
 
     // 토큰에서 클레임을 추출하는 함수
     public Claims extractAllClaims(String token) {
         token = token.substring(7);
-        var jwtSubject =  Jwts.parserBuilder().setSigningKey(key).build();
+        var jwtSubject = Jwts.parserBuilder().setSigningKey(key).build();
         var parseClaims = jwtSubject.parseClaimsJws(token).getBody();
         return parseClaims;
     }
@@ -56,7 +61,7 @@ public class JwtUtilsService {
         var claims = Jwts.builder()
                 .setIssuer("refresh")
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plusSeconds(60*60*24*14)))
+                .setExpiration(Date.from(Instant.now().plusSeconds(60 * 60 * 24 * 14)))
                 .setSubject(userid)
                 .claim("scope", "Refresh") // authority
                 .signWith(key)
@@ -70,7 +75,7 @@ public class JwtUtilsService {
         var claims = Jwts.builder()
                 .setIssuer("access")
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plusSeconds(60*60*24*14)))
+                .setExpiration(Date.from(Instant.now().plusSeconds(60 * 60 * 24 * 14)))
                 .setSubject(userid)
                 .claim("scope", "ROLE_USER") // authority
                 .signWith(key)
@@ -92,12 +97,12 @@ public class JwtUtilsService {
     public boolean validateAccessToken(String token, UserDetails userDetails) {
         final String username = getUsername(token);
 
-        return ( username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     public String getExistingRefreshToken(String userid) {
         var userEntityOptional = authRepository.findByUserEntityUserid(userid);
-        if(userEntityOptional.isEmpty()) {
+        if (userEntityOptional.isEmpty()) {
             return "유저 없음";
         }
 

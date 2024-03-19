@@ -1,5 +1,5 @@
 package com.weatherable.weatherable.enums;
 
 public enum MajorCategory {
-    Top, Pants, Outer, Shoes, Skirt, Onepiece, Accessory;
+    Top, Bottom, Outer, Shoes, Accessory;
 }

@@ -87,7 +87,7 @@ public class ClosetController {
     }
 
     @PutMapping("")
-    public ResponseEntity<DefaultRes<String>> updateSingleClosetById(@RequestBody ClosetDTO closetDTO) throws AccountNotFoundException {
+    public ResponseEntity<DefaultRes<String>> updateSingleClosetById(@RequestBody ClosetDTO closetDTO) {
         try {
             String result = closetService.updateCloth(closetDTO);
             return new ResponseEntity<>(

@@ -113,10 +113,16 @@ public class UserController {
     @PatchMapping("/password")
     public ResponseEntity<DefaultRes<String>> updateUserPassword(@RequestBody UserDTO userDTO) {
         String existingPassword = userService.retrieveExistingPasswordById(userDTO.getId());
+        boolean inputPasswordsAreEquals = userDTO.getPassword().equals(userDTO.getPasswordConfirm());
+        if (!inputPasswordsAreEquals) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, "비밀번호와 비밀번호 확인이 다릅니다."),
+                    HttpStatus.BAD_REQUEST);
+        }
         boolean arePasswordsEquals = userService.matchPassword(userDTO.getPassword(), existingPassword);
         if (arePasswordsEquals) {
             return new ResponseEntity<>(
-                    DefaultRes.res(StatusCode.BAD_REQUEST, "패스워드가 동일합니다."),
+                    DefaultRes.res(StatusCode.BAD_REQUEST, "이전 패스워드가 동일합니다."),
                     HttpStatus.BAD_REQUEST);
         }
         String result = userService.changeUserPassword(userDTO.getPassword(), userDTO.getId());

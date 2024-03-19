@@ -57,9 +57,9 @@ public class CodiController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllSomeonesCodi(@PathVariable Long id){
+    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllSomeonesCodi(@PathVariable Long id, @RequestParam Long userIndex){
         try {
-        List<CodiDTOWithImage> codiDTOList = codiService.retrieveSomeOnesCodi(id);
+        List<CodiDTOWithImage> codiDTOList = codiService.retrieveSomeOnesCodi(id, userIndex);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, "Codi Fetch 완료", codiDTOList),
                 HttpStatus.OK);

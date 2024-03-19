@@ -28,11 +28,11 @@ public interface CodiRepository extends JpaRepository<CodiEntity, Long> {
     Optional<List<CodiEntity>> findByUserCodiIdAndActiveOrderByCreatedAtDesc(Long id, boolean access);
     Optional<List<CodiEntity>> findByUserCodiIdAndActiveAndShowingOrderByCreatedAtDesc(Long id, boolean access, boolean show);
 
-    Optional<List<CodiEntity>> findByActiveOrderByCreatedAtDesc(boolean access);
+    Optional<List<CodiEntity>> findByActiveAndShowingOrderByCreatedAtDesc(boolean access, boolean showing);
 
     Optional<CodiEntity> getByIdAndActive(Long id, boolean access);
 
-    Optional<CodiEntity> getByIdAndActiveAndShowing(Long id, boolean access, boolean show);
+    Optional<CodiEntity> getByIdAndActiveAndShowing(Long id, boolean access, boolean showing);
 
 
 }
