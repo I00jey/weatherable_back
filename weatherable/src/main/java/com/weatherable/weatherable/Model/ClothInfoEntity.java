@@ -7,24 +7,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
-import java.util.List;
 
-@Document(collection = "cloth_info")
+@Document(collection = "clothes")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class ClothInfoEntity {
     @Id
+    @Column(name = "_id")
     private String id;
 
+    @Column(name = "major_category")
     private MajorCategory majorCategory;
 
+    @Column(name = "middle_category")
     private MiddleCategory middleCategory;
 
-    private Color color;
-
-    private Size size;
+    private long price;
 
     private Thickness thickness;
 
@@ -35,12 +34,10 @@ public class ClothInfoEntity {
 
     private String brand;
 
-    @Column(name = "small_image_path")
+    @Column(name = "small_img")
     private String smallImagePath;
 
-
-    @Column(name = "big_image_path")
+    @Column(name = "big_img")
     private String bigImagePath;
-
 
 }

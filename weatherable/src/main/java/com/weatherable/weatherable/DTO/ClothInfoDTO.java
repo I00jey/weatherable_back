@@ -8,14 +8,13 @@ import lombok.Data;
 @Builder
 public class ClothInfoDTO {
 
-    private long id;
+    private String id;
     private MajorCategory majorCategory;
     private MiddleCategory middleCategory;
     private long price;
-    private Color color;
     private Size size;
     private Thickness thickness;
     private String productName;
     private String brand;
-    private String image_Path;
+    private String image_path;
 }
