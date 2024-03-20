@@ -37,11 +37,11 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/{codiId}")
-    public ResponseEntity<DefaultRes<List<CommentDTO>>> retrieveAllComment(@PathVariable Long codiIndex) {
+    @GetMapping("/{id}")
+    public ResponseEntity<DefaultRes<List<CommentDTO>>> retrieveAllComment(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(
-                    DefaultRes.res(StatusCode.OK, "댓글 fetch 완료", commentService.retrieveAllComment(codiIndex)),
+                    DefaultRes.res(StatusCode.OK, "댓글 fetch 완료", commentService.retrieveAllComment(id)),
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(
@@ -50,7 +50,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/comment/{id}")
+    @GetMapping("/single/{id}")
     public ResponseEntity<DefaultRes<CommentDTO>> retrieveSingleComment(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(

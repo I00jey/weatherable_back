@@ -43,6 +43,7 @@ public class ClosetService {
                     .productName(closetEntity.getProductName())
                     .user_id(closetEntity.getUserCloset().getId())
                     .userid(closetEntity.getUserCloset().getUserid())
+                    .nickname(closetEntity.getUserCloset().getNickname())
                     .majorCategory(closetEntity.getMajorCategory())
                     .middleCategory(closetEntity.getMiddleCategory())
                     .price(closetEntity.getPrice())
@@ -81,6 +82,7 @@ public class ClosetService {
                     .productName(closetEntity.getProductName())
                     .user_id(closetEntity.getUserCloset().getId())
                     .userid(closetEntity.getUserCloset().getUserid())
+                    .nickname(closetEntity.getUserCloset().getNickname())
                     .majorCategory(closetEntity.getMajorCategory())
                     .middleCategory(closetEntity.getMiddleCategory())
                     .price(closetEntity.getPrice())
@@ -198,6 +200,7 @@ public class ClosetService {
                 .productName(closetEntity.getProductName())
                 .thickness(closetEntity.getThickness())
                 .userid(closetEntity.getUserCloset().getUserid())
+                .nickname(closetEntity.getUserCloset().getNickname())
                 .build();
         return closetDTO;
     }
