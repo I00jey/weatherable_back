@@ -51,6 +51,8 @@ public class UserEntity {
     @Column(name = "favorite_style")
     private Style favoriteStyle;
 
+    @OneToOne(mappedBy = "userEntity")
+    private AuthEntity authEntity;
 
     @OneToMany(mappedBy = "userCodi", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<CodiEntity> userCodie = new ArrayList<>();
@@ -60,12 +62,6 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userCloset", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<ClosetEntity> closet = new ArrayList<>();
-
-    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<ClosetLikeEntity> fromUser = new ArrayList<>();
-
-    @OneToMany(mappedBy = "userClosetLike", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<ClosetLikeEntity> toUser = new ArrayList<>();
 
     @OneToMany(mappedBy = "userIndex", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<CodiLikeEntity> userLookBookLikes = new ArrayList<>();

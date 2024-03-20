@@ -33,7 +33,7 @@ public class ClosetService {
         Optional<List<ClosetEntity>> closetEntitiesOptional = closetRepository.retrieveAllClothByUserIndex(userEntity.getId());
         List<ClosetDTO> result = new ArrayList<>();
         if (closetEntitiesOptional.isEmpty()) {
-            throw new Exception("옷장에 옷이 없습니다.");
+            throw new Exception("옷장 정보가 없습니다.");
         }
 
         List<ClosetEntity> closetEntityList = closetEntitiesOptional.get();
@@ -118,6 +118,7 @@ public class ClosetService {
                 .size(closetDTO.getSize())
                 .brand(closetDTO.getBrand())
                 .score(closetDTO.getScore())
+                .liked(false)
                 .color(closetDTO.getColor())
                 .smallImagePath(closetDTO.getSmallImagePath())
                 .season(closetDTO.getSeason())

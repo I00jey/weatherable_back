@@ -18,7 +18,7 @@ public class AuthEntity {
     @Column(name = "refresh_token", length = 10000)
     private String refreshToken;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
@@ -27,7 +27,6 @@ public class AuthEntity {
         this.refreshToken = refreshToken;
         this.userEntity = usersEntity;
     }
-    public void refreshUpdate(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
+
+
 }
