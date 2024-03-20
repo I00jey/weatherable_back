@@ -36,6 +36,9 @@ public class CodiEntity {
     @Column(columnDefinition="tinyint(1) default 0")
     private boolean showing;
 
+    @Column(name = "codi_name", nullable = false, columnDefinition = "varchar(30)")
+    private String codiName;
+
 
     @CreationTimestamp
     @Column(nullable = false, name = "created_at")

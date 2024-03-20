@@ -41,6 +41,7 @@ public class ClosetEntity {
 
     private Thickness thickness;
 
+    @Column(nullable = false)
     private String productName;
 
     private String brand;
@@ -55,6 +56,7 @@ public class ClosetEntity {
 
     private Season season;
 
+    @Column(columnDefinition="tinyint(1) default 0")
     private boolean liked;
 
     @Column(columnDefinition="tinyint(1) default 1")

@@ -16,6 +16,7 @@ public class CodiDTO {
     private Long topIndex;
     private Long bottomIndex;
     private Long outerIndex;
+    private String codiName;
     private Long shoesIndex;
     private Long accessoryIndex;
     private Long capIndex;
