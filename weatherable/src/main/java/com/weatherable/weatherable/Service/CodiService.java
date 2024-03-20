@@ -39,7 +39,6 @@ public class CodiService {
     }
 
 
-
     public void createCodi(CodiDTO codiDTO) throws AccountNotFoundException {
         Optional<UserEntity> userEntityOptional = userRepository.findByUseridAndActive(codiDTO.getUserid(), true);
         if (userEntityOptional.isEmpty()) {
@@ -54,7 +53,6 @@ public class CodiService {
                 .shoesIndex(codiDTO.getShoesIndex())
                 .accessoryIndex(codiDTO.getAccessoryIndex())
                 .capIndex(codiDTO.getCapIndex())
-                .createdAt(codiDTO.getCreatedAt())
                 .build();
         codiRepository.save(codiEntity);
     }
@@ -75,6 +73,7 @@ public class CodiService {
                 .active(true)
                 .accessoryIndex(codiDTO.getAccessoryIndex())
                 .capIndex(codiDTO.getCapIndex())
+                .createdAt(codiDTO.getCreatedAt())
                 .build();
         codiRepository.save(codiEntity);
     }
@@ -96,7 +95,7 @@ public class CodiService {
             Long numberOfLikes = codiLikeRepository.countByCodiIndexId(codiEntity.getId());
             boolean doiLike = codiLikeRepository.existsByCodiIndexIdAndUserIndexId(codiEntity.getId(), user_id);
 
-            var codiDTo = CodiDTOWithImage.builder()
+            var codiDTO = CodiDTOWithImage.builder()
                     .id(codiEntity.getId())
                     .createdAt(codiEntity.getCreatedAt())
                     .userid(codiEntity.getUserCodi().getUserid())
@@ -111,7 +110,7 @@ public class CodiService {
                     .accessory(transformIntoClosetDTO(closetAccessoryEntity))
                     .cap(transformIntoClosetDTO(closetCapEntity))
                     .build();
-            codiDTOList.add(codiDTo);
+            codiDTOList.add(codiDTO);
         }
         return codiDTOList;
 
@@ -129,7 +128,6 @@ public class CodiService {
                 .smallImagePath(closetEntity.getSmallImagePath())
                 .bigImagePath(closetEntity.getBigImagePath())
                 .brand(closetEntity.getBrand())
-                .createdAt(closetEntity.getCreatedAt())
                 .color(closetEntity.getColor())
                 .majorCategory(closetEntity.getMajorCategory())
                 .productName(closetEntity.getProductName())
@@ -155,7 +153,7 @@ public class CodiService {
             ClosetEntity closetCapEntity = closetRepository.getByIdAndActive(codiEntity.getCapIndex(), true).orElseGet(ClosetEntity::new);
             Long numberOfLikes = codiLikeRepository.countByCodiIndexId(codiEntity.getId());
             boolean doILike = codiLikeRepository.existsByCodiIndexIdAndUserIndexId(codiEntity.getId(), userIndex);
-            var codiDTo = CodiDTOWithImage.builder()
+            var codiDTO = CodiDTOWithImage.builder()
                     .id(codiEntity.getId())
                     .createdAt(codiEntity.getCreatedAt())
                     .userid(codiEntity.getUserCodi().getUserid())
@@ -170,7 +168,7 @@ public class CodiService {
                     .accessory(transformIntoClosetDTO(closetAccessoryEntity))
                     .cap(transformIntoClosetDTO(closetCapEntity))
                     .build();
-            codiDTOList.add(codiDTo);
+            codiDTOList.add(codiDTO);
         }
         return codiDTOList;
     }
@@ -192,7 +190,7 @@ public class CodiService {
             ClosetEntity closetCapEntity = closetRepository.getByIdAndActive(codiEntity.getCapIndex(), true).orElseGet(ClosetEntity::new);
             Long numberOfLikes = codiLikeRepository.countByCodiIndexId(codiEntity.getId());
             boolean doILike = codiLikeRepository.existsByCodiIndexIdAndUserIndexId(codiEntity.getId(), userIndex);
-            var codiDTo = CodiDTOWithImage.builder()
+            var codiDTO = CodiDTOWithImage.builder()
                     .id(codiEntity.getId())
                     .createdAt(codiEntity.getCreatedAt())
                     .userid(codiEntity.getUserCodi().getUserid())
@@ -207,7 +205,7 @@ public class CodiService {
                     .accessory(transformIntoClosetDTO(closetAccessoryEntity))
                     .cap(transformIntoClosetDTO(closetCapEntity))
                     .build();
-            codiDTOList.add(codiDTo);
+            codiDTOList.add(codiDTO);
         }
         return codiDTOList;
     }

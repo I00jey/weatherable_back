@@ -15,6 +15,8 @@ public class ClosetDTO {
 
     private String userid;
 
+    private String nickname;
+
     private double score;
 
     private MajorCategory majorCategory;
