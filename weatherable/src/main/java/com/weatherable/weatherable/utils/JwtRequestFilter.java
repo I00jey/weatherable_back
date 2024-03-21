@@ -1,9 +1,13 @@
 package com.weatherable.weatherable.utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weatherable.weatherable.Service.CustomUserDetailsService;
 import com.weatherable.weatherable.Service.JwtUtilsService;
+import com.weatherable.weatherable.enums.DefaultRes;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,12 +25,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.security.SignatureException;
 
 @RequiredArgsConstructor
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-
+    private final ObjectMapper objectMapper;
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtUtilsService jwtUtilsService;
 
@@ -33,29 +39,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String accessToken = request.getHeader("Authorization");
-        try {
-            jwtUtilsService.isTokenExpired(accessToken);
-        } catch(Exception e) {
-            sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Not Access Token Exception");
-            filterChain.doFilter(request, response);
-        }
         String username = null;
-        if (accessToken != null) {
-            try {
+        try {
+            if (accessToken != null) {
                 username = jwtUtilsService.getUsername(accessToken);
                 String issuer = jwtUtilsService.getIssuer(accessToken);
                 if (!issuer.equals("access")) {
-                    sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Not Access Token Exception");
+                    sendErrorResponse(response, "액세스 토큰이 아닙니다.");
                     return;
                 }
-
-            } catch (JwtException e) {
-                System.out.println("에러발생");
-                sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
-                System.out.println("에러끝");
             }
-        }
-        try {
             if (username != null) {
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
@@ -70,19 +63,26 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     // SecurityContext는 해당 요청에서만 유지되고, 해당 요청의 다른 로직에서 Authentication 객체가 필요할 때 사용되다가
                     // 클라이언트의 요청을 모두 처리하고 응답을 리턴하는 어느 시점에 더이상 Authentication 객체가 필요 없을 때 자동으로 삭제됨
                 }
+
             }
+            filterChain.doFilter(request, response);
+        } catch (MalformedJwtException e) {
+            sendErrorResponse(response, "손상된 토큰");
         } catch (ExpiredJwtException e) {
-            sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Expired JWT Exception");
-            return;
+            sendErrorResponse(response, "만료된 토큰");
+        } catch (UnsupportedJwtException e) {
+            sendErrorResponse(response, "지원되지 않는 토큰");
+        } catch (JwtException e) {
+            sendErrorResponse(response, e.getMessage());
         }
 
-        filterChain.doFilter(request, response);
-
     }
-    private void sendErrorResponse(HttpServletResponse response, int statusCode, String message) throws IOException {
-        response.setStatus(statusCode);
+
+    private void sendErrorResponse(HttpServletResponse response, String message) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(message);
+        response.getWriter().write(objectMapper.writeValueAsString(DefaultRes.res(HttpStatus.UNAUTHORIZED.value(), message)));
     }
 
 }

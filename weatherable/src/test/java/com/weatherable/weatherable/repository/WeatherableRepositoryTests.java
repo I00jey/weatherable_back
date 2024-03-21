@@ -31,17 +31,18 @@ public class WeatherableRepositoryTests {
         assertEquals(longMock.size(), 3);
     }
 
-//    @Test
-//    void findByUserEntityIdExistTest() {
-//        Optional<AuthEntity> authEntity = authRepository.findByUserEntityId(1L);
-//        System.out.println(authEntity);
-//        assertTrue(authEntity.isPresent());
-//    }
-//
-//    @Test
-//    void findByUserEntityIdNotExistTest() {
-//        Optional<AuthEntity> authEntity = authRepository.findByUserEntityId(999L);
-//        assertTrue(authEntity.isEmpty());
-//    }
+    @Test
+    void findByUserEntityIdExistTest() {
+        Optional<AuthEntity> authEntity = authRepository.findByUserEntityId(1L);
+        System.out.println(authEntity);
+        assertTrue(authEntity.isPresent());
+        assertEquals(authEntity.get().getId(), 1);
+    }
+
+    @Test
+    void findByUserEntityIdNotExistTest() {
+        Optional<AuthEntity> authEntity = authRepository.findByUserEntityId(999L);
+        assertTrue(authEntity.isEmpty());
+    }
 
 }
