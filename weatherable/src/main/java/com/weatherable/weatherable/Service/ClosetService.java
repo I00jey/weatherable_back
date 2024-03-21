@@ -52,9 +52,8 @@ public class ClosetService {
                     .style(closetEntity.getStyle())
                     .size(closetEntity.getSize())
                     .season(closetEntity.getSeason())
-                    .bigImagePath(closetEntity.getBigImagePath())
+                    .imagePath(closetEntity.getImagePath())
                     .thickness(closetEntity.getThickness())
-                    .smallImagePath(closetEntity.getSmallImagePath())
                     .createdAt(closetEntity.getCreatedAt())
                     .build();
             result.add(closetDTO);
@@ -86,15 +85,14 @@ public class ClosetService {
                     .majorCategory(closetEntity.getMajorCategory())
                     .middleCategory(closetEntity.getMiddleCategory())
                     .price(closetEntity.getPrice())
-                    .liked(closetEntity.isLiked())
+                    .liked(false)
                     .brand(closetEntity.getBrand())
                     .color(closetEntity.getColor())
                     .style(closetEntity.getStyle())
                     .size(closetEntity.getSize())
                     .season(closetEntity.getSeason())
-                    .bigImagePath(closetEntity.getBigImagePath())
+                    .imagePath(closetEntity.getImagePath())
                     .thickness(closetEntity.getThickness())
-                    .smallImagePath(closetEntity.getSmallImagePath())
                     .createdAt(closetEntity.getCreatedAt())
                     .build();
             result.add(closetDTO);
@@ -108,19 +106,19 @@ public class ClosetService {
         if (userEntityOptional.isEmpty()) {
             throw new Exception("유저 정보가 없습니다.");
         }
+
         var userEntity = userEntityOptional.get();
         ClosetEntity closetEntity = ClosetEntity.builder()
                 .majorCategory(closetDTO.getMajorCategory())
                 .middleCategory(closetDTO.getMiddleCategory())
                 .userCloset(userEntity)
-                .bigImagePath(closetDTO.getBigImagePath())
+                .imagePath(closetDTO.getImagePath())
                 .style(closetDTO.getStyle())
                 .size(closetDTO.getSize())
                 .brand(closetDTO.getBrand())
                 .score(closetDTO.getScore())
                 .liked(false)
                 .color(closetDTO.getColor())
-                .smallImagePath(closetDTO.getSmallImagePath())
                 .season(closetDTO.getSeason())
                 .productName(closetDTO.getProductName())
                 .thickness(closetDTO.getThickness())
@@ -143,7 +141,7 @@ public class ClosetService {
                 .majorCategory(closetDTO.getMajorCategory())
                 .middleCategory(closetDTO.getMiddleCategory())
                 .userCloset(userEntity)
-                .bigImagePath(closetDTO.getBigImagePath())
+                .imagePath(closetDTO.getImagePath())
                 .style(closetDTO.getStyle())
                 .size(closetDTO.getSize())
                 .brand(closetDTO.getBrand())
@@ -151,7 +149,6 @@ public class ClosetService {
                 .color(closetDTO.getColor())
                 .liked(closetDTO.isLiked())
                 .active(true)
-                .smallImagePath(closetDTO.getSmallImagePath())
                 .season(closetDTO.getSeason())
                 .productName(closetDTO.getProductName())
                 .thickness(closetDTO.getThickness())
@@ -191,8 +188,7 @@ public class ClosetService {
                 .middleCategory(closetEntity.getMiddleCategory())
                 .price(closetEntity.getPrice())
                 .season(closetEntity.getSeason())
-                .smallImagePath(closetEntity.getSmallImagePath())
-                .bigImagePath(closetEntity.getBigImagePath())
+                .imagePath(closetEntity.getImagePath())
                 .brand(closetEntity.getBrand())
                 .liked(closetEntity.isLiked())
                 .createdAt(closetEntity.getCreatedAt())

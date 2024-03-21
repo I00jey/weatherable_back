@@ -46,11 +46,8 @@ public class ClosetEntity {
 
     private String brand;
 
-    @Column(name = "small_image_path")
-    private String smallImagePath;
-
-    @Column(name = "big_image_path")
-    private String bigImagePath;
+    @Column(name = "image_path")
+    private String imagePath;
 
     private Style style;
 
