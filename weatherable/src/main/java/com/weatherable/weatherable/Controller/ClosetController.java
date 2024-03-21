@@ -32,8 +32,9 @@ public class ClosetController {
 
 
     @GetMapping("")
-    public ResponseEntity<DefaultRes<List<ClosetDTO>>> getClosetByUserid(@RequestParam String userid) {
+    public ResponseEntity<DefaultRes<List<ClosetDTO>>> getClosetByUserid(@RequestHeader("Authorization") String accessToken) {
         try {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
             List<ClosetDTO> result = closetService.getAllClothListByUserid(userid);
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.OK, "Closet fetch 완료", result),
