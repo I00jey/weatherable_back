@@ -1,12 +1,15 @@
 package com.weatherable.weatherable.Model;
 
-import com.weatherable.weatherable.enums.*;
-import jakarta.persistence.*;
+
+import com.weatherable.weatherable.enums.MajorCategory;
+import com.weatherable.weatherable.enums.MiddleCategory;
+import com.weatherable.weatherable.enums.Thickness;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import java.util.List;
 
 @Document(collection = "clothes")
 @NoArgsConstructor
@@ -14,30 +17,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class ClothInfoEntity {
     @Id
-    @Column(name = "_id")
     private String id;
 
-    @Column(name = "major_category")
-    private MajorCategory majorCategory;
+    private MajorCategory major_category;
 
-    @Column(name = "middle_category")
-    private MiddleCategory middleCategory;
+    private MiddleCategory middle_category;
 
     private long price;
 
     private Thickness thickness;
 
-    private Season season;
+    private List<String> season;
 
-    @Column(name = "product_name")
-    private String productName;
+    private String product_name;
 
     private String brand;
 
-    @Column(name = "small_img")
-    private String smallImagePath;
+    private String small_img;
 
-    @Column(name = "big_img")
-    private String bigImagePath;
-
+    private String big_img;
 }

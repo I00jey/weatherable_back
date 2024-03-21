@@ -4,6 +4,8 @@ import com.weatherable.weatherable.enums.*;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 public class ClothInfoDTO {
@@ -13,6 +15,7 @@ public class ClothInfoDTO {
     private MiddleCategory middleCategory;
     private long price;
     private Size size;
+    private List<String> season;
     private Thickness thickness;
     private String productName;
     private String brand;
