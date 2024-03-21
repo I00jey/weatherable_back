@@ -46,7 +46,7 @@ public class ClosetController {
     }
 
     @PostMapping("")
-    public ResponseEntity<DefaultRes<String>> insertCloth(@RequestHeader("Authorization") String accessToken, @RequestBody ClosetDTO closetDTO){
+    public ResponseEntity<DefaultRes<String>> insertCloth(@RequestHeader("Authorization") String accessToken, @RequestBody ClosetDTO closetDTO) {
         try {
             String userid = jwtUtilsService.retrieveUserid(accessToken);
             closetDTO.setUserid(userid);
@@ -60,7 +60,6 @@ public class ClosetController {
                     HttpStatus.BAD_REQUEST);
         }
     }
-
     @PostMapping("/image")
     public ResponseEntity<DefaultRes<String>> uploadImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
         try {

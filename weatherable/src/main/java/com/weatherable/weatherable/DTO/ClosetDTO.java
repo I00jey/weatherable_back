@@ -37,13 +37,12 @@ public class ClosetDTO {
 
     private String brand;
 
-    private String smallImagePath;
-
-    private String bigImagePath;
+    private String imagePath;
 
     private Style style;
 
     private Season season;
 
     private Timestamp createdAt;
+
 }
