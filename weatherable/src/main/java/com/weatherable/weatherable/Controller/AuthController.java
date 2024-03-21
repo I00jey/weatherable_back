@@ -100,7 +100,7 @@ public class AuthController {
             authService.updateUserRefreshToken(refreshToken, id);
 
             return new ResponseEntity<>(
-                    DefaultRes.res(StatusCode.OK, "0: refresh token, 1: access token", List.of(refreshToken, accessToken)),
+                    DefaultRes.res(StatusCode.OK, "0: refresh token, 1: access token", List.of(refreshToken, accessToken, userid)),
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(
