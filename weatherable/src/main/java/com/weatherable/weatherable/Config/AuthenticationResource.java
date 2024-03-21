@@ -2,6 +2,8 @@ package com.weatherable.weatherable.Config;
 
 import com.weatherable.weatherable.Service.CustomUserDetailsService;
 import com.weatherable.weatherable.Service.JwtUtilsService;
+import com.weatherable.weatherable.utils.JwtAccessDeniedHandler;
+import com.weatherable.weatherable.utils.JwtAuthenticationEntryPoint;
 import com.weatherable.weatherable.utils.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,10 @@ public class AuthenticationResource {
 
     private final JwtRequestFilter jwtRequestFilter;
 
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
     @Bean
     SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
 
@@ -42,12 +48,15 @@ public class AuthenticationResource {
         // HTTP 세션에 사용할 정책을 STATELESS로 설정하기 (REST API에서 설정해야 함.)
         // 스프링 부트 기본 옵션에서는 세션을 이용해서 로그인 로그아웃을 설정함.
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.httpBasic(AbstractHttpConfigurer::disable);
         http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()));
         // csrf 사용 해제
         http.csrf(AbstractHttpConfigurer::disable);
         http.headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
-
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.exceptionHandling((exceptionConfig) ->
+                exceptionConfig.accessDeniedHandler(jwtAccessDeniedHandler).authenticationEntryPoint(jwtAuthenticationEntryPoint)
+        );
         return http.build();
     }
 

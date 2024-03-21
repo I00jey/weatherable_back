@@ -78,7 +78,7 @@ public class JwtUtilsService {
         var claims = Jwts.builder()
                 .setIssuer("access")
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plusSeconds(60 * 60 * 24 * 14)))
+                .setExpiration(Date.from(Instant.now().plusSeconds(60*60*24*14)))
                 .setSubject(userid)
                 .claim("scope", "ROLE_USER") // authority
                 .signWith(key)
