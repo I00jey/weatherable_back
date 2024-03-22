@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,5 +34,20 @@ public class ClothInfoController {
                     HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/cloth/{id}")
+    public ResponseEntity<DefaultRes<ClothInfoDTO>> getSingleClothInfoById(@PathVariable String id) {
+        try {
+            ClothInfoDTO result = clothInfoService.getClothInfoById(id);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "ClothInfo Get 완료", result),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }
