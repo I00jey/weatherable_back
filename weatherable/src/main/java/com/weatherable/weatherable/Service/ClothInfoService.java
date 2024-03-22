@@ -11,25 +11,31 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 
 @Service
 public class ClothInfoService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClothInfoService.class);
 
     @Autowired
     ClothInfoRepository clothInfoRepository;
 
     public List<ClothInfoDTO> getAllClothInfoList() throws Exception {
-        List<ClothInfoEntity> clothInfoEntityList = clothInfoRepository.findAll();
-        if (clothInfoEntityList.isEmpty()) {
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<ClothInfoEntity> page = clothInfoRepository.findAll(pageRequest);
+
+        //List<ClothInfoEntity> clothInfoEntityList = clothInfoRepository.findAll();
+        if (page.isEmpty()) {
             throw new Exception("옷 정보가 없습니다.");
         }
         List<ClothInfoDTO> result = new ArrayList<>();
-        for (ClothInfoEntity clothInfoEntity : clothInfoEntityList) {
+        for (ClothInfoEntity clothInfoEntity : page) {
             ClothInfoDTO clothInfoDTO = ClothInfoDTO.builder()
                     .id(clothInfoEntity.getId())
                     .majorCategory(clothInfoEntity.getMajor_category())
@@ -43,6 +49,7 @@ public class ClothInfoService {
                     .build();
             result.add(clothInfoDTO);
         }
+
         return result;
     }
 
