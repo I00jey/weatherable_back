@@ -7,6 +7,7 @@ import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Repository.CodiRepository;
 import com.weatherable.weatherable.Repository.CommentRepository;
 import com.weatherable.weatherable.Repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class CommentService {
     @Autowired
     UserRepository userRepository;
 
-
+    @Transactional
     public String deleteComment(Long id) {
         commentRepository.deleteComment(id);
         return "삭제 완료";
@@ -70,7 +71,7 @@ public class CommentService {
         }
         return commentDTOList;
     }
-
+    @Transactional
     public void insertComment(CommentDTO commentDTO) throws Exception {
 
         Optional<CodiEntity> codiEntityOptional = codiRepository.getByIdAndActiveAndShowing(commentDTO.getCodi_Id(), true, true);
@@ -90,7 +91,7 @@ public class CommentService {
 
         commentRepository.save(commentEntity);
     }
-
+    @Transactional
     public void updateComment(CommentDTO commentDTO) throws Exception {
         Optional<CodiEntity> codiEntityOptional = codiRepository.getByIdAndActiveAndShowing(commentDTO.getCodi_Id(), true, true);
         Optional<UserEntity> userEntityOptional = userRepository.findByUseridAndActive(commentDTO.getUserid(), true);

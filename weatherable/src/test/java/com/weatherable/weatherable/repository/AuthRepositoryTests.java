@@ -1,9 +1,10 @@
 package com.weatherable.weatherable.repository;
 
 import com.weatherable.weatherable.Entity.AuthEntity;
+import com.weatherable.weatherable.Entity.ClosetEntity;
 import com.weatherable.weatherable.Repository.AuthRepository;
+import com.weatherable.weatherable.Repository.ClosetRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -15,11 +16,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class WeatherableRepositoryTests {
+public class AuthRepositoryTests {
 
 
     @Autowired
     AuthRepository authRepository;
+
+    @Autowired
+    ClosetRepository closetRepository;
 
 
 
@@ -44,5 +48,7 @@ public class WeatherableRepositoryTests {
         Optional<AuthEntity> authEntity = authRepository.findByUserEntityId(999L);
         assertTrue(authEntity.isEmpty());
     }
+
+
 
 }
