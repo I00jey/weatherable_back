@@ -77,7 +77,7 @@ public class UserService {
 
     @Value("${cloud.aws.default.imgPath}")
     private String defaultImgPath;
-
+    @Transactional
     public String insertUser(UserDTO userDTO) throws Exception {
         if (!checkIdValidation(userDTO)) {
             throw new RuntimeException("이미 존재하는 사용자입니다.");

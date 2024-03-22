@@ -7,6 +7,7 @@ import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Repository.CodiLikeRepository;
 import com.weatherable.weatherable.Repository.CodiRepository;
 import com.weatherable.weatherable.Repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class CodiLikeService {
         return codiLikeRepository.countByCodiIndexId(codiIndex);
     }
 
-
+    @Transactional
     public void likeToggle(CodiLikeDTO codiLikeDTO) throws Exception {
         Long codi_id = codiLikeDTO.getCodi_id();
         Long user_id = codiLikeDTO.getUser_id();

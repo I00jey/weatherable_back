@@ -5,6 +5,7 @@ import com.weatherable.weatherable.Entity.ClosetEntity;
 import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Repository.ClosetRepository;
 import com.weatherable.weatherable.Repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -100,7 +101,7 @@ public class ClosetService {
 
         return result;
     }
-
+    @Transactional
     public String insertCloth(ClosetDTO closetDTO) throws Exception {
         var userEntityOptional = userRepository.findByUseridAndActive(closetDTO.getUserid(), true);
         if (userEntityOptional.isEmpty()) {
@@ -130,6 +131,7 @@ public class ClosetService {
         return result.getProductName() + "등록완료";
     }
 
+    @Transactional
     public String updateCloth(ClosetDTO closetDTO) throws Exception {
         var userEntityOptional = userRepository.findByUseridAndActive(closetDTO.getUserid(), true);
         if (userEntityOptional.isEmpty()) {
@@ -160,15 +162,15 @@ public class ClosetService {
         return result.getProductName() + "등록완료";
     }
 
-
+@Transactional
     public void deleteCloth(Long id) {
         closetRepository.deleteCloset(id);
     }
-
+    @Transactional
     public void likeCloth(Long id) {
         closetRepository.likeCloset(id);
     }
-
+    @Transactional
     public void unlikeCloth(Long id) {
         closetRepository.unlikeCloset(id);
     }

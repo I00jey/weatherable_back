@@ -10,6 +10,7 @@ import com.weatherable.weatherable.Repository.ClosetRepository;
 import com.weatherable.weatherable.Repository.CodiLikeRepository;
 import com.weatherable.weatherable.Repository.CodiRepository;
 import com.weatherable.weatherable.Repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +34,12 @@ public class CodiService {
     @Autowired
     CodiLikeRepository codiLikeRepository;
 
-
+    @Transactional
     public void deleteCodi(Long id) {
         codiRepository.deleteCodi(id);
     }
 
-
+    @Transactional
     public void createCodi(CodiDTO codiDTO) throws AccountNotFoundException {
         Optional<UserEntity> userEntityOptional = userRepository.findByUseridAndActive(codiDTO.getUserid(), true);
         if (userEntityOptional.isEmpty()) {
@@ -58,7 +59,7 @@ public class CodiService {
         codiRepository.save(codiEntity);
     }
 
-
+    @Transactional
     public void updateCodi(CodiDTO codiDTO) throws AccountNotFoundException {
         Optional<UserEntity> userEntityOptional = userRepository.findByUseridAndActive(codiDTO.getUserid(), true);
         if (userEntityOptional.isEmpty()) {
