@@ -174,7 +174,7 @@ public class ClosetService {
     }
 
 
-    public ClosetDTO retrieveClothById(Long id) throws ChangeSetPersister.NotFoundException {
+    public ClosetDTO retrieveClosetClothById(Long id) throws ChangeSetPersister.NotFoundException {
         if (closetRepository.getByIdAndActive(id, true).isEmpty()) {
             throw new ChangeSetPersister.NotFoundException();
         }

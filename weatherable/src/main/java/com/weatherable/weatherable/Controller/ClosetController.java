@@ -78,7 +78,7 @@ public class ClosetController {
     @GetMapping("/{id}")
     public ResponseEntity<DefaultRes<ClosetDTO>> getSingleClosetById(@PathVariable Long id) {
         try {
-            ClosetDTO closetDTO = closetService.retrieveClothById(id);
+            ClosetDTO closetDTO = closetService.retrieveClosetClothById(id);
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.OK, "Cloth fetch 완료", closetDTO),
                     HttpStatus.OK);
