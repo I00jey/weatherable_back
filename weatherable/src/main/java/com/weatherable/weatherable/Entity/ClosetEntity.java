@@ -1,6 +1,5 @@
 package com.weatherable.weatherable.Entity;
 
-import com.weatherable.weatherable.Model.ClothInfoEntity;
 import com.weatherable.weatherable.enums.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,8 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Table(name = "closet")
 @NoArgsConstructor

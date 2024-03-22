@@ -83,7 +83,7 @@ public class CodiController {
     }
 
     @PostMapping("")
-    public ResponseEntity<DefaultRes<String>> insertCodi(CodiDTO codiDTO, @RequestHeader("Authorization") String accessToken) {
+    public ResponseEntity<DefaultRes<String>> insertCodi(@RequestBody CodiDTO codiDTO, @RequestHeader("Authorization") String accessToken) {
         try {
             String userid = jwtUtilsService.retrieveUserid(accessToken);
             codiDTO.setUserid(userid);
