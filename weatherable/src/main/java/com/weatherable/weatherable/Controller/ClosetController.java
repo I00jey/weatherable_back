@@ -75,7 +75,7 @@ public class ClosetController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/cloth/{id}")
     public ResponseEntity<DefaultRes<ClosetDTO>> getSingleClosetById(@PathVariable Long id) {
         try {
             ClosetDTO closetDTO = closetService.retrieveClosetClothById(id);

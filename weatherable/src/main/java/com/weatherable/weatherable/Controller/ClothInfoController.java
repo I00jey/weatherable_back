@@ -38,9 +38,9 @@ public class ClothInfoController {
     @GetMapping("/cloth/{id}")
     public ResponseEntity<DefaultRes<ClothInfoDTO>> getSingleClothInfoById(@PathVariable String id) {
         try {
-            ClothInfoDTO result = clothInfoService.getClothInfoById(id);
+            ClothInfoDTO clothInfoDTO = clothInfoService.getClothInfoById(id);
             return new ResponseEntity<>(
-                    DefaultRes.res(StatusCode.OK, "ClothInfo Get 완료", result),
+                    DefaultRes.res(StatusCode.OK, "ClothInfo Get 완료", clothInfoDTO),
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(
