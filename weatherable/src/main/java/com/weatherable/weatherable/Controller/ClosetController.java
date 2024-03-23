@@ -128,7 +128,7 @@ public class ClosetController {
     }
 
 
-    @DeleteMapping("")
+    @DeleteMapping("/{id}")
     public ResponseEntity<DefaultRes<String>> deleteSingleClosetById(@PathVariable Long id) {
         try {
         closetService.deleteCloth(id);
