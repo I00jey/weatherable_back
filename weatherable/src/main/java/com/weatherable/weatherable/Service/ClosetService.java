@@ -108,7 +108,7 @@ public class ClosetService {
     public List<ClosetDTO> retrieveAllClosetDTOByUserIndexAndMajorCategory(Long user_id, MajorCategory major) throws Exception {
         var closetEntityList = closetRepository.findByUserClosetIdAndMajorCategoryAndActive(user_id, major, true);
         if(closetEntityList.isEmpty()) {
-            throw new Exception("불러올 옷이 없습니다.");
+            return new ArrayList<>();
         }
         List<ClosetDTO> result = new ArrayList<>();
         for (ClosetEntity closetEntity : closetEntityList) {
@@ -140,7 +140,7 @@ public class ClosetService {
     public List<ClosetDTO> retrieveAllClosetDTOByUserIndexAndMiddleCategory(Long user_id, MiddleCategory middle) throws Exception {
         var closetEntityList = closetRepository.findByUserClosetIdAndMiddleCategoryAndActive(user_id, middle, true);
         if(closetEntityList.isEmpty()) {
-            throw new Exception("불러올 옷이 없습니다.");
+            return new ArrayList<>();
         }
         List<ClosetDTO> result = new ArrayList<>();
         for (ClosetEntity closetEntity : closetEntityList) {
