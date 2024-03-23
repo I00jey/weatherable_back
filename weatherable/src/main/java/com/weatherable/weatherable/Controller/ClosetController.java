@@ -6,6 +6,8 @@ import com.weatherable.weatherable.Service.JwtUtilsService;
 import com.weatherable.weatherable.Service.S3Upload;
 import com.weatherable.weatherable.Service.UserService;
 import com.weatherable.weatherable.enums.DefaultRes;
+import com.weatherable.weatherable.enums.MajorCategory;
+import com.weatherable.weatherable.enums.MiddleCategory;
 import com.weatherable.weatherable.enums.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -136,6 +138,38 @@ public class ClosetController {
                 DefaultRes.res(StatusCode.OK, "삭제 완료"),
                 HttpStatus.OK);
 
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/cloth/major/{major}")
+    public ResponseEntity<DefaultRes<List<ClosetDTO>>> retrieveByMajorCategory(@PathVariable MajorCategory major, @RequestHeader("Authorization") String accessToken) {
+        try {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            Long userIndex = userService.retrieveUserIndexByUserid(userid);
+            var closetDTOList = closetService.retrieveAllClosetDTOByUserIndexAndMajorCategory(userIndex, major);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "Cloth fetch 완료", closetDTOList),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/cloth/middle/{middle}")
+    public ResponseEntity<DefaultRes<List<ClosetDTO>>> retrieveByMiddleCategory(@PathVariable MiddleCategory middle, @RequestHeader("Authorization") String accessToken) {
+        try {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            Long userIndex = userService.retrieveUserIndexByUserid(userid);
+            var closetDTOList = closetService.retrieveAllClosetDTOByUserIndexAndMiddleCategory(userIndex, middle);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "Cloth fetch 완료", closetDTOList),
+                    HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),

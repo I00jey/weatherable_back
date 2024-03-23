@@ -1,6 +1,8 @@
 package com.weatherable.weatherable.Repository;
 
 import com.weatherable.weatherable.Entity.ClosetEntity;
+import com.weatherable.weatherable.enums.MajorCategory;
+import com.weatherable.weatherable.enums.MiddleCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +33,9 @@ public interface ClosetRepository extends JpaRepository<ClosetEntity, Long> {
     Optional<ClosetEntity> getByIdAndActive(Long id, boolean active);
 
     List<ClosetEntity> findByProductNameAndUserClosetIdAndActive(String productName, Long id,boolean active);
+
+    List<ClosetEntity> findByUserClosetIdAndMajorCategoryAndActive(Long id, MajorCategory major, boolean active);
+
+    List<ClosetEntity> findByUserClosetIdAndMiddleCategoryAndActive(Long id, MiddleCategory middle, boolean active);
+
 }
