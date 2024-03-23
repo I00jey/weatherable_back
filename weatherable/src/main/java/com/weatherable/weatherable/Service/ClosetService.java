@@ -236,7 +236,7 @@ public class ClosetService {
     }
 
     public List<ClosetDTO> processGPTResponse(String response, Long user_id) {
-        List<String> responseList = Arrays.stream(response.split(":\\s|\\n")).toList();
+        List<String> responseList = Arrays.stream(response.split(":|\\n")).toList();
         List<ClosetDTO> closetDTOList = new ArrayList<>();
         for ( int i = 1; i < responseList.size(); i+= 2) {
             closetDTOList.add(retrieveClosetClothByProductName(responseList.get(i).trim(), user_id));
