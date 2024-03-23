@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -202,6 +203,45 @@ public class ClosetService {
                 .nickname(closetEntity.getUserCloset().getNickname())
                 .build();
         return closetDTO;
+    }
+
+    public ClosetDTO retrieveClosetClothByProductName(String productName, Long user_id) {
+        var closetEntityList = closetRepository.findByProductNameAndUserClosetIdAndActive(productName, user_id, true);
+        if(closetEntityList.isEmpty()) {
+            return ClosetDTO.builder()
+                    .productName("없음")
+                    .build();
+        }
+        var closetEntity = closetEntityList.get(0);
+        ClosetDTO closetDTO = ClosetDTO.builder()
+                .id(closetEntity.getId())
+                .user_id(closetEntity.getUserCloset().getId())
+                .size(closetEntity.getSize())
+                .style(closetEntity.getStyle())
+                .middleCategory(closetEntity.getMiddleCategory())
+                .price(closetEntity.getPrice())
+                .season(closetEntity.getSeason())
+                .imagePath(closetEntity.getImagePath())
+                .brand(closetEntity.getBrand())
+                .liked(closetEntity.isLiked())
+                .createdAt(closetEntity.getCreatedAt())
+                .color(closetEntity.getColor())
+                .majorCategory(closetEntity.getMajorCategory())
+                .productName(closetEntity.getProductName())
+                .thickness(closetEntity.getThickness())
+                .userid(closetEntity.getUserCloset().getUserid())
+                .nickname(closetEntity.getUserCloset().getNickname())
+                .build();
+        return closetDTO;
+    }
+
+    public List<ClosetDTO> processGPTResponse(String response, Long user_id) {
+        List<String> responseList = Arrays.stream(response.split(":\\s|\\n")).toList();
+        List<ClosetDTO> closetDTOList = new ArrayList<>();
+        for ( int i = 1; i < responseList.size(); i+= 2) {
+            closetDTOList.add(retrieveClosetClothByProductName(responseList.get(i).trim(), user_id));
+        }
+        return closetDTOList;
     }
 
 }

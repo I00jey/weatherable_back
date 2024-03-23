@@ -89,4 +89,12 @@ public class ClosetRepositoryTests {
         assertEquals(closetEntityList.get().get(lastIndex).getId(), 4);
 
     }
+
+    @Test
+    void getClosetEntityByProductName() {
+        var closetEntityList = closetRepository.findByProductNameAndUserClosetIdAndActive("울 꽈배기 니트", 1L, true);
+        System.out.println(closetEntityList.get(0));
+        System.out.println(closetEntityList.size());
+        assertEquals(closetEntityList.get(0).getId(), 3);
+    }
 }

@@ -4,6 +4,7 @@ import com.weatherable.weatherable.DTO.ClosetDTO;
 import com.weatherable.weatherable.Service.ClosetService;
 import com.weatherable.weatherable.Service.JwtUtilsService;
 import com.weatherable.weatherable.Service.S3Upload;
+import com.weatherable.weatherable.Service.UserService;
 import com.weatherable.weatherable.enums.DefaultRes;
 import com.weatherable.weatherable.enums.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class ClosetController {
 
     @Autowired
     JwtUtilsService jwtUtilsService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     S3Upload s3Upload;
@@ -139,4 +143,6 @@ public class ClosetController {
                     HttpStatus.BAD_REQUEST);
         }
     }
+
+
 }
