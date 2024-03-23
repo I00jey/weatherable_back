@@ -9,6 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.util.List;
 
 @Document(collection = "clothes")
@@ -29,7 +31,8 @@ public class ClothInfoEntity {
 
     private List<String> season;
 
-    private String product_name;
+    @Field("product_name")
+    private String productName;
 
     private String brand;
 
