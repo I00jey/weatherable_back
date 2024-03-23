@@ -55,6 +55,7 @@ public class CodiService {
                 .shoesIndex(codiDTO.getShoesIndex())
                 .accessoryIndex(codiDTO.getAccessoryIndex())
                 .capIndex(codiDTO.getCapIndex())
+                .codiDate(codiDTO.getCodiDate())
                 .build();
         codiRepository.save(codiEntity);
     }
