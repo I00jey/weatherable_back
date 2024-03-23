@@ -20,5 +20,5 @@ public class CodiDTO {
     private Long shoesIndex;
     private Long accessoryIndex;
     private Long capIndex;
-    private Timestamp createdAt;
+    private Timestamp codiDate;
 }

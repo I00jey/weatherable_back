@@ -68,6 +68,7 @@ public class GptController {
     public List<ClosetDTO> processGPTResponse(@RequestParam String response, @RequestHeader("Authorization") String accessToken) throws Exception {
         String userid = jwtUtilsService.retrieveUserid(accessToken);
         Long userIndex = userService.retrieveUserIndexByUserid(userid);
+        System.out.println(closetService.processGPTResponse(response, userIndex));
         return closetService.processGPTResponse(response, userIndex);
     }
 }

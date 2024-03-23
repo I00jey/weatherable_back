@@ -41,8 +41,8 @@ public class CodiEntity {
 
 
     @CreationTimestamp
-    @Column(nullable = false, name = "created_at")
-    private Timestamp createdAt;
+    @Column(nullable = false, name = "codi_date")
+    private Timestamp codiDate;
 
     @OneToMany(mappedBy = "codiComment", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
