@@ -5,6 +5,8 @@ import com.weatherable.weatherable.Entity.ClosetEntity;
 import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Repository.ClosetRepository;
 import com.weatherable.weatherable.Repository.UserRepository;
+import com.weatherable.weatherable.enums.MajorCategory;
+import com.weatherable.weatherable.enums.MiddleCategory;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -77,6 +79,70 @@ public class ClosetService {
         }
 
         List<ClosetEntity> closetEntityList = closetEntitiesOptional.get();
+        for (ClosetEntity closetEntity : closetEntityList) {
+            ClosetDTO closetDTO = ClosetDTO.builder()
+                    .id(closetEntity.getId())
+                    .productName(closetEntity.getProductName())
+                    .user_id(closetEntity.getUserCloset().getId())
+                    .userid(closetEntity.getUserCloset().getUserid())
+                    .nickname(closetEntity.getUserCloset().getNickname())
+                    .majorCategory(closetEntity.getMajorCategory())
+                    .middleCategory(closetEntity.getMiddleCategory())
+                    .price(closetEntity.getPrice())
+                    .liked(false)
+                    .brand(closetEntity.getBrand())
+                    .color(closetEntity.getColor())
+                    .style(closetEntity.getStyle())
+                    .size(closetEntity.getSize())
+                    .season(closetEntity.getSeason())
+                    .imagePath(closetEntity.getImagePath())
+                    .thickness(closetEntity.getThickness())
+                    .createdAt(closetEntity.getCreatedAt())
+                    .build();
+            result.add(closetDTO);
+        }
+
+        return result;
+    }
+
+    public List<ClosetDTO> retrieveAllClosetDTOByUserIndexAndMajorCategory(Long user_id, MajorCategory major) throws Exception {
+        var closetEntityList = closetRepository.findByUserClosetIdAndMajorCategoryAndActive(user_id, major, true);
+        if(closetEntityList.isEmpty()) {
+            throw new Exception("불러올 옷이 없습니다.");
+        }
+        List<ClosetDTO> result = new ArrayList<>();
+        for (ClosetEntity closetEntity : closetEntityList) {
+            ClosetDTO closetDTO = ClosetDTO.builder()
+                    .id(closetEntity.getId())
+                    .productName(closetEntity.getProductName())
+                    .user_id(closetEntity.getUserCloset().getId())
+                    .userid(closetEntity.getUserCloset().getUserid())
+                    .nickname(closetEntity.getUserCloset().getNickname())
+                    .majorCategory(closetEntity.getMajorCategory())
+                    .middleCategory(closetEntity.getMiddleCategory())
+                    .price(closetEntity.getPrice())
+                    .liked(false)
+                    .brand(closetEntity.getBrand())
+                    .color(closetEntity.getColor())
+                    .style(closetEntity.getStyle())
+                    .size(closetEntity.getSize())
+                    .season(closetEntity.getSeason())
+                    .imagePath(closetEntity.getImagePath())
+                    .thickness(closetEntity.getThickness())
+                    .createdAt(closetEntity.getCreatedAt())
+                    .build();
+            result.add(closetDTO);
+        }
+
+        return result;
+    }
+
+    public List<ClosetDTO> retrieveAllClosetDTOByUserIndexAndMiddleCategory(Long user_id, MiddleCategory middle) throws Exception {
+        var closetEntityList = closetRepository.findByUserClosetIdAndMiddleCategoryAndActive(user_id, middle, true);
+        if(closetEntityList.isEmpty()) {
+            throw new Exception("불러올 옷이 없습니다.");
+        }
+        List<ClosetDTO> result = new ArrayList<>();
         for (ClosetEntity closetEntity : closetEntityList) {
             ClosetDTO closetDTO = ClosetDTO.builder()
                     .id(closetEntity.getId())

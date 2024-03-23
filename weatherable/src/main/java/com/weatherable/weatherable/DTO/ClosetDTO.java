@@ -29,7 +29,7 @@ public class ClosetDTO {
 
     private boolean liked;
 
-    private Size size;
+    private String size;
 
     private Thickness thickness;
 

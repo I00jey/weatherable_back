@@ -16,7 +16,7 @@ public class ClothInfo {
 
     private Color color;
 
-    private Size size;
+    private String size;
 
     private Thickness thickness;
 

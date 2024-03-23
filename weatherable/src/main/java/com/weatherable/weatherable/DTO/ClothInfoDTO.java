@@ -14,7 +14,7 @@ public class ClothInfoDTO {
     private MajorCategory majorCategory;
     private MiddleCategory middleCategory;
     private long price;
-    private Size size;
+    private String size;
     private List<String> season;
     private Thickness thickness;
     private String productName;
