@@ -54,10 +54,9 @@ public class ClothInfoController {
     @GetMapping("/search")
     public ResponseEntity<DefaultRes<List<ClothInfoDTO>>> getSearchDataFromClothInfo(@RequestParam String keyWord){
         try {
-            List<ClothInfoDTO> resultByProductName = clothInfoService.findByProductName(keyWord);
-            List<ClothInfoDTO> resultByBrand = clothInfoService.findByBrand(keyWord);
+            List<ClothInfoDTO> resultByProductName = clothInfoService.findByProductNameFromClothInfo(keyWord);
+            List<ClothInfoDTO> resultByBrand = clothInfoService.findByBrandFromClothInfo(keyWord);
             List<ClothInfoDTO> result = Stream.concat(resultByBrand.stream(), resultByProductName.stream()).collect(Collectors.toList());
-
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.OK, "ClothInfo search 완료", result),
                     HttpStatus.OK);

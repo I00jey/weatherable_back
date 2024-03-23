@@ -75,13 +75,14 @@ public class ClothInfoService {
         return result;
     }
 
-    public List<ClothInfoDTO> findByProductName(String keyWord) throws Exception {
-
+    public List<ClothInfoDTO> findByProductNameFromClothInfo(String keyWord) throws Exception {
+        List<ClothInfoDTO> result = new ArrayList<>();
         List<ClothInfoEntity> clothInfoEntityList = clothInfoRepository.findByProductNameContainingIgnoreCase(keyWord);
         if (clothInfoEntityList.isEmpty()) {
-            throw new Exception("검색 결과가 없습니다.");
+            return result;
+//            throw new Exception("검색 결과가 없습니다.");
         }
-        List<ClothInfoDTO> result = new ArrayList<>();
+
         for (ClothInfoEntity clothInfoEntity : clothInfoEntityList) {
             ClothInfoDTO clothInfoDTO = ClothInfoDTO.builder()
                     .id(clothInfoEntity.getId())
@@ -98,13 +99,14 @@ public class ClothInfoService {
         }
 
         return result;
-    } public List<ClothInfoDTO> findByBrand(String keyWord) throws Exception {
+    } public List<ClothInfoDTO> findByBrandFromClothInfo(String keyWord) throws Exception {
 
         List<ClothInfoEntity> clothInfoEntityList = clothInfoRepository.findByBrandContainingIgnoreCase(keyWord);
-        if (clothInfoEntityList.isEmpty()) {
-            throw new Exception("검색 결과가 없습니다.");
-        }
         List<ClothInfoDTO> result = new ArrayList<>();
+        if (clothInfoEntityList.isEmpty()) {
+            return result;
+//            throw new Exception("검색 결과가 없습니다.");
+        }
         for (ClothInfoEntity clothInfoEntity : clothInfoEntityList) {
             ClothInfoDTO clothInfoDTO = ClothInfoDTO.builder()
                     .id(clothInfoEntity.getId())
