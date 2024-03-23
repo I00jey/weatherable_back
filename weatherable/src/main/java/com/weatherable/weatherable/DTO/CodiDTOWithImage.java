@@ -21,6 +21,6 @@ public class CodiDTOWithImage {
     private ClosetDTO cap;
     private Long numberOfLikes;
     private boolean doILike;
-    private Timestamp createdAt;
+    private Timestamp codiDate;
 
 }

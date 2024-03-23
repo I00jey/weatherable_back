@@ -76,13 +76,13 @@ public class CodiService {
                 .active(true)
                 .accessoryIndex(codiDTO.getAccessoryIndex())
                 .capIndex(codiDTO.getCapIndex())
-                .createdAt(codiDTO.getCreatedAt())
+                .codiDate(codiDTO.getCodiDate())
                 .build();
         codiRepository.save(codiEntity);
     }
 
     public List<CodiDTOWithImage> retrieveAllCodi(Long user_id) throws Exception {
-        Optional<List<CodiEntity>> codiEntityOptional = codiRepository.findByActiveAndShowingOrderByCreatedAtDesc(true, true);
+        Optional<List<CodiEntity>> codiEntityOptional = codiRepository.findByActiveAndShowingOrderByCodiDateDesc(true, true);
         if (codiEntityOptional.isEmpty()) {
             throw new Exception("불러올 코디가 없습니다.");
         }
@@ -100,7 +100,7 @@ public class CodiService {
 
             var codiDTO = CodiDTOWithImage.builder()
                     .id(codiEntity.getId())
-                    .createdAt(codiEntity.getCreatedAt())
+                    .codiDate(codiEntity.getCodiDate())
                     .userid(codiEntity.getUserCodi().getUserid())
                     .nickname(codiEntity.getUserCodi().getNickname())
                     .codiName(codiEntity.getCodiName())
@@ -141,7 +141,7 @@ public class CodiService {
 
     public List<CodiDTOWithImage> retrieveSomeOnesCodi(Long user_id, Long userIndex) throws Exception {
         Optional<List<CodiEntity>> codiEntityOptional =
-                codiRepository.findByUserCodiIdAndActiveAndShowingOrderByCreatedAtDesc(user_id, true, true);
+                codiRepository.findByUserCodiIdAndActiveAndShowingOrderByCodiDateDesc(user_id, true, true);
         if (codiEntityOptional.isEmpty()) {
             throw new Exception("불러올 코디가 없습니다.");
         }
@@ -158,7 +158,7 @@ public class CodiService {
             boolean doILike = codiLikeRepository.existsByCodiIndexIdAndUserIndexId(codiEntity.getId(), userIndex);
             var codiDTO = CodiDTOWithImage.builder()
                     .id(codiEntity.getId())
-                    .createdAt(codiEntity.getCreatedAt())
+                    .codiDate(codiEntity.getCodiDate())
                     .userid(codiEntity.getUserCodi().getUserid())
                     .nickname(codiEntity.getUserCodi().getNickname())
                     .user_id(codiEntity.getUserCodi().getId())
@@ -179,7 +179,7 @@ public class CodiService {
 
     public List<CodiDTOWithImage> retrieveMyCodi(Long userIndex) throws Exception {
         Optional<List<CodiEntity>> codiEntityOptional =
-                codiRepository.findByUserCodiIdAndActiveOrderByCreatedAtDesc(userIndex, true);
+                codiRepository.findByUserCodiIdAndActiveOrderByCodiDateDesc(userIndex, true);
         if (codiEntityOptional.isEmpty()) {
             throw new Exception("불러올 코디가 없습니다.");
         }
@@ -196,7 +196,7 @@ public class CodiService {
             boolean doILike = codiLikeRepository.existsByCodiIndexIdAndUserIndexId(codiEntity.getId(), userIndex);
             var codiDTO = CodiDTOWithImage.builder()
                     .id(codiEntity.getId())
-                    .createdAt(codiEntity.getCreatedAt())
+                    .codiDate(codiEntity.getCodiDate())
                     .userid(codiEntity.getUserCodi().getUserid())
                     .nickname(codiEntity.getUserCodi().getNickname())
                     .codiName(codiEntity.getCodiName())
@@ -232,7 +232,7 @@ public class CodiService {
         boolean doILike = codiLikeRepository.existsByCodiIndexIdAndUserIndexId(codiEntity.getId(), user_id);
         CodiDTOWithImage codiDTO = CodiDTOWithImage.builder()
                 .id(codiEntity.getId())
-                .createdAt(codiEntity.getCreatedAt())
+                .codiDate(codiEntity.getCodiDate())
                 .userid(codiEntity.getUserCodi().getUserid())
                 .nickname(codiEntity.getUserCodi().getNickname())
                 .user_id(codiEntity.getUserCodi().getId())

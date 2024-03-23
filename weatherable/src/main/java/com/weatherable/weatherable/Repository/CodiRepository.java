@@ -25,10 +25,10 @@ public interface CodiRepository extends JpaRepository<CodiEntity, Long> {
     @Query(value = "update codi set showing = false where id = :id", nativeQuery = true)
     void hideCodi(Long id);
 
-    Optional<List<CodiEntity>> findByUserCodiIdAndActiveOrderByCreatedAtDesc(Long id, boolean access);
-    Optional<List<CodiEntity>> findByUserCodiIdAndActiveAndShowingOrderByCreatedAtDesc(Long id, boolean access, boolean show);
+    Optional<List<CodiEntity>> findByUserCodiIdAndActiveOrderByCodiDateDesc(Long id, boolean access);
+    Optional<List<CodiEntity>> findByUserCodiIdAndActiveAndShowingOrderByCodiDateDesc(Long id, boolean access, boolean show);
 
-    Optional<List<CodiEntity>> findByActiveAndShowingOrderByCreatedAtDesc(boolean access, boolean showing);
+    Optional<List<CodiEntity>> findByActiveAndShowingOrderByCodiDateDesc(boolean access, boolean showing);
 
     Optional<CodiEntity> getByIdAndActive(Long id, boolean access);
 
