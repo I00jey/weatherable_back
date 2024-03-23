@@ -44,7 +44,7 @@ public class ClothInfoService {
                     .thickness(clothInfoEntity.getThickness())
                     .brand(clothInfoEntity.getBrand())
                     .image_path(clothInfoEntity.getBig_img())
-                    .productName(clothInfoEntity.getProduct_name())
+                    .productName(clothInfoEntity.getProductName())
                     .season(clothInfoEntity.getSeason())
                     .build();
             result.add(clothInfoDTO);
@@ -68,11 +68,60 @@ public class ClothInfoService {
                 .thickness(clothInfoEntity.getThickness())
                 .brand(clothInfoEntity.getBrand())
                 .image_path(clothInfoEntity.getBig_img())
-                .productName(clothInfoEntity.getProduct_name())
+                .productName(clothInfoEntity.getProductName())
                 .season(clothInfoEntity.getSeason())
                 .build();
 
         return result;
     }
+
+    public List<ClothInfoDTO> findByProductName(String keyWord) throws Exception {
+
+        List<ClothInfoEntity> clothInfoEntityList = clothInfoRepository.findByProductNameContainingIgnoreCase(keyWord);
+        if (clothInfoEntityList.isEmpty()) {
+            throw new Exception("검색 결과가 없습니다.");
+        }
+        List<ClothInfoDTO> result = new ArrayList<>();
+        for (ClothInfoEntity clothInfoEntity : clothInfoEntityList) {
+            ClothInfoDTO clothInfoDTO = ClothInfoDTO.builder()
+                    .id(clothInfoEntity.getId())
+                    .majorCategory(clothInfoEntity.getMajor_category())
+                    .middleCategory(clothInfoEntity.getMiddle_category())
+                    .price(clothInfoEntity.getPrice())
+                    .thickness(clothInfoEntity.getThickness())
+                    .brand(clothInfoEntity.getBrand())
+                    .image_path(clothInfoEntity.getBig_img())
+                    .productName(clothInfoEntity.getProductName())
+                    .season(clothInfoEntity.getSeason())
+                    .build();
+            result.add(clothInfoDTO);
+        }
+
+        return result;
+    } public List<ClothInfoDTO> findByBrand(String keyWord) throws Exception {
+
+        List<ClothInfoEntity> clothInfoEntityList = clothInfoRepository.findByBrandContainingIgnoreCase(keyWord);
+        if (clothInfoEntityList.isEmpty()) {
+            throw new Exception("검색 결과가 없습니다.");
+        }
+        List<ClothInfoDTO> result = new ArrayList<>();
+        for (ClothInfoEntity clothInfoEntity : clothInfoEntityList) {
+            ClothInfoDTO clothInfoDTO = ClothInfoDTO.builder()
+                    .id(clothInfoEntity.getId())
+                    .majorCategory(clothInfoEntity.getMajor_category())
+                    .middleCategory(clothInfoEntity.getMiddle_category())
+                    .price(clothInfoEntity.getPrice())
+                    .thickness(clothInfoEntity.getThickness())
+                    .brand(clothInfoEntity.getBrand())
+                    .image_path(clothInfoEntity.getBig_img())
+                    .productName(clothInfoEntity.getProductName())
+                    .season(clothInfoEntity.getSeason())
+                    .build();
+            result.add(clothInfoDTO);
+        }
+
+        return result;
+    }
+
 
 }

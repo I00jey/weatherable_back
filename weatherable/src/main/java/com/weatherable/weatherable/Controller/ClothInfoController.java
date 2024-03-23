@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/clothinfo")
@@ -41,6 +43,23 @@ public class ClothInfoController {
             ClothInfoDTO clothInfoDTO = clothInfoService.getClothInfoById(id);
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.OK, "ClothInfo Get 완료", clothInfoDTO),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<DefaultRes<List<ClothInfoDTO>>> getSearchDataFromClothInfo(@RequestParam String keyWord){
+        try {
+            List<ClothInfoDTO> resultByProductName = clothInfoService.findByProductName(keyWord);
+            List<ClothInfoDTO> resultByBrand = clothInfoService.findByBrand(keyWord);
+            List<ClothInfoDTO> result = Stream.concat(resultByBrand.stream(), resultByProductName.stream()).collect(Collectors.toList());
+
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "ClothInfo search 완료", result),
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(

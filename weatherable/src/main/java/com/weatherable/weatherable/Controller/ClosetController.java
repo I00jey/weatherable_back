@@ -125,9 +125,8 @@ public class ClosetController {
 
 
     @DeleteMapping("")
-    public ResponseEntity<DefaultRes<String>> deleteSingleClosetById(@RequestBody ClosetDTO closetDTO) {
+    public ResponseEntity<DefaultRes<String>> deleteSingleClosetById(@PathVariable Long id) {
         try {
-        Long id = closetDTO.getId();
         closetService.deleteCloth(id);
         return new ResponseEntity<>(
                 DefaultRes.res(StatusCode.OK, "삭제 완료"),
