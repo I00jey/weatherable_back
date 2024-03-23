@@ -4,8 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Table(name = "codi")
@@ -39,10 +40,8 @@ public class CodiEntity {
     @Column(name = "codi_name", nullable = false, columnDefinition = "varchar(30)")
     private String codiName;
 
-
-    @CreationTimestamp
     @Column(nullable = false, name = "codi_date")
-    private Timestamp codiDate;
+    private LocalDateTime codiDate;
 
     @OneToMany(mappedBy = "codiComment", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

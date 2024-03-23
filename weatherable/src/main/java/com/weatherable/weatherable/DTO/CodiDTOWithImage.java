@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -21,6 +22,5 @@ public class CodiDTOWithImage {
     private ClosetDTO cap;
     private Long numberOfLikes;
     private boolean doILike;
-    private Timestamp codiDate;
-
+    private LocalDateTime codiDate;
 }

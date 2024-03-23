@@ -3,7 +3,7 @@ package com.weatherable.weatherable.DTO;
 import lombok.Builder;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -20,5 +20,5 @@ public class CodiDTO {
     private Long shoesIndex;
     private Long accessoryIndex;
     private Long capIndex;
-    private Timestamp codiDate;
+    private LocalDateTime codiDate;
 }
