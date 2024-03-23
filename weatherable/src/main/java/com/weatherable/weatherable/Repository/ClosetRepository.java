@@ -29,4 +29,6 @@ public interface ClosetRepository extends JpaRepository<ClosetEntity, Long> {
 
 
     Optional<ClosetEntity> getByIdAndActive(Long id, boolean active);
+
+    List<ClosetEntity> findByProductNameAndUserClosetIdAndActive(String productName, Long id,boolean active);
 }
