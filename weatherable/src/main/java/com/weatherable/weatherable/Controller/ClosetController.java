@@ -145,8 +145,8 @@ public class ClosetController {
         }
     }
 
-    @GetMapping("/major/{major}")
-    public ResponseEntity<DefaultRes<List<ClosetDTO>>> retrieveByMajorCategory(@PathVariable MajorCategory major, @RequestHeader("Authorization") String accessToken) {
+    @GetMapping("/major")
+    public ResponseEntity<DefaultRes<List<ClosetDTO>>> retrieveByMajorCategory(@RequestParam MajorCategory major, @RequestHeader("Authorization") String accessToken) {
         try {
             String userid = jwtUtilsService.retrieveUserid(accessToken);
             Long userIndex = userService.retrieveUserIndexByUserid(userid);
@@ -161,8 +161,8 @@ public class ClosetController {
         }
     }
 
-    @GetMapping("/middle/{middle}")
-    public ResponseEntity<DefaultRes<List<ClosetDTO>>> retrieveByMiddleCategory(@PathVariable MiddleCategory middle, @RequestHeader("Authorization") String accessToken) {
+    @GetMapping("/middle")
+    public ResponseEntity<DefaultRes<List<ClosetDTO>>> retrieveByMiddleCategory(@RequestParam MiddleCategory middle, @RequestHeader("Authorization") String accessToken) {
         try {
             String userid = jwtUtilsService.retrieveUserid(accessToken);
             Long userIndex = userService.retrieveUserIndexByUserid(userid);
