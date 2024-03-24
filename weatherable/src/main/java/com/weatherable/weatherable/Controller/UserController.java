@@ -94,16 +94,27 @@ public class UserController {
 
     @PatchMapping("/image")
     public ResponseEntity<DefaultRes<String>> updateUserImagePath(@RequestHeader("Authorization") String accessToken, @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
-        String imagePath;
         try {
             String userid = jwtUtilsService.retrieveUserid(accessToken);
             Long userIndex = userService.retrieveUserIndexByUserid(userid);
-            if (imageFile.isEmpty()) {
-                imagePath = defaultImgPath;
-            } else {
-                imagePath = s3Upload.saveImageFile(imageFile);
-            }
+            String imagePath = s3Upload.saveImageFile(imageFile);
             String result = userService.changeUserImagePath(imagePath, userIndex);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, result),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping("/image/initial")
+    public ResponseEntity<DefaultRes<String>> updateUserImagePathToDefault(@RequestHeader("Authorization") String accessToken) {
+        try {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            Long userIndex = userService.retrieveUserIndexByUserid(userid);
+            String result = userService.changeUserImagePath(defaultImgPath, userIndex);
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.OK, result),
                     HttpStatus.OK);
