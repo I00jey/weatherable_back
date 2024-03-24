@@ -83,6 +83,15 @@ public class UserService {
             throw new RuntimeException("이미 존재하는 사용자입니다.");
         }
 
+        boolean lengthVali = userDTO.getUserid().length() >= 4;
+        boolean passwordVali1 = userDTO.getPassword().length()>=6;
+        if(!lengthVali) {
+            throw new Exception("아이디는 최소 4글자 이상입니다.");
+        }
+        if(!passwordVali1) {
+            throw new Exception("비밀번호는 최소 6글자 이상입니다.");
+        }
+
         if (!checkPasswordsAreEqual(userDTO)) {
             throw new Exception("비밀번호와 비밀번호 확인이 다릅니다.");
         }

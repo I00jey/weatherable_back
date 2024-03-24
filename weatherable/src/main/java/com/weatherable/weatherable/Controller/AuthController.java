@@ -49,6 +49,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<DefaultRes<String>> insertUser(@RequestBody UserDTO userDTO) throws Exception {
         try {
+
             String result = userService.insertUser(userDTO);
 
             return new ResponseEntity<>(DefaultRes.res(StatusCode.CREATED, result), HttpStatus.CREATED);
@@ -64,13 +65,14 @@ public class AuthController {
     public ResponseEntity<DefaultRes<Boolean>> useridValidation(@RequestBody UserDTO userDTO) {
         try {
             boolean result = userService.checkIdValidation(userDTO);
-            if (result) {
+            boolean lengthVali = userDTO.getUserid().length() >= 4;
+            if (result && lengthVali) {
                 return new ResponseEntity<>(
                         DefaultRes.res(StatusCode.OK, "validation Info", userService.checkIdValidation(userDTO)),
                         HttpStatus.OK);
             }
             return new ResponseEntity<>(
-                    DefaultRes.res(StatusCode.BAD_REQUEST, "validation Info", userService.checkIdValidation(userDTO)),
+                    DefaultRes.res(StatusCode.BAD_REQUEST, "이미 존재하는 아이디이거나 비밀번호가 4자 이상이 아닙니다.", userService.checkIdValidation(userDTO)),
                     HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(
