@@ -93,7 +93,7 @@ public class UserController {
     private String defaultImgPath;
 
     @PatchMapping("/image")
-    public ResponseEntity<DefaultRes<String>> updateUserImagePath(@RequestBody UserDTO userDTO, @RequestHeader("Authorization") String accessToken, @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
+    public ResponseEntity<DefaultRes<String>> updateUserImagePath(@RequestHeader("Authorization") String accessToken, @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
         String imagePath;
         try {
             String userid = jwtUtilsService.retrieveUserid(accessToken);
