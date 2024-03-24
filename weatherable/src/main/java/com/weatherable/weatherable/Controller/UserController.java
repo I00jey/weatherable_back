@@ -135,7 +135,14 @@ public class UserController {
         try {
             String userid = jwtUtilsService.retrieveUserid(accessToken);
             Long userIndex = userService.retrieveUserIndexByUserid(userid);
+            String insertedExistingPassword = userDTO.getExistingPassword();
             String existingPassword = userService.retrieveExistingPasswordById(userIndex);
+            boolean checkExistingPassword = userService.matchPassword(insertedExistingPassword, existingPassword);
+            if(!checkExistingPassword) {
+                return new ResponseEntity<>(
+                        DefaultRes.res(StatusCode.BAD_REQUEST, "현재 비밀번호가 다릅니다."),
+                        HttpStatus.BAD_REQUEST);
+            }
             boolean inputPasswordsAreEquals = userDTO.getPassword().equals(userDTO.getPasswordConfirm());
             if (!inputPasswordsAreEquals) {
                 return new ResponseEntity<>(
