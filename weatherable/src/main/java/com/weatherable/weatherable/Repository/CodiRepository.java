@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +26,12 @@ public interface CodiRepository extends JpaRepository<CodiEntity, Long> {
     @Query(value = "update codi set showing = false where id = :id", nativeQuery = true)
     void hideCodi(Long id);
 
-    Optional<List<CodiEntity>> findByUserCodiIdAndActiveOrderByCodiDateDesc(Long id, boolean access);
-    Optional<List<CodiEntity>> findByUserCodiIdAndActiveAndShowingOrderByCodiDateDesc(Long id, boolean access, boolean show);
+    Optional<List<CodiEntity>> findByUserCodiIdAndActiveOrderByCodiDateDesc(Long id, boolean active);
+    Optional<List<CodiEntity>> findByUserCodiIdAndActiveAndShowingOrderByCodiDateDesc(Long id, boolean active, boolean show);
 
-    Optional<List<CodiEntity>> findByActiveAndShowingOrderByCodiDateDesc(boolean access, boolean showing);
+    Optional<List<CodiEntity>> findByActiveAndShowingOrderByCodiDateDesc(boolean active, boolean showing);
+
+    List<CodiEntity> findByUserCodiIdAndActiveAndCodiDate(Long id, boolean active, Timestamp codiDate);
 
     Optional<CodiEntity> getByIdAndActive(Long id, boolean access);
 

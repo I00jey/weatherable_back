@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.AccountNotFoundException;
+import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -139,6 +140,23 @@ public class CodiController {
             CodiDTOWithImage codiDTO = codiService.retrieveSingleCodi(id, userIndex);
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.OK, "Codi fetch 완료", codiDTO),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/date")
+    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveCodiListWithDate(@RequestHeader("Authorization") String accessToken, @RequestBody CodiDTO codiDTO) {
+        try {
+            Timestamp timestamp = codiDTO.getCodiDate();
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            Long userIndex = userService.retrieveUserIndexByUserid(userid);
+            var codiDTOList = codiService.retrieveByUser_idAndCodiDate(userIndex, timestamp);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "Codi fetch 완료", codiDTOList),
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(

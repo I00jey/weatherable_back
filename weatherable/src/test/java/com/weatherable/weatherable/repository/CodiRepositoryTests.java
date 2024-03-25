@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,6 +78,17 @@ public class CodiRepositoryTests {
     void findByUserCodiIdTest() {
         var codiEntityList = codiRepository.findByUserCodiIdAndActiveOrderByCodiDateDesc(2L, true);
         assertEquals(codiEntityList.get().size(), 3);
+    }
+
+    @Test
+    void findByUserCodiIdAndcodiDate() {
+        Date date = new Date(124, Calendar.MARCH, 23);
+        long milliseconds = date.getTime();
+        var codiEntityList = codiRepository.findByUserCodiIdAndActiveAndCodiDate(2L, true, new Timestamp(milliseconds));
+        for(var codiEntity : codiEntityList) {
+            System.out.println(codiEntity.getId());
+        }
+        assertEquals(codiEntityList.size(), 3);
     }
 
 
