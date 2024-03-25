@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weatherable.weatherable.Service.CustomUserDetailsService;
 import com.weatherable.weatherable.Service.JwtUtilsService;
 import com.weatherable.weatherable.enums.DefaultRes;
+import com.weatherable.weatherable.enums.StatusCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,7 +46,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (accessToken != null) {
                 username = jwtUtilsService.getUsername(accessToken);
                 String issuer = jwtUtilsService.getIssuer(accessToken);
+                // authorization 헤더에 있는게 access token이 아닐 경우
                 if (!issuer.equals("access")) {
+                    // 리프레시 토큰일 경우
+                    if(issuer.equals("refresh")) {
+                        try {
+                            boolean result = jwtUtilsService.validateToken(accessToken);
+                            if (!result) {
+                                throw new RuntimeException("Refresh Token Is Not Valid!");
+                            }
+                            String userid = jwtUtilsService.retrieveUserid(accessToken);
+                            sendErrorResponse(response, jwtUtilsService.createAccessToken(userid));
+                            return;
+                        }catch (Exception e) {
+                            sendErrorResponse(response, "refresh 토큰이 만료되었습니다.");
+                        }
+                    }
                     sendErrorResponse(response, "액세스 토큰이 아닙니다.");
                     return;
                 }
