@@ -63,7 +63,7 @@ public class JwtUtilsService {
         var claims = Jwts.builder()
                 .setIssuer("refresh")
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plusSeconds(60 * 60 * 24 * 14)))
+                .setExpiration(Date.from(Instant.now().plusSeconds(60*60*24*14)))
                 .setSubject(userid)
                 .claim("scope", "Refresh") // authority
                 .signWith(key)
