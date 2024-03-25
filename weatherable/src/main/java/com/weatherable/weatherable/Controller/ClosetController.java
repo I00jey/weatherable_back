@@ -95,7 +95,7 @@ public class ClosetController {
         }
     }
 
-    @PutMapping("")
+    @PatchMapping("/modify")
     public ResponseEntity<DefaultRes<String>> updateSingleClosetById(@RequestHeader("Authorization") String accessToken, @RequestBody ClosetDTO closetDTO) {
         try {
             String userid = jwtUtilsService.retrieveUserid(accessToken);
