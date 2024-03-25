@@ -44,8 +44,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (accessToken != null) {
                 username = jwtUtilsService.getUsername(accessToken);
                 String issuer = jwtUtilsService.getIssuer(accessToken);
-                if (!issuer.equals("access")) {
-                    sendErrorResponse(response, "액세스 토큰이 아닙니다.");
+                if (issuer.equals("refresh")) {
+                    filterChain.doFilter(request, response);
                     return;
                 }
             }

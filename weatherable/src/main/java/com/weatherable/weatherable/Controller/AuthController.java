@@ -115,7 +115,7 @@ public class AuthController {
     CustomUserDetailsService customUserDetailsService;
 
     @PostMapping("/refresh")
-    public ResponseEntity<DefaultRes<String>> getRefresh(@RequestHeader("Refresh") String refreshToken) {
+    public ResponseEntity<DefaultRes<String>> getRefresh(@RequestHeader("Authorization") String refreshToken) {
         try {
         boolean result = jwtUtilsService.validateToken(refreshToken);
         if (!result) {
