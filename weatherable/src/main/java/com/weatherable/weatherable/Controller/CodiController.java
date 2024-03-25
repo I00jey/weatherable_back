@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.security.auth.login.AccountNotFoundException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -150,9 +151,9 @@ public class CodiController {
     }
 
     @GetMapping("/date")
-    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveCodiListWithDate(@RequestHeader("Authorization") String accessToken, @RequestBody CodiDTO codiDTO) {
+    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveCodiListWithDate(@RequestHeader("Authorization") String accessToken, @RequestParam LocalDateTime selectedDate) {
         try {
-            Timestamp timestamp = Timestamp.valueOf(codiDTO.getCodiDate());
+            Timestamp timestamp = Timestamp.valueOf(selectedDate);
             String userid = jwtUtilsService.retrieveUserid(accessToken);
             Long userIndex = userService.retrieveUserIndexByUserid(userid);
             var codiDTOList = codiService.retrieveByUser_idAndCodiDate(userIndex, timestamp);
