@@ -91,6 +91,15 @@ public class CodiRepositoryTests {
         assertEquals(codiEntityList.size(), 3);
     }
 
+    @Test
+    void findByMyCodi() {
+        var codiEntityList = codiRepository.findByUserCodiIdAndActiveOrderByCodiDateDesc(2L, true);
+        for(var codiEntity : codiEntityList.get()) {
+            System.out.println(codiEntity.getId());
+        }
+        assertEquals(codiEntityList.get().size(), 4);
+    }
+
 
 
 

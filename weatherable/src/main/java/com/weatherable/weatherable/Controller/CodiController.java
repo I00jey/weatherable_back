@@ -155,9 +155,9 @@ public class CodiController {
         try {
             String userid = jwtUtilsService.retrieveUserid(accessToken);
             Long userIndex = userService.retrieveUserIndexByUserid(userid);
-            var codiDTO = codiService.retrieveMyCodi(userIndex);
+            var codiDTOWithImageList = codiService.retrieveMyCodi(userIndex);
             return new ResponseEntity<>(
-                    DefaultRes.res(StatusCode.OK, "Codi fetch 완료", codiDTO),
+                    DefaultRes.res(StatusCode.OK, "Codi fetch 완료", codiDTOWithImageList),
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(

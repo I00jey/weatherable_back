@@ -97,4 +97,14 @@ public class ClosetRepositoryTests {
         System.out.println(closetEntityList.size());
         assertEquals(closetEntityList.get(0).getId(), 3);
     }
+
+    @Test
+    void getByIdWithNull() {
+
+    ClosetEntity closetShoesEntity = closetRepository.getByIdAndActive(null, true).orElseGet(ClosetEntity::new);
+        System.out.println(closetShoesEntity.getId());
+        assertNull(closetShoesEntity.getId());
+    }
+
+
 }
