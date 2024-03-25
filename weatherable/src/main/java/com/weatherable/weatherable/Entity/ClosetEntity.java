@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 @Entity
 public class ClosetEntity {
 

@@ -205,28 +205,16 @@ public class ClosetService {
             throw new Exception("유저 정보가 없습니다.");
         }
         var userEntity = userEntityOptional.get();
-        ClosetEntity closetEntity = ClosetEntity.builder()
-                .id(closetDTO.getId())
-                .majorCategory(closetDTO.getMajorCategory())
-                .middleCategory(closetDTO.getMiddleCategory())
-                .userCloset(userEntity)
-                .imagePath(closetDTO.getImagePath())
-                .style(closetDTO.getStyle())
-                .size(closetDTO.getSize())
-                .brand(closetDTO.getBrand())
-                .score(closetDTO.getScore())
-                .color(closetDTO.getColor())
-                .liked(closetDTO.isLiked())
-                .active(true)
-                .season(closetDTO.getSeason())
-                .productName(closetDTO.getProductName())
-                .thickness(closetDTO.getThickness())
-                .price(closetDTO.getPrice())
-                .createdAt(closetDTO.getCreatedAt())
-                .build();
+
+        ClosetEntity closetEntity = closetRepository.findById(closetDTO.getId())
+                .orElseThrow(() -> new Exception("해당하는 아이템을 찾을 수 없습니다."));
+
+        closetEntity.setProductName(closetDTO.getProductName());
+        closetEntity.setSize(closetDTO.getSize());
+        closetEntity.setPrice(closetDTO.getPrice());
 
         ClosetEntity result = closetRepository.save(closetEntity);
-        return result.getProductName() + "등록완료";
+        return result.getProductName() + "수정 완료";
     }
 
 @Transactional
