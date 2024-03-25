@@ -2,6 +2,7 @@ package com.weatherable.weatherable.Controller;
 
 import com.weatherable.weatherable.DTO.UserDTO;
 import com.weatherable.weatherable.DTO.UserForMyPageDTO;
+import com.weatherable.weatherable.DTO.UserSizeDTO;
 import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Service.*;
 import com.weatherable.weatherable.enums.DefaultRes;
@@ -134,6 +135,23 @@ public class UserController {
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.OK, result),
                     HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/size")
+    public ResponseEntity<DefaultRes<String>> putUserSize(@RequestBody UserSizeDTO userSizeDTO, @RequestHeader("Authorization") String accessToken) {
+        try {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            Long userIndex = userService.retrieveUserIndexByUserid(userid);
+            userService.insertUserSize(userIndex, userSizeDTO);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "사이즈 정보가 변경되었습니다."),
+                    HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity<>(
                     DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
