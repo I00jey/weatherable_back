@@ -61,7 +61,6 @@ public class ClosetEntity {
     @Column(nullable = false, name = "created_at")
     private Timestamp createdAt;
 
-
     public void setBigImagePath(String imagePath) {
     }
 }
