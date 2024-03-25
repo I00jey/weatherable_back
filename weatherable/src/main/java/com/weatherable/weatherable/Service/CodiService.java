@@ -125,7 +125,6 @@ public class CodiService {
     ClosetDTO transformIntoClosetDTO(ClosetEntity closetEntity) {
         return ClosetDTO.builder()
                 .id(closetEntity.getId())
-                .user_id(closetEntity.getUserCloset().getId())
                 .size(closetEntity.getSize())
                 .style(closetEntity.getStyle())
                 .middleCategory(closetEntity.getMiddleCategory())
@@ -137,7 +136,6 @@ public class CodiService {
                 .majorCategory(closetEntity.getMajorCategory())
                 .productName(closetEntity.getProductName())
                 .thickness(closetEntity.getThickness())
-                .userid(closetEntity.getUserCloset().getUserid())
                 .build();
     }
 
