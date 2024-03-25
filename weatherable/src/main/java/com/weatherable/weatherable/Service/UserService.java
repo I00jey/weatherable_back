@@ -211,6 +211,7 @@ public class UserService {
                     .nickname(userEntity.getNickname())
                     .favoriteStyle(userEntity.getFavoriteStyle())
                     .height(userEntity.getHeight())
+                    .image_path(userEntity.getImagePath())
                     .weight(userEntity.getWeight())
                     .userSizeDTO(userSizeDTO)
                     .build();
@@ -242,6 +243,36 @@ public class UserService {
                     .user_id(userSizeEntity.getUserEntity().getId())
                     .build();
             return userSizeDTO;
+    }
+
+    public void insertUserSize(Long userIndex, UserSizeDTO userSizeDTO) throws Exception {
+        Optional<UserSizeEntity> userSizeEntityOptional = userSizeRepository.retrieveUserSizeByUserIndex(userIndex);
+        if (userSizeEntityOptional.isEmpty()) {
+            throw new Exception("불러올 유저 정보가 없습니다.");
+        }
+
+        var existingUserEntity = userSizeEntityOptional.get().getUserEntity();
+        long id = existingUserEntity.getUserSizeEntity().getId();
+
+        UserSizeEntity userSizeEntity = UserSizeEntity.builder()
+                .id(id)
+                .b1(userSizeDTO.getB1())
+                .b2(userSizeDTO.getB2())
+                .b3(userSizeDTO.getB3())
+                .b4(userSizeDTO.getB4())
+                .o1(userSizeDTO.getO1())
+                .o2(userSizeDTO.getO2())
+                .o3(userSizeDTO.getO3())
+                .o4(userSizeDTO.getO4())
+                .s1(userSizeDTO.getS1())
+                .s2(userSizeDTO.getS2())
+                .t1(userSizeDTO.getT1())
+                .t2(userSizeDTO.getT2())
+                .t3(userSizeDTO.getT3())
+                .t4(userSizeDTO.getT4())
+                .userEntity(existingUserEntity)
+                .build();
+        userSizeRepository.save(userSizeEntity);
     }
 
 

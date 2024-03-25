@@ -66,8 +66,8 @@ public class UserEntity {
     @OneToMany(mappedBy = "userIndex", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<CodiLikeEntity> userLookBookLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<UserSizeEntity> userSize = new ArrayList<>();
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private UserSizeEntity userSizeEntity;
 
 
 
