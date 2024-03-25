@@ -150,6 +150,22 @@ public class CodiController {
         }
     }
 
+    @GetMapping("/mycodi")
+    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveMyCodi(@RequestHeader("Authorization") String accessToken) {
+        try {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            Long userIndex = userService.retrieveUserIndexByUserid(userid);
+            var codiDTO = codiService.retrieveMyCodi(userIndex);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "Codi fetch 완료", codiDTO),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/date")
     public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveCodiListWithDate(@RequestHeader("Authorization") String accessToken, @RequestParam LocalDateTime selectedDate) {
         try {
