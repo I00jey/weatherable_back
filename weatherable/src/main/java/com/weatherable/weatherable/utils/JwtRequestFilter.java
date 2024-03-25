@@ -60,7 +60,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         }
                     }
                     sendErrorResponse(response, "액세스 토큰이 아닙니다.");
-
+                    return;
                 }
             }
             if (username != null) {
