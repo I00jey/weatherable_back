@@ -53,6 +53,10 @@ public class UserSizeEntity {
     //    b4: 하의 엉덩이단면
     private Double b4;
 
+    private Double b5;
+
+    private Double b6;
+
     //    o1: 아우터 총장
     private Double o1;
 

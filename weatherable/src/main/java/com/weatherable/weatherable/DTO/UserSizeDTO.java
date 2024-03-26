@@ -21,6 +21,8 @@ public class UserSizeDTO {
     private Double b2;
     private Double b3;
     private Double b4;
+    private Double b5;
+    private Double b6;
     private Double o1;
     private Double o2;
     private Double o3;
