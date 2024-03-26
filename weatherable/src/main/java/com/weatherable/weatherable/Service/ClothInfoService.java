@@ -27,7 +27,7 @@ public class ClothInfoService {
     ClothInfoRepository clothInfoRepository;
 
     public List<ClothInfoDTO> getAllClothInfoList() throws Exception {
-        PageRequest pageRequest = PageRequest.of(0, 10);
+        PageRequest pageRequest = PageRequest.of(0, 20000);
         Page<ClothInfoEntity> page = clothInfoRepository.findAll(pageRequest);
 
         //List<ClothInfoEntity> clothInfoEntityList = clothInfoRepository.findAll();
@@ -49,7 +49,7 @@ public class ClothInfoService {
                     .build();
             result.add(clothInfoDTO);
         }
-
+        System.out.println(result.size());
         return result;
     }
 
