@@ -91,7 +91,7 @@ public class JwtUtilsService {
         var claims = extractAllClaims(token);
         String userid = claims.getSubject();
         String existingRefreshToken = getExistingRefreshToken(userid);
-        boolean isValidToken = token.substring(7).equals(existingRefreshToken);
+        boolean isValidToken = userid.equals(extractAllClaims("Bearer " + existingRefreshToken).getSubject());
         boolean isExpired = isTokenExpired(token);
 
         return !isExpired && isValidToken;
