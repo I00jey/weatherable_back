@@ -57,6 +57,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                             return;
                         }catch (Exception e) {
                             sendErrorResponse(response, "refresh 토큰이 만료되었습니다.");
+                            return;
                         }
                     }
                     sendErrorResponse(response, "액세스 토큰이 아닙니다.");
