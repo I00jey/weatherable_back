@@ -132,8 +132,8 @@ public class UserService {
 
     @Transactional
     public String changeUserNickname(String nickname, Long id) throws Exception {
-        if (userRepository.existsByNicknameAndId(nickname, id)) {
-            throw new Exception("동일한 닉네임입니다");
+        if (nickname.trim().isBlank()) {
+            throw new Exception("공백 문자는 닉네임으로 설정할 수 없습니다.");
         }
         userRepository.updateNickname(nickname, id);
         return "닉네임 변경 완료";
