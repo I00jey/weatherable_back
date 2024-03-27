@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ClothInfoRepository extends MongoRepository<ClothInfoEntity, String> {
     List<ClothInfoEntity> findByProductNameContainingIgnoreCase(String keyword);
-    List<ClothInfoEntity> findByBrandContainingIgnoreCase(String keyword);
+    List<ClothInfoEntity> findByBrandIgnoreCase(String keyword);
 }

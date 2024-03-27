@@ -100,7 +100,7 @@ public class ClothInfoService {
         return result;
     } public List<ClothInfoDTO> findByBrandFromClothInfo(String keyWord) throws Exception {
 
-        List<ClothInfoEntity> clothInfoEntityList = clothInfoRepository.findByBrandContainingIgnoreCase(keyWord);
+        List<ClothInfoEntity> clothInfoEntityList = clothInfoRepository.findByBrandIgnoreCase(keyWord);
         List<ClothInfoDTO> result = new ArrayList<>();
         if (clothInfoEntityList.isEmpty()) {
             return result;
