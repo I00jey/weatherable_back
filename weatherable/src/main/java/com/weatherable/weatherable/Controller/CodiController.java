@@ -69,6 +69,22 @@ public class CodiController {
         }
     }
 
+    @GetMapping("/like")
+    public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllMyLikeCodi(@RequestHeader("Authorization") String accessToken) {
+        try {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            Long userIndex = userService.retrieveUserIndexByUserid(userid);
+            List<CodiDTOWithImage> codiDTOList = codiService.retrieveMyLikeCodi(userIndex);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "Like Codi Fetch 완료", codiDTOList),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/user/{id}")
     public ResponseEntity<DefaultRes<List<CodiDTOWithImage>>> retrieveAllSomeonesCodi(@PathVariable Long id, @RequestHeader("Authorization") String accessToken) {
         try {

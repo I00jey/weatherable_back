@@ -106,6 +106,45 @@ public class ClosetService {
         return result;
     }
 
+
+    public List<ClosetDTO> getMyAllLikeClothList(String userid) throws Exception {
+        var userEntityOptional = userRepository.findByUseridAndActive(userid, true);
+        if (userEntityOptional.isEmpty()) {
+            throw new Exception("유저 정보가 없습니다.");
+        }
+        var userEntity = userEntityOptional.get();
+        List<ClosetEntity> closetEntityList = closetRepository.findByUserClosetIdAndActiveAndLiked(userEntity.getId(), true, true);
+        List<ClosetDTO> result = new ArrayList<>();
+        if (closetEntityList.isEmpty()) {
+            throw new Exception("옷장에 옷이 없습니다.");
+        }
+
+        for (ClosetEntity closetEntity : closetEntityList) {
+            ClosetDTO closetDTO = ClosetDTO.builder()
+                    .id(closetEntity.getId())
+                    .productName(closetEntity.getProductName())
+                    .user_id(closetEntity.getUserCloset().getId())
+                    .userid(closetEntity.getUserCloset().getUserid())
+                    .nickname(closetEntity.getUserCloset().getNickname())
+                    .majorCategory(closetEntity.getMajorCategory())
+                    .middleCategory(closetEntity.getMiddleCategory())
+                    .price(closetEntity.getPrice())
+                    .liked(closetEntity.isLiked())
+                    .brand(closetEntity.getBrand())
+                    .color(closetEntity.getColor())
+                    .style(closetEntity.getStyle())
+                    .size(closetEntity.getSize())
+                    .season(closetEntity.getSeason())
+                    .imagePath(closetEntity.getImagePath())
+                    .thickness(closetEntity.getThickness())
+                    .createdAt(closetEntity.getCreatedAt())
+                    .build();
+            result.add(closetDTO);
+        }
+
+        return result;
+    }
+
     public List<ClosetDTO> retrieveAllClosetDTOByUserIndexAndMajorCategory(Long user_id, MajorCategory major) throws Exception {
         var closetEntityList = closetRepository.findByUserClosetIdAndMajorCategoryAndActive(user_id, major, true);
         if(closetEntityList.isEmpty()) {

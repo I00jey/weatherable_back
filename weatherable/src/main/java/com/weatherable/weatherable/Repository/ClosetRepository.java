@@ -34,6 +34,8 @@ public interface ClosetRepository extends JpaRepository<ClosetEntity, Long> {
 
     List<ClosetEntity> findByProductNameAndUserClosetIdAndActive(String productName, Long id,boolean active);
 
+    List<ClosetEntity> findByUserClosetIdAndActiveAndLiked(Long id, boolean active, boolean liked);
+
     List<ClosetEntity> findByUserClosetIdAndMajorCategoryAndActive(Long id, MajorCategory major, boolean active);
 
     List<ClosetEntity> findByUserClosetIdAndMiddleCategoryAndActive(Long id, MiddleCategory middle, boolean active);
