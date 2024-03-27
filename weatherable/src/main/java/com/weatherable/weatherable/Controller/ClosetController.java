@@ -177,5 +177,20 @@ public class ClosetController {
         }
     }
 
+    @GetMapping("/like")
+    public ResponseEntity<DefaultRes<List<ClosetDTO>>> retrieveByLike(@RequestHeader("Authorization") String accessToken) {
+        try {
+            String userid = jwtUtilsService.retrieveUserid(accessToken);
+            var closetDTOList = closetService.getMyAllLikeClothList(userid);
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.OK, "like Cloth fetch 완료", closetDTOList),
+                    HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    DefaultRes.res(StatusCode.BAD_REQUEST, e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }

@@ -5,6 +5,7 @@ import com.weatherable.weatherable.DTO.CodiDTO;
 import com.weatherable.weatherable.DTO.CodiDTOWithImage;
 import com.weatherable.weatherable.Entity.ClosetEntity;
 import com.weatherable.weatherable.Entity.CodiEntity;
+import com.weatherable.weatherable.Entity.CodiLikeEntity;
 import com.weatherable.weatherable.Entity.UserEntity;
 import com.weatherable.weatherable.Repository.ClosetRepository;
 import com.weatherable.weatherable.Repository.CodiLikeRepository;
@@ -186,6 +187,45 @@ public class CodiService {
         List<CodiEntity> codiEntitityList = codiEntityOptional.get();
         List<CodiDTOWithImage> codiDTOList = new ArrayList<>();
         for (var codiEntity : codiEntitityList) {
+            ClosetEntity closetTopEntity = closetRepository.getByIdAndActive(codiEntity.getTopIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetBottomEntity = closetRepository.getByIdAndActive(codiEntity.getBottomIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetOuterEntity = closetRepository.getByIdAndActive(codiEntity.getOuterIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetShoesEntity = closetRepository.getByIdAndActive(codiEntity.getShoesIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetAccessoryEntity = closetRepository.getByIdAndActive(codiEntity.getAccessoryIndex(), true).orElseGet(ClosetEntity::new);
+            ClosetEntity closetCapEntity = closetRepository.getByIdAndActive(codiEntity.getCapIndex(), true).orElseGet(ClosetEntity::new);
+            Long numberOfLikes = codiLikeRepository.countByCodiIndexId(codiEntity.getId());
+            boolean doILike = codiLikeRepository.existsByCodiIndexIdAndUserIndexId(codiEntity.getId(), userIndex);
+            var codiDTO = CodiDTOWithImage.builder()
+                    .id(codiEntity.getId())
+                    .codiDate(codiEntity.getCodiDate())
+                    .userid(codiEntity.getUserCodi().getUserid())
+                    .nickname(codiEntity.getUserCodi().getNickname())
+                    .codiName(codiEntity.getCodiName())
+                    .user_id(codiEntity.getUserCodi().getId())
+                    .top(transformIntoClosetDTO(closetTopEntity))
+                    .bottom(transformIntoClosetDTO(closetBottomEntity))
+                    .outer(transformIntoClosetDTO(closetOuterEntity))
+                    .numberOfLikes(numberOfLikes)
+                    .doILike(doILike)
+                    .shoes(transformIntoClosetDTO(closetShoesEntity))
+                    .accessory(transformIntoClosetDTO(closetAccessoryEntity))
+                    .cap(transformIntoClosetDTO(closetCapEntity))
+                    .build();
+            codiDTOList.add(codiDTO);
+        }
+        return codiDTOList;
+    }
+
+    public List<CodiDTOWithImage> retrieveMyLikeCodi(Long userIndex) throws Exception {
+        List<CodiLikeEntity> codiLikeEntityList =
+                codiLikeRepository.findByUserIndexId(userIndex);
+        if (codiLikeEntityList.isEmpty()) {
+            throw new Exception("불러올 코디가 없습니다.");
+        }
+
+        List<CodiDTOWithImage> codiDTOList = new ArrayList<>();
+        for (var codiLikeEntity : codiLikeEntityList) {
+            var codiEntity = codiLikeEntity.getCodiIndex();
             ClosetEntity closetTopEntity = closetRepository.getByIdAndActive(codiEntity.getTopIndex(), true).orElseGet(ClosetEntity::new);
             ClosetEntity closetBottomEntity = closetRepository.getByIdAndActive(codiEntity.getBottomIndex(), true).orElseGet(ClosetEntity::new);
             ClosetEntity closetOuterEntity = closetRepository.getByIdAndActive(codiEntity.getOuterIndex(), true).orElseGet(ClosetEntity::new);
