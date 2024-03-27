@@ -49,7 +49,6 @@ public class ClothInfoService {
                     .build();
             result.add(clothInfoDTO);
         }
-        System.out.println(result.size());
         return result;
     }
 
