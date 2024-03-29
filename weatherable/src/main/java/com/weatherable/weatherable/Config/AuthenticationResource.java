@@ -64,8 +64,8 @@ public class AuthenticationResource {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         //Make the below setting as * to allow connection from any hos
-        corsConfiguration.setAllowedOrigins(List.of("http://43.201.22.187:9000", "http://localhost:9000", "http://43.201.22.187:3000", "http://localhost:3000",
-                "https://43.201.22.187:9000", "https://localhost:9000", "https://43.201.22.187:3000", "https://localhost:3000"
+        corsConfiguration.setAllowedOrigins(List.of("http://3.36.128.237:9000", "http://localhost:9000", "http://3.36.128.237:3000", "http://localhost:3000",
+                "https://3.36.128.237:9000", "https://localhost:9000", "https://3.36.128.237:3000", "https://localhost:3000"
         ));
         corsConfiguration.setAllowedMethods(List.of("*"));
         corsConfiguration.setAllowCredentials(true);
