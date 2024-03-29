@@ -13,6 +13,7 @@
 //import java.util.List;
 //import java.util.Optional;
 //
+//import static com.weatherable.weatherable.enums.Style.Sporty;
 //import static org.junit.jupiter.api.Assertions.*;
 //import static org.mockito.Mockito.mock;
 //import static org.mockito.Mockito.when;
@@ -71,6 +72,12 @@
 //        assertTrue(userEntityOptional.isEmpty());
 //    }
 //
-//
+//  @Transactional
+//    @Test
+//    void updateStyleUserTest() {
+//        userRepository.updateStyle(Sporty, 1L);
+//        var userEntityOptional = userRepository.findByUseridAndActive("test", true);
+//        assertEquals(userEntityOptional.get().getFavoriteStyle(), Sporty);
+//    }
 //
 //}
