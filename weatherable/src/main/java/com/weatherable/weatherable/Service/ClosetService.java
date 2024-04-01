@@ -300,6 +300,10 @@ public class ClosetService {
     }
 
     public ClosetDTO retrieveClosetClothByProductName(String productName, Long user_id) {
+        if(productName.contains(",")) {
+            productName = productName.substring(0,productName.charAt(','));
+        }
+
         var closetEntityList = closetRepository.findByProductNameAndUserClosetIdAndActive(productName, user_id, true);
         if(closetEntityList.isEmpty()) {
             return ClosetDTO.builder()
