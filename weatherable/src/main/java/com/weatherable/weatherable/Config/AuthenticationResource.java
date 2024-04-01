@@ -7,6 +7,7 @@ import com.weatherable.weatherable.utils.JwtAuthenticationEntryPoint;
 import com.weatherable.weatherable.utils.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,6 +28,12 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class AuthenticationResource {
+
+    @Value("${python.data.uri}")
+    String pythonURI;
+
+    @Value("${front.data.uri}")
+    String frontURI;
 
     private final JwtRequestFilter jwtRequestFilter;
 
@@ -65,7 +72,7 @@ public class AuthenticationResource {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         //Make the below setting as * to allow connection from any hos
         corsConfiguration.setAllowedOrigins(List.of("http://3.36.128.237:9000", "http://localhost:9000", "http://3.36.128.237:3000", "http://localhost:3000",
-                "https://3.36.128.237:9000", "https://localhost:9000", "https://3.36.128.237:3000", "https://localhost:3000"
+                "https://3.36.128.237:9000", "https://localhost:9000", "https://3.36.128.237:3000", "https://localhost:3000", pythonURI, frontURI
         ));
         corsConfiguration.setAllowedMethods(List.of("*"));
         corsConfiguration.setAllowCredentials(true);
