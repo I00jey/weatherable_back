@@ -39,6 +39,7 @@ https://www.notion.so/Weatherable-API-Reference-307d36f1808b4b8daffab7d4a4ae4b71
 ## 프로젝트 소개
 This project is REST API for weatherable Front-end.
 It response when front-end (client) request something. Signup or Login or etc...
+
 mainly it has 3 features
 1. closet feature
 2. codi and community feature
