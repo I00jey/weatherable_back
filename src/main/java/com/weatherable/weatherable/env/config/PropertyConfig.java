@@ -5,9 +5,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
 @Configuration
-@PropertySources({
-        @PropertySource("classpath:env.properties")
-})
-
+//@PropertySources({
+// 로컬에서는 env.properties 필요
+//        @PropertySource("classpath:env.properties")
+//})
 public class PropertyConfig {
 }
